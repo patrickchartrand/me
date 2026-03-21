@@ -1,5 +1,5 @@
 <template>
-  <section id="hero" class="px-6 md:px-12 lg:px-24 mb-24 md:mb-40 min-h-[80vh] flex items-center">
+  <section id="about" class="px-6 md:px-12 lg:px-24 mb-24 md:mb-40 min-h-[80vh] flex items-center">
     <div class="max-w-7xl mx-auto w-full">
       <p class="text-xs uppercase tracking-[0.3em] text-secondary mb-8 reveal-text">
         Frontend Developer & Design Systems
@@ -27,12 +27,13 @@
         </div>
         <div class="flex flex-col gap-2 text-right">
           <span class="text-xs uppercase tracking-[0.2em] text-secondary">Based in</span>
-          <span class="text-xl font-serif">Granby, Canada</span>
+          <span class="text-xl font-serif">Granby, Quebec</span>
           <div class="flex items-center gap-2 mt-2 justify-end">
-            <span class="pulse-wrapper">
-              <span class="pulse-ring ring-1"></span>
-              <span class="pulse-ring ring-2"></span>
-              <span class="pulse-dot"></span>
+            <span class="relative flex h-2.5 w-2.5">
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"
+              ></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-700"></span>
             </span>
             <span class="text-xs text-available font-medium">Available for work</span>
           </div>
@@ -62,56 +63,5 @@
 }
 .highlight-offset:hover::before {
   height: 60%;
-}
-
-/* Pulse */
-.pulse-wrapper {
-  position: relative;
-  width: 12px;
-  height: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--color-available);
-  position: relative;
-  z-index: 2;
-}
-
-.pulse-ring {
-  position: absolute;
-  border-radius: 50%;
-  background-color: var(--color-available);
-  opacity: 0;
-  z-index: 1;
-}
-
-.ring-1 {
-  width: 18px;
-  height: 18px;
-  animation: pulse-out 2s ease-out infinite;
-}
-
-.ring-2 {
-  width: 18px;
-  height: 18px;
-  animation: pulse-out 2s ease-out infinite 0.6s;
-}
-
-@keyframes pulse-out {
-  0% {
-    transform: scale(0.5);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(2.2);
-    opacity: 0;
-  }
 }
 </style>

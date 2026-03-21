@@ -1,7 +1,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 export function useActiveSection() {
-  const activeSection = ref('hero')
+  const activeSection = ref('about')
   let navObserver: IntersectionObserver | null = null
 
   onMounted(() => {

@@ -99,7 +99,7 @@ const socialLinks = [
           © {{ year }} Patrick Chartrand. All rights reserved.
         </div>
         <div class="flex gap-8 text-sm uppercase tracking-widest text-white/40">
-          <a href="#hero" class="hover:text-white/80 transition-colors">Top</a>
+          <a href="#about" class="hover:text-white/80 transition-colors">Top</a>
           <a href="#work" class="hover:text-white/80 transition-colors">Work</a>
           <a href="#experience" class="hover:text-white/80 transition-colors">Experience</a>
         </div>
