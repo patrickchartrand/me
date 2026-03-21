@@ -2,16 +2,26 @@
 import { ref, onMounted } from 'vue'
 
 const technologies = [
-  { name: 'Vue.js', slug: 'vuedotjs' },
-  { name: 'Nuxt', slug: 'nuxt' },
+  // Design
+  { name: 'Figma', slug: 'figma' },
+  // Frontend
+  { name: 'HTML5', slug: 'html5' },
   { name: 'TypeScript', slug: 'typescript' },
   { name: 'Tailwind', slug: 'tailwindcss' },
-  { name: 'Figma', slug: 'figma' },
-  { name: 'Prisma', slug: 'prisma' },
-  { name: 'WordPress', slug: 'wordpress' },
+  // Frameworks
+  { name: 'Vue.js', slug: 'vuedotjs' },
+  { name: 'Nuxt', slug: 'nuxt' },
+  // Backend & DB
   { name: 'PHP', slug: 'php' },
-  { name: 'Git', slug: 'git' },
   { name: 'Node.js', slug: 'nodedotjs' },
+  { name: 'Prisma', slug: 'prisma' },
+  // CMS
+  { name: 'WordPress', slug: 'wordpress' },
+  // Outils
+  { name: 'Git', slug: 'git' },
+  // Contenu & données
+  { name: 'Markdown', slug: 'markdown' },
+  { name: 'XML', slug: 'xml' },
 ]
 
 interface TechSvg {
