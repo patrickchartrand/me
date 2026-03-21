@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const stats = [
   { value: '08', label: 'Years Experience' },
-  { value: '11+', label: 'Projects Delivered' },
+  { value: '1,458+', label: 'Projects Contributed To' },
   { value: '100%', label: 'Semantic HTML' },
   { value: '404', label: 'Bugs fixed (and counting)' },
 ]
