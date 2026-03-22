@@ -1,4 +1,7 @@
-export async function useDownload({ filename, filepath }: { filename: string; filepath: string }) {
+export async function useDownload(
+  locale: string,
+  { filename, filepath }: { filename: string; filepath: string },
+) {
   const html2pdf = (await import('html2pdf.js')).default
 
   // Overlay avec loader
@@ -35,7 +38,7 @@ export async function useDownload({ filename, filepath }: { filename: string; fi
     </style>
     <div class="pdf-spinner"></div>
     <div class="pdf-label">
-      Generating PDF
+      ${locale === 'en' ? 'Generating PDF' : 'Génération du PDF'}
       <span class="pdf-dot">.</span><span class="pdf-dot">.</span><span class="pdf-dot">.</span>
     </div>
   `

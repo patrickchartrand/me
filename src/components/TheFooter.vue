@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import { useDownload } from '@/composables/useDownload'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const year = new Date().getFullYear()
 
 const socialLinks = [
@@ -84,7 +84,7 @@ const socialLinks = [
               href="#"
               class="group inline-flex items-center gap-4 bg-[#63667b] text-cream px-8 py-4 rounded-full font-medium hover:bg-[#8a8c9c] hover:scale-105 transition-all duration-300"
               @click.prevent="
-                useDownload({ filename: 'pchartrand-cv.pdf', filepath: '/site/cv.html' })
+                useDownload(locale, { filename: 'pchartrand-cv.pdf', filepath: '/site/cv.html' })
               "
             >
               {{ t('footer.ctaCV') }}
