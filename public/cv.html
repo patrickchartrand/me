@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patrick Chartrand — CV</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #3d405b;
+        --cream: #f5f3ef;
+        --charcoal: #1a1a1a;
+        --secondary: #8a8a8a;
+        --lavender: #9d9fbd;
+      }
+
+      body.cv {
+        font-family: 'Inter', sans-serif;
+        background: #dddbd7;
+        padding: 2rem;
+      }
+
+      .page {
+        max-width: 920px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        background: var(--cream);
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        background: var(--primary);
+        color: var(--cream);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar-header {
+        padding: 1.5rem 1.75rem 1.25rem;
+        /* border-bottom: 1px solid rgba(255, 255, 255, 0.08); */
+        margin-bottom: 2rem;
+      }
+
+      .sidebar-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.4rem;
+        font-weight: 700;
+        line-height: 1.1;
+        color: var(--cream);
+        margin-bottom: 1rem;
+        position: relative;
+        top: -10px;
+      }
+
+      .sidebar-role {
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(245, 243, 239, 0.5);
+      }
+
+      .sidebar-body {
+        padding: 1.25rem 1.75rem;
+        flex: 1;
+      }
+
+      .sidebar-section {
+        margin-bottom: 2.5rem;
+      }
+
+      .sidebar-section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--cream);
+        margin-bottom: 0.9rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 2px solid var(--lavender);
+        display: inline-block;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        margin-bottom: 0.8rem;
+        margin-top: 0.6rem;
+      }
+
+      .contact-item svg {
+        margin-top: 0.1rem;
+      }
+
+      .contact-icon {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
+        opacity: 0.55;
+        fill: var(--cream);
+      }
+
+      .contact-item a,
+      .contact-item span {
+        font-size: 0.72rem;
+        color: rgba(245, 243, 239, 0.75);
+        text-decoration: none;
+        line-height: 1.5;
+        position: relative;
+        top: -5px;
+      }
+      .contact-item a:hover {
+        color: var(--cream);
+      }
+
+      .skill-row {
+        margin-bottom: 0.55rem;
+      }
+      .skill-cat {
+        font-size: 0.62rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--cream);
+        margin-right: 0.3rem;
+      }
+      .skill-val {
+        font-size: 0.68rem;
+        color: rgba(245, 243, 239, 0.65);
+      }
+
+      .realisation {
+        margin-bottom: 0.75rem;
+      }
+      .realisation-year {
+        font-size: 0.62rem;
+        color: rgba(245, 243, 239, 0.45);
+      }
+      .realisation-title {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: rgba(245, 243, 239, 0.8);
+      }
+
+      /* MAIN */
+      .main {
+        padding: 1.5rem 2rem;
+        background: var(--cream);
+      }
+
+      .main-section {
+        margin-bottom: 3.3rem;
+      }
+
+      .main-section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 0.9rem;
+        padding-bottom: 0.3rem;
+        border-bottom: 2px solid var(--lavender);
+        display: inline-block;
+      }
+
+      .edu-grid {
+        display: grid;
+        gap: 0.7rem;
+      }
+
+      .edu-row {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 0.75rem;
+        align-items: start;
+      }
+
+      .edu-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+      }
+
+      .edu-period {
+        font-size: 0.65rem;
+        color: var(--charcoal);
+      }
+      .edu-school {
+        font-size: 0.62rem;
+        color: var(--secondary);
+      }
+      .edu-degree {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--charcoal);
+        line-height: 1.35;
+      }
+
+      .exp-entry {
+        display: grid;
+        grid-template-columns: 150px 1fr;
+        gap: 0.75rem;
+        margin-bottom: 1.1rem;
+        padding-bottom: 1.1rem;
+        align-items: start;
+      }
+      .exp-entry:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .exp-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+      }
+
+      .exp-period {
+        font-size: 0.62rem;
+        color: var(--charcoal);
+      }
+      .exp-org {
+        font-size: 0.6rem;
+        color: var(--secondary);
+      }
+      .exp-tag {
+        font-size: 0.56rem;
+        color: var(--lavender);
+        font-style: italic;
+      }
+
+      .exp-title {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--charcoal);
+        margin-bottom: 0.25rem;
+      }
+
+      .exp-content ul {
+        list-style: none;
+        padding: 0;
+      }
+      .exp-content ul li {
+        font-size: 0.63rem;
+        color: #444;
+        line-height: 1.45;
+        margin-bottom: 0.1rem;
+        padding-left: 0.9rem;
+        position: relative;
+      }
+      .exp-content ul li::before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: var(--lavender);
+      }
+
+      @media print {
+        body.cv {
+          background: none;
+          padding: 0;
+        }
+        .page {
+          max-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body class="cv">
+    <div class="page">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-name">Patrick<br />Chartrand</div>
+          <div class="sidebar-role">Développeur Frontend<br />& spécialiste UI Systems</div>
+        </div>
+
+        <div class="sidebar-body">
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Coordonnées</div>
+            <div class="contact-item">
+              <svg class="contact-icon" viewBox="0 0 24 24">
+                <path
+                  d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"
+                />
+              </svg>
+              <span>438-524-5603</span>
+            </div>
+            <div class="contact-item">
+              <svg class="contact-icon" viewBox="0 0 24 24">
+                <path
+                  d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
+                />
+              </svg>
+              <a href="mailto:pchartrand@outlook.com">pchartrand@outlook.com</a>
+            </div>
+            <div class="contact-item">
+              <svg class="contact-icon" viewBox="0 0 24 24">
+                <path
+                  d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+                />
+              </svg>
+              <span>228 rue Denison Ouest, Granby</span>
+            </div>
+            <div class="contact-item">
+              <svg class="contact-icon" viewBox="0 0 24 24">
+                <path
+                  d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"
+                />
+              </svg>
+              <a href="https://patrickchartrand.dev">patrickchartrand.dev</a>
+            </div>
+            <div class="contact-item">
+              <svg class="contact-icon" viewBox="0 0 24 24">
+                <path
+                  d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"
+                />
+              </svg>
+              <a href="https://github.com/patrickchartrand">github.com/patrickchartrand</a>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Compétences</div>
+            <div class="skill-row">
+              <span class="skill-cat">Design UX/UI</span><span class="skill-val">Figma</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">CSS</span
+              ><span class="skill-val">Tailwind | PrimeVue | XSLT</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Balisage sémantique</span
+              ><span class="skill-val">HTML | XML</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Frontend</span
+              ><span class="skill-val">JavaScript | TypeScript</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Backend</span
+              ><span class="skill-val">PHP | SQL | Node.js | Prisma</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Données</span
+              ><span class="skill-val">API REST, CRUD, JSON</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">CMS</span
+              ><span class="skill-val">WordPress | Magento | Wix</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Frameworks</span
+              ><span class="skill-val">Vue.js | Nuxt.js | Svelte</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Logiciels</span
+              ><span class="skill-val">VS Code | AutoCAD</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Gestion de projet</span
+              ><span class="skill-val">Git | ClickUp</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-cat">Langues</span
+              ><span class="skill-val">Français | Anglais</span>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Autres réalisations</div>
+            <div class="realisation">
+              <div class="realisation-year">2021 | Cégep Limoilou</div>
+              <div class="realisation-title">Formation en création de sites WordPress</div>
+            </div>
+            <div class="realisation">
+              <div class="realisation-year">2018 | Revue numérique Sens Public</div>
+              <div class="realisation-title">Critique littéraire « La mémoire du texte »</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="main">
+        <div class="main-section">
+          <div class="main-section-title">Cursus universitaire</div>
+          <div class="edu-grid">
+            <div class="edu-row">
+              <div class="edu-meta">
+                <span class="edu-period">2019 – 2020</span>
+                <span class="edu-school">Université de Montréal</span>
+              </div>
+              <div class="edu-degree">Attestation de premier cycle en programmation internet</div>
+            </div>
+            <div class="edu-row">
+              <div class="edu-meta">
+                <span class="edu-period">2019 – 2020</span>
+                <span class="edu-school"
+                  >École de bibliothéconomie et des sciences de l'information</span
+                >
+              </div>
+              <div class="edu-degree">
+                Diplôme d'études supérieures spécialisées en édition numérique
+              </div>
+            </div>
+            <div class="edu-row">
+              <div class="edu-meta">
+                <span class="edu-period">2015 – 2018</span>
+                <span class="edu-school">Université de Montréal</span>
+              </div>
+              <div class="edu-degree">Baccalauréat en littératures de langue française</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="main-section">
+          <div class="main-section-title">Expérience</div>
+
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-period">2022 – 2025</span>
+              <span class="exp-org">Beaulieu Canada</span>
+            </div>
+            <div class="exp-content">
+              <div class="exp-title">Développeur web frontend</div>
+              <ul>
+                <li>
+                  Développement d'interfaces dynamiques avec les technologies Nuxt.js / Vue.js
+                </li>
+                <li>
+                  Intégration d'API en équipe avec le backend et optimisation des performances
+                  frontend
+                </li>
+                <li>
+                  Collaboration avec l'équipe marketing pour améliorer l'expérience utilisateur et
+                  les contenus
+                </li>
+                <li>Conception de maquettes Figma pour assurer la qualité UX/UI des designs</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-period">2021 – 2025</span>
+              <span class="exp-org">DIY Robotics</span>
+              <span class="exp-tag">consultant depuis 2022</span>
+            </div>
+            <div class="exp-content">
+              <div class="exp-title">Webmestre</div>
+              <ul>
+                <li>Développement et intégration de sites web responsives avec WordPress</li>
+                <li>
+                  Optimisation de l'architecture et des performances des pages et du serveur cPanel
+                </li>
+                <li>
+                  Création d'animations 3D pour enrichir l'expérience d'utilisation avec AutoCAD
+                </li>
+                <li>Rédaction SEO pour assurer le référencement sur les moteurs de recherche</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-period">2021</span>
+              <span class="exp-org">Avril Supermarché Santé</span>
+            </div>
+            <div class="exp-content">
+              <div class="exp-title">Rédacteur-réviseur</div>
+              <ul>
+                <li>Création de fiches produits et d'articles de blog pour la marque maison</li>
+                <li>
+                  Correction de toutes informations écrites et nutritionnelles avec les équipes
+                  concernées
+                </li>
+                <li>Intégration de contenus textuels et SEO sur le site web avec Magento</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-period">2017 – 2020</span>
+              <span class="exp-org"
+                >Chaire de recherche du Canada sur les écritures numériques</span
+              >
+            </div>
+            <div class="exp-content">
+              <div class="exp-title">Assistant à l'édition</div>
+              <ul>
+                <li>Mise en forme et publication d'articles et de documents Markdown</li>
+                <li>
+                  Présentation d'outils informatiques pour le traitement de texte à des fins
+                  d'apprentissage
+                </li>
+                <li>
+                  Communication dans l'espace numérique par des infolettres et des réseaux sociaux
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="exp-entry">
+            <div class="exp-meta">
+              <span class="exp-period">2011 – 2020</span>
+              <span class="exp-org">La Cordée plein air</span>
+            </div>
+            <div class="exp-content">
+              <div class="exp-title">Agent au service à la clientèle</div>
+              <ul>
+                <li>Conseil client et gestion des transactions en magasin et en ligne</li>
+                <li>
+                  Encadrement et initiation des participants aux pratiques sécuritaires de
+                  l'escalade
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

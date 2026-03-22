@@ -25,11 +25,10 @@ export const projects: Project[] = [
     category: 'Development, 3D Modeling',
     year: '2022',
     link: 'https://diy-robotics.com/',
-    image:
-      'https://storage.googleapis.com/uxpilot-auth.appspot.com/ab9d9c0dac-f2ff011627c7c97ae3b8.png',
+    image: '/images/robotics.png',
     imageAlt:
       'isometric laptop mockup displaying a colorful modern digital magazine layout, clean background, soft shadows',
-    imageHeight: 'h-[340px]',
+    imageHeight: 'h-[420px]',
     offset: true,
   },
   {

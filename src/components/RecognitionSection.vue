@@ -5,7 +5,6 @@ const technologies = [
   // Design
   { name: 'Figma', slug: 'figma' },
   // Frontend
-  { name: 'HTML5', slug: 'html5' },
   { name: 'TypeScript', slug: 'typescript' },
   { name: 'Tailwind', slug: 'tailwindcss' },
   // Frameworks
@@ -59,7 +58,7 @@ const hovered = ref<string | null>(null)
         </h2>
       </div>
 
-      <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-x-12 gap-y-10">
+      <div class="grid justify-items-center grid-cols-3 md:grid-cols-6 gap-x-12 gap-y-10">
         <div
           v-for="tech in technologies"
           :key="tech.name"

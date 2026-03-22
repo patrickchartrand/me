@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patrick Chartrand — Lettre de présentation</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #3d405b;
+        --cream: #f5f3ef;
+        --charcoal: #1a1a1a;
+        --secondary: #8a8a8a;
+        --lavender: #9d9fbd;
+      }
+
+      html {
+        background: #dddbd7;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: #dddbd7;
+        padding: 2rem;
+      }
+
+      .page {
+        max-width: 920px;
+        margin: 0 auto;
+        background: var(--cream);
+      }
+
+      .page-header {
+        background: var(--primary);
+        color: var(--cream);
+        padding: 2.5rem 3rem;
+        margin-right: -1px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+
+      .header-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1.1;
+        color: var(--cream);
+        margin-bottom: 1.5rem;
+      }
+
+      .header-role {
+        font-size: 0.68rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: rgba(245, 243, 239, 0.5);
+        margin-top: 0.4rem;
+      }
+
+      .header-contact {
+        text-align: right;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        position: relative;
+        top: -1.25rem;
+      }
+
+      .header-contact a,
+      .header-contact span {
+        font-size: 0.68rem;
+        color: rgba(245, 243, 239, 0.65);
+        text-decoration: none;
+      }
+
+      .page-body {
+        padding: 3rem;
+      }
+
+      .letter-date {
+        font-size: 0.75rem;
+        color: var(--secondary);
+        margin-bottom: 2.5rem;
+      }
+
+      .letter-body p {
+        font-size: 0.82rem;
+        color: var(--charcoal);
+        line-height: 1.8;
+        margin-bottom: 1.25rem;
+      }
+
+      .letter-closing {
+        margin-top: 10rem;
+        padding-bottom: 100rem;
+      }
+
+      .letter-closing p {
+        font-size: 0.82rem;
+        color: var(--charcoal);
+        line-height: 1.8;
+      }
+
+      .signature {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        color: var(--primary);
+      }
+
+      @media print {
+        body {
+          background: none;
+          padding: 0;
+        }
+        .page {
+          max-width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="page-header">
+        <div>
+          <div class="header-name">Patrick<br />Chartrand</div>
+          <div class="header-role">Développeur Frontend & spécialiste UI Systems</div>
+        </div>
+        <div class="header-contact">
+          <span>438-524-5603</span>
+          <a href="mailto:pchartrand@outlook.com">pchartrand@outlook.com</a>
+          <span>Granby, Québec</span>
+          <a href="https://patrickchartrand.dev">patrickchartrand.dev</a>
+        </div>
+      </div>
+
+      <div class="page-body">
+        <div class="letter-date">Granby, le 21 mars 2026</div>
+
+        <div class="letter-body">
+          <p>Bonjour,</p>
+
+          <p>
+            C'est avec grand enthousiasme que je me permets de postuler pour le rôle de webmestre au
+            sein de la ville de Granby. Après avoir pris connaissance de l'offre d'emploi, je suis
+            convaincu de pouvoir contribuer de façon positive et harmonieuse à votre équipe.
+          </p>
+
+          <p>
+            Mon parcours combine un baccalauréat et un diplôme d'études supérieures spécialisées en
+            édition numérique, ainsi qu'une attestation en programmation internet de la même
+            université. Ces formations m'ont permis d'acquérir un regard critique sur les
+            technologies web telles que HTML, CSS, JavaScript et PHP, ainsi qu'une bonne
+            compréhension des enjeux liés à l'expérience utilisateur et au design interactif.
+          </p>
+
+          <p>
+            Polyvalent et curieux, je possède également des compétences en rédaction et en
+            multimédia, ce qui me permet de collaborer efficacement avec différents profils au sein
+            d'une équipe et de contribuer à des projets de manière globale. Je suis persuadé que
+            cette combinaison de compétences techniques et créatives serait un atout pour votre
+            organisation.
+          </p>
+
+          <p>
+            Je vous remercie d'avance pour l'attention portée à ma candidature. Je reste à votre
+            disposition pour un entretien afin de discuter plus en détail de la manière dont je
+            pourrais contribuer à vos projets.
+          </p>
+        </div>
+
+        <div class="letter-closing">
+          <p>Cordialement,</p>
+          <!--<div class="signature">Patrick Chartrand</div>-->
+          <img
+            style="width: 350px; margin-left: -50px"
+            src="/signature.png"
+            alt="Signature de Patrick Chartrand"
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

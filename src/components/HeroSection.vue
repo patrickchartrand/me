@@ -2,7 +2,7 @@
   <section id="about" class="px-6 md:px-12 lg:px-24 mb-24 md:mb-40 min-h-[80vh] flex items-center">
     <div class="max-w-7xl mx-auto w-full">
       <p class="text-xs uppercase tracking-[0.3em] text-secondary mb-8 reveal-text">
-        Frontend Developer & Design Systems
+        Frontend Developer & UI Systems Specialist
       </p>
 
       <h1
@@ -20,9 +20,11 @@
       >
         <div class="max-w-xl">
           <p class="text-lg md:text-xl font-light leading-relaxed text-charcoal/80">
-            I come from writing and publishing — that background shapes how I think about structure,
-            hierarchy, and clarity. I bridge design and code, bringing the same rigour to every
-            layer of the stack.
+            I come from writing and publishing, and this background shapes how I think about
+            structure, hierarchy, and clarity. Today I bridge design and code, building
+            component-driven interfaces and design systems that are as easy to maintain as they are
+            to use. I bring the same rigour to a button component as I do to a full page
+            architecture.
           </p>
         </div>
         <div class="flex flex-col gap-2 text-right">
