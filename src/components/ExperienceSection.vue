@@ -1,5 +1,23 @@
 <script setup lang="ts">
-import { experiences, education } from '@/utils/experience'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t, tm } = useI18n()
+
+interface ExperienceItem {
+  company: string
+  role: string
+  period: string
+}
+
+interface EducationItem {
+  degree: string
+  school: string
+  period: string
+}
+
+const experiences = computed(() => tm('experience.items') as ExperienceItem[])
+const education = computed(() => tm('experience.education') as EducationItem[])
 </script>
 
 <template>
@@ -12,7 +30,7 @@ import { experiences, education } from '@/utils/experience'
         <!-- Experience Column -->
         <div class="md:col-span-7 fade-in-up">
           <h2 class="text-3xl font-serif mb-14">
-            <span class="highlight-offset-dark">Experience</span>
+            <span class="highlight-offset-dark">{{ t('experience.experienceTitle') }}</span>
           </h2>
           <div class="space-y-0 stagger-children">
             <div
@@ -31,10 +49,10 @@ import { experiences, education } from '@/utils/experience'
           </div>
         </div>
 
-        <!-- Education + Skills Column -->
+        <!-- Education Column -->
         <div class="md:col-span-5 fade-in-up">
           <h2 class="text-3xl font-serif mb-14">
-            <span class="highlight-offset-dark">Education</span>
+            <span class="highlight-offset-dark">{{ t('experience.educationTitle') }}</span>
           </h2>
           <div class="space-y-0 stagger-children">
             <div

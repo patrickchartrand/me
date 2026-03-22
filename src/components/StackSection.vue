@@ -1,24 +1,20 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const technologies = [
-  // Design
   { name: 'Figma', slug: 'figma' },
-  // Frontend
   { name: 'TypeScript', slug: 'typescript' },
   { name: 'Tailwind', slug: 'tailwindcss' },
-  // Frameworks
   { name: 'Vue.js', slug: 'vuedotjs' },
   { name: 'Nuxt', slug: 'nuxt' },
-  // Backend & DB
   { name: 'PHP', slug: 'php' },
   { name: 'Node.js', slug: 'nodedotjs' },
   { name: 'Prisma', slug: 'prisma' },
-  // CMS
   { name: 'WordPress', slug: 'wordpress' },
-  // Outils
   { name: 'Git', slug: 'git' },
-  // Contenu & données
   { name: 'Markdown', slug: 'markdown' },
   { name: 'XML', slug: 'xml' },
 ]
@@ -52,9 +48,11 @@ const hovered = ref<string | null>(null)
   <section id="stack" class="px-6 md:px-12 lg:px-24 mb-40 fade-in-up">
     <div class="max-w-7xl mx-auto">
       <div class="mb-16">
-        <p class="text-xs uppercase tracking-[0.3em] text-secondary mb-4">What I build with</p>
+        <p class="text-xs uppercase tracking-[0.3em] text-secondary mb-4">
+          {{ t('stack.tagline') }}
+        </p>
         <h2 class="text-4xl md:text-6xl font-serif">
-          <span class="highlight-offset-md">Tech I Actually Use</span>
+          <span class="highlight-offset-md">{{ t('stack.title') }}</span>
         </h2>
       </div>
 

@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const stats = [
-  { value: 8, display: '08', suffix: '', label: 'Years Experience' },
-  { value: 1458, display: '1,458+', suffix: '+', label: 'Projects Contributed To' },
-  { value: 100, display: '100%', suffix: '%', label: 'Semantic HTML' },
-  { value: 404, display: '404', suffix: '', label: 'Bugs fixed (and counting)' },
-]
+const { tm } = useI18n()
 
-const displayed = ref(stats.map(() => '0'))
+interface StatItem {
+  display: string
+  label: string
+}
+
+const statItems = computed(() => tm('stats.items') as StatItem[])
+
+const rawValues = [8, 1458, 100, 404]
+const displayed = ref(rawValues.map(() => '0'))
 const hasAnimated = ref(false)
 
 const formatNumber = (val: number, index: number) => {
@@ -22,18 +26,18 @@ const animateCounters = () => {
   if (hasAnimated.value) return
   hasAnimated.value = true
 
-  stats.forEach((stat, index) => {
+  rawValues.forEach((value, index) => {
     const duration = 1800
     const steps = 60
-    const increment = stat.value / steps
+    const increment = value / steps
     let current = 0
     let step = 0
 
     const timer = setInterval(() => {
       step++
-      current = Math.min(Math.round(increment * step), stat.value)
+      current = Math.min(Math.round(increment * step), value)
       displayed.value[index] = formatNumber(current, index)
-      if (current >= stat.value) clearInterval(timer)
+      if (current >= value) clearInterval(timer)
     }, duration / steps)
   })
 }
@@ -61,8 +65,8 @@ onMounted(() => {
       class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 pb-16 stagger-children"
     >
       <div
-        v-for="(stat, index) in stats"
-        :key="stat.label"
+        v-for="(item, index) in statItems"
+        :key="item.label"
         class="flex flex-col gap-2 group cursor-default"
       >
         <span
@@ -71,7 +75,7 @@ onMounted(() => {
           {{ displayed[index] }}
         </span>
         <span class="text-xs uppercase tracking-[0.15em] text-secondary mt-3">
-          {{ stat.label }}
+          {{ item.label }}
         </span>
       </div>
     </div>

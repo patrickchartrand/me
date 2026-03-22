@@ -1,17 +1,22 @@
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+</script>
+
 <template>
   <section id="hero" class="px-6 md:px-12 lg:px-24 mb-24 md:mb-40 min-h-[80vh] flex items-center">
     <div class="max-w-7xl mx-auto w-full">
       <p class="text-xs uppercase tracking-[0.3em] text-secondary mb-8 reveal-text">
-        Frontend Developer & UI Systems Specialist
+        {{ t('hero.tagline') }}
       </p>
 
       <h1
         class="font-serif text-5xl md:text-7xl lg:text-[8rem] leading-[1.05] font-medium tracking-tight mb-16 reveal-text"
         style="animation-delay: 0.15s"
       >
-        Building component-driven <br />
-        <span class="highlight-offset">interfaces</span> that<br />
-        <span class="relative inline-block">hold up.</span>
+        {{ t('hero.headline1') }} <br />
+        <span class="highlight-offset">{{ t('hero.headlineHighlight') }}</span>
+        {{ t('hero.headlineEnd') }}
       </h1>
 
       <div
@@ -20,16 +25,14 @@
       >
         <div class="max-w-xl">
           <p class="text-lg md:text-xl font-light leading-relaxed text-charcoal/80">
-            I come from writing and publishing, and this background shapes how I think about
-            structure, hierarchy, and clarity. Today I bridge design and code, building
-            component-driven interfaces and design systems that are as easy to maintain as they are
-            to use. I bring the same rigour to a button component as I do to a full page
-            architecture.
+            {{ t('hero.bio') }}
           </p>
         </div>
         <div class="flex flex-col gap-2 text-right">
-          <span class="text-xs uppercase tracking-[0.2em] text-secondary">Based in</span>
-          <span class="text-xl font-serif">Granby, Quebec</span>
+          <span class="text-xs uppercase tracking-[0.2em] text-secondary">{{
+            t('hero.basedLabel')
+          }}</span>
+          <span class="text-xl font-serif">{{ t('hero.basedCity') }}</span>
           <div class="flex items-center gap-2 mt-2 justify-end">
             <span class="relative flex h-2.5 w-2.5">
               <span
@@ -37,7 +40,7 @@
               ></span>
               <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-700"></span>
             </span>
-            <span class="text-xs text-available font-medium">Available for work</span>
+            <span class="text-xs text-available font-medium">{{ t('hero.available') }}</span>
           </div>
         </div>
       </div>

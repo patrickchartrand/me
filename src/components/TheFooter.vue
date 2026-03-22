@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { useFileDownload } from '@/composables/useFileDownload'
+import { useI18n } from 'vue-i18n'
+import { useDownload } from '@/composables/useDownload'
 
+const { t } = useI18n()
 const year = new Date().getFullYear()
 
 const socialLinks = [
@@ -50,16 +52,20 @@ const socialLinks = [
     <div class="max-w-7xl mx-auto relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end mb-28">
         <div class="fade-in-up">
-          <p class="text-xs uppercase tracking-[0.3em] text-white/40 mb-6">Get in touch</p>
+          <p class="text-xs uppercase tracking-[0.3em] text-white/40 mb-6">
+            {{ t('footer.tagline') }}
+          </p>
           <h2 class="text-5xl md:text-7xl lg:text-8xl mb-10 leading-none font-serif">
-            Let's bring your <br /><span class="text-white/70">ideas to life.</span>
+            {{ t('footer.headline1') }} <br /><span class="text-white/70">{{
+              t('footer.headline2')
+            }}</span>
           </h2>
           <div class="flex flex-col sm:flex-row gap-4">
             <a
-              href="mailto:patrick.chartrand@umontreal.ca"
+              href="/cdn-cgi/l/email-protection#e999889d9b808a82c78a81889b9d9b88878da99c8486879d9b8c8885c78a88"
               class="group inline-flex items-center gap-4 bg-cream text-primary px-8 py-4 rounded-full font-medium hover:scale-105 hover:shadow-lg hover:shadow-cream/20 transition-all duration-300"
             >
-              Start a Project
+              {{ t('footer.ctaProject') }}
               <span
                 class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors"
               >
@@ -78,10 +84,10 @@ const socialLinks = [
               href="#"
               class="group inline-flex items-center gap-4 bg-[#63667b] text-cream px-8 py-4 rounded-full font-medium hover:bg-[#8a8c9c] hover:scale-105 transition-all duration-300"
               @click.prevent="
-                useFileDownload({ filename: 'pchartrand-cv.pdf', filepath: '/site/cv.html' })
+                useDownload({ filename: 'pchartrand-cv.pdf', filepath: '/site/cv.html' })
               "
             >
-              Download CV
+              {{ t('footer.ctaCV') }}
               <span
                 class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors"
               >
@@ -100,7 +106,7 @@ const socialLinks = [
 
         <div class="lg:text-right fade-in-up">
           <p class="text-white/50 text-lg max-w-md ml-auto leading-relaxed mb-8">
-            Currently available for freelance projects and open to full-time opportunities.
+            {{ t('footer.availability') }}
           </p>
           <div class="flex gap-4 lg:justify-end">
             <a
@@ -122,12 +128,16 @@ const socialLinks = [
         class="pt-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
       >
         <div class="text-sm text-white/30">
-          © {{ year }} Patrick Chartrand. All rights reserved.
+          © {{ year }} Patrick Chartrand. {{ t('footer.copyright') }}
         </div>
         <div class="flex gap-8 text-sm uppercase tracking-widest text-white/40">
-          <a href="#" class="hover:text-white/80 transition-colors">Top</a>
-          <a href="#work" class="hover:text-white/80 transition-colors">Work</a>
-          <a href="#experience" class="hover:text-white/80 transition-colors">Experience</a>
+          <a href="#" class="hover:text-white/80 transition-colors">{{ t('footer.topLink') }}</a>
+          <a href="#work" class="hover:text-white/80 transition-colors">{{
+            t('header.nav.work')
+          }}</a>
+          <a href="#experience" class="hover:text-white/80 transition-colors">{{
+            t('header.nav.experience')
+          }}</a>
         </div>
       </div>
     </div>

@@ -2,17 +2,22 @@
 import { useActiveSection } from '@/composables/useActiveSection'
 import { useMobileMenu } from '@/composables/useMobileMenu'
 import { useHeaderScroll } from '@/composables/useHeaderScroll'
+import { useLocale } from '@/composables/useLocale'
+import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
 useHeaderScroll()
 
+const { t } = useI18n()
 const { activeSection } = useActiveSection()
 const { mobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useMobileMenu()
+const { locale, toggle } = useLocale()
 
-const navLinks = [
-  { href: '#work', label: 'Work', section: 'work' },
-  { href: '#experience', label: 'Experience', section: 'experience' },
-  { href: '#footer', label: 'Contact', section: 'footer' },
-]
+const navLinks = computed(() => [
+  { href: '#work', label: t('header.nav.work'), section: 'work' },
+  { href: '#experience', label: t('header.nav.experience'), section: 'experience' },
+  { href: '#footer', label: t('header.nav.contact'), section: 'footer' },
+])
 </script>
 
 <template>
@@ -24,7 +29,7 @@ const navLinks = [
       <a href="#">Patrick Chartrand</a>
     </div>
 
-    <nav class="hidden md:flex gap-8 text-sm font-medium tracking-wide">
+    <nav class="hidden md:flex gap-8 text-sm font-medium tracking-wide items-center">
       <a
         v-for="link in navLinks"
         :key="link.href"
@@ -34,11 +39,18 @@ const navLinks = [
       >
         {{ link.label }}
       </a>
+
+      <button
+        class="-mt-1.5 text-xs tracking-[0.2em] uppercase font-medium text-secondary hover:text-charcoal transition-colors duration-200 ml-2"
+        @click="toggle"
+      >
+        {{ locale === 'fr' ? 'EN' : 'FR' }}
+      </button>
     </nav>
 
     <button
       class="md:hidden text-xl focus:outline-none z-50 relative"
-      :aria-label="mobileMenuOpen ? 'Close menu' : 'Open menu'"
+      :aria-label="mobileMenuOpen ? t('header.ariaClose') : t('header.ariaOpen')"
       @click="toggleMobileMenu"
     >
       <svg
@@ -81,6 +93,18 @@ const navLinks = [
       >
         {{ link.label }}
       </a>
+
+      <button
+        class="text-sm tracking-[0.2em] uppercase font-medium text-secondary hover:text-charcoal transition-colors mt-4"
+        @click="
+          () => {
+            toggle()
+            closeMobileMenu()
+          }
+        "
+      >
+        {{ locale === 'fr' ? 'English' : 'Français' }}
+      </button>
     </div>
   </Transition>
 </template>

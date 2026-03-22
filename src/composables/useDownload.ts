@@ -1,10 +1,4 @@
-export async function useFileDownload({
-  filename,
-  filepath,
-}: {
-  filename: string
-  filepath: string
-}) {
+export async function useDownload({ filename, filepath }: { filename: string; filepath: string }) {
   const html2pdf = (await import('html2pdf.js')).default
 
   // Overlay avec loader

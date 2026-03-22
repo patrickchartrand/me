@@ -1,5 +1,23 @@
 <script setup lang="ts">
-import { projects } from '@/utils/projects'
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { projects as projectsMeta } from '@/utils/projects'
+
+const { t, tm } = useI18n()
+
+interface ProjectTranslation {
+  title: string
+  category: string
+}
+
+const projects = computed(() => {
+  const translations = tm('work.projects') as ProjectTranslation[]
+  return projectsMeta.map((p, i) => ({
+    ...p,
+    title: translations[i]?.title ?? p.title,
+    category: translations[i]?.category ?? p.category,
+  }))
+})
 
 function navigateTo(url: string) {
   window.open(url, '_blank')
@@ -11,9 +29,11 @@ function navigateTo(url: string) {
     <div class="max-w-7xl mx-auto">
       <div class="flex justify-between items-end mb-20 fade-in-up">
         <div>
-          <p class="text-xs uppercase tracking-[0.3em] text-secondary mb-4">Portfolio</p>
+          <p class="text-xs uppercase tracking-[0.3em] text-secondary mb-4">
+            {{ t('work.tagline') }}
+          </p>
           <h2 class="text-4xl md:text-6xl font-serif">
-            <span class="highlight-offset-md">Selected Work</span>
+            <span class="highlight-offset-md">{{ t('work.title') }}</span>
           </h2>
         </div>
       </div>
@@ -21,7 +41,7 @@ function navigateTo(url: string) {
       <div class="masonry-grid">
         <article
           v-for="project in projects"
-          :key="project.title"
+          :key="project.link"
           class="masonry-item group cursor-pointer fade-in-up mb-20"
           @click="navigateTo(project.link)"
         >
