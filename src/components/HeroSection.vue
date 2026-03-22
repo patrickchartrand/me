@@ -1,5 +1,5 @@
 <template>
-  <section id="about" class="px-6 md:px-12 lg:px-24 mb-24 md:mb-40 min-h-[80vh] flex items-center">
+  <section id="hero" class="px-6 md:px-12 lg:px-24 mb-24 md:mb-40 min-h-[80vh] flex items-center">
     <div class="max-w-7xl mx-auto w-full">
       <p class="text-xs uppercase tracking-[0.3em] text-secondary mb-8 reveal-text">
         Frontend Developer & UI Systems Specialist
@@ -18,6 +18,7 @@
         class="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 pt-8 reveal-text"
         style="animation-delay: 0.4s"
       >
+        <i id="about" class="absolute -top-28" />
         <div class="max-w-xl">
           <p class="text-lg md:text-xl font-light leading-relaxed text-charcoal/80">
             I come from writing and publishing, and this background shapes how I think about

@@ -15,7 +15,7 @@ export const projects: Project[] = [
     category: 'UI/UX Design, Product Thinking',
     year: '2026',
     link: 'https://tabledeveloppementhy.ca',
-    image: '/src/assets/images/haute-yamaska.png',
+    image: '/images/haute-yamaska.png',
     imageAlt:
       'minimalist laptop mockup showcasing a dark elegant website interface design, high end photography, studio lighting',
     imageHeight: 'h-[520px]',
@@ -25,7 +25,7 @@ export const projects: Project[] = [
     category: 'Development, 3D Modeling',
     year: '2022',
     link: 'https://diy-robotics.com/',
-    image: '/src/assets/images/robotics.png',
+    image: '/images/robotics.png',
     imageAlt:
       'isometric laptop mockup displaying a colorful modern digital magazine layout, clean background, soft shadows',
     imageHeight: 'h-[420px]',
@@ -36,7 +36,7 @@ export const projects: Project[] = [
     category: 'Web Design, Development',
     year: '2024',
     link: 'https://canada.beaulieucanada.com',
-    image: '/src/assets/images/beaulieu.png',
+    image: '/images/beaulieu.png',
     imageAlt:
       'tablet mockup floating in air showing a minimalist furniture ecommerce app, beige background, high fashion aesthetic',
     imageHeight: 'h-[430px]',
