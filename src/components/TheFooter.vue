@@ -156,7 +156,7 @@ const downloadCV = async () => {
 
             <a
               href="#"
-              class="group inline-flex items-center gap-4 bg-white/10 text-cream px-8 py-4 rounded-full font-medium hover:bg-white/20 hover:scale-105 transition-all duration-300"
+              class="group inline-flex items-center gap-4 bg-[#63667b] text-cream px-8 py-4 rounded-full font-medium hover:bg-[#8a8c9c] hover:scale-105 transition-all duration-300"
               @click.prevent="downloadCV"
             >
               Download CV
