@@ -64,7 +64,7 @@ const downloadCV = async () => {
   `
   document.body.appendChild(overlay)
 
-  const response = await fetch('/cv.html')
+  const response = await fetch('/site/cv.html')
   const html = await response.text()
 
   const container = document.createElement('div')
@@ -186,7 +186,7 @@ const downloadCV = async () => {
               :key="link.label"
               :href="link.href"
               :aria-label="link.label"
-              class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-all duration-300"
+              class="w-12 h-12 bg-[#63667b] rounded-full flex items-center justify-center hover:bg-[#8a8c9c] transition-all duration-300"
             >
               <svg class="w-5 h-5" fill="currentColor" :viewBox="link.viewBox">
                 <path :d="link.path" />

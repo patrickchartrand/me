@@ -12,6 +12,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="/src/assets/style.css" />
     <link rel="icon" href="/favicon.ico" />
     <title>Patrick Chartrand - Frontend Developer & UI Systems Specialist</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -44,42 +45,6 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    <style>
-      /*
-       * ─── Color Tokens ───
-       * Tailwind colors are defined in tailwind.config above.
-       * Only colors needed by scoped CSS (outside Tailwind) live here.
-       */
-      :root {
-        --color-lavender: #9d9fbd;
-        --color-available: #81b29a;
-      }
-
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #f5f3ef; /* cream */
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #ccc;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #999;
-      }
-      .reveal-text {
-        animation: reveal 1s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      @keyframes reveal {
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    </style>
   </head>
   <body>
     <div id="app"></div>

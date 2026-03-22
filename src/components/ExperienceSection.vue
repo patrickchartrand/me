@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { experiences, education } from '@/data/experience'
+import { experiences, education } from '@/utils/experience'
 </script>
 
 <template>

@@ -41,7 +41,7 @@ const download = async () => {
   `
   document.body.appendChild(overlay)
 
-  const response = await fetch('/letter.html')
+  const response = await fetch('/site/letter.html')
   const html = await response.text()
 
   const container = document.createElement('div')

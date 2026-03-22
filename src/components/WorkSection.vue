@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { projects } from '@/data/projects'
+import { projects } from '@/utils/projects'
 
 function navigateTo(url: string) {
   window.open(url, '_blank')
