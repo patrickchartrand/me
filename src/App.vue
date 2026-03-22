@@ -7,7 +7,7 @@ import WorkSection from '@/components/WorkSection.vue'
 import ExperienceSection from '@/components/ExperienceSection.vue'
 import StackSection from '@/components/StackSection.vue'
 import TheFooter from '@/components/TheFooter.vue'
-import SecretSection from '@/components/SecretSection.vue'
+import SecretInput from '@/components/SecretInput.vue'
 import { onMounted } from 'vue'
 
 useScrollAnimations()
@@ -30,7 +30,7 @@ onMounted(() => {
       <WorkSection />
       <ExperienceSection />
       <StackSection />
-      <SecretSection />
+      <SecretInput />
     </main>
     <TheFooter />
   </div>

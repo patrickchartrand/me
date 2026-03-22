@@ -9,7 +9,6 @@ const { activeSection } = useActiveSection()
 const { mobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useMobileMenu()
 
 const navLinks = [
-  { href: '#about', label: 'About', section: 'stats' },
   { href: '#work', label: 'Work', section: 'work' },
   { href: '#experience', label: 'Experience', section: 'experience' },
   { href: '#footer', label: 'Contact', section: 'footer' },

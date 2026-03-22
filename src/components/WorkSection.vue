@@ -7,8 +7,7 @@ function navigateTo(url: string) {
 </script>
 
 <template>
-  <section class="px-6 md:px-12 lg:px-24 mb-40">
-    <i id="work" class="relative -top-8" />
+  <section id="work" class="px-6 md:px-12 lg:px-24 mb-40">
     <div class="max-w-7xl mx-auto">
       <div class="flex justify-between items-end mb-20 fade-in-up">
         <div>

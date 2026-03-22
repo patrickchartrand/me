@@ -72,7 +72,7 @@
         flex-direction: column;
         gap: 0.3rem;
         position: relative;
-        top: -1.25rem;
+        top: -1.1rem;
       }
 
       .header-contact a,
@@ -116,6 +116,12 @@
         color: var(--primary);
       }
 
+      .icon {
+        position: relative;
+        bottom: -0.375rem;
+        margin-left: 0.4rem;
+      }
+
       @media print {
         body {
           background: none;
@@ -135,45 +141,56 @@
           <div class="header-role">Développeur Frontend & spécialiste UI Systems</div>
         </div>
         <div class="header-contact">
-          <span>438-524-5603</span>
-          <a href="mailto:pchartrand@outlook.com">pchartrand@outlook.com</a>
-          <span>Granby, Québec</span>
-          <a href="https://patrickchartrand.dev">patrickchartrand.dev</a>
+          <span>438-524-5603 <i class="fa-solid fa-phone icon"></i></span>
+          <a href="mailto:pchartrand@outlook.com"
+            >pchartrand@outlook.com <i class="fa-solid fa-envelope icon"></i
+          ></a>
+          <span
+            >Granby, Québec<i style="visibility: hidden">|</i>
+            <i style="position: relative; left: -0.35px" class="fa-solid fa-location-dot icon"></i
+          ></span>
+          <a href="https://patrickchartrand.dev"
+            >patrickchartrand.dev <i class="fa-solid fa-globe icon"></i
+          ></a>
         </div>
       </div>
 
       <div class="page-body">
-        <div class="letter-date">Granby, le 21 mars 2026</div>
+        <div class="letter-date" id="letter-date"></div>
 
         <div class="letter-body">
           <p>Bonjour,</p>
 
           <p>
-            C'est avec grand enthousiasme que je me permets de postuler pour le rôle de webmestre au
-            sein de la ville de Granby. Après avoir pris connaissance de l'offre d'emploi, je suis
-            convaincu de pouvoir contribuer de façon positive et harmonieuse à votre équipe.
+            C'est avec un vif intérêt que je pose ma candidature au poste de webmestre à la Ville de
+            Granby. Habitant Granby depuis plusieurs années, je suis attaché à ma communauté et
+            l'idée de contribuer directement au rayonnement numérique de ma ville me motive
+            profondément.
           </p>
 
           <p>
-            Mon parcours combine un baccalauréat et un diplôme d'études supérieures spécialisées en
-            édition numérique, ainsi qu'une attestation en programmation internet de la même
-            université. Ces formations m'ont permis d'acquérir un regard critique sur les
-            technologies web telles que HTML, CSS, JavaScript et PHP, ainsi qu'une bonne
-            compréhension des enjeux liés à l'expérience utilisateur et au design interactif.
+            Mon parcours combine une formation universitaire en édition numérique et en
+            programmation internet, ainsi qu'une expérience concrète en développement et gestion
+            d'infrastructures web. Depuis 2021, j'assume le rôle de webmestre pour DIY Robotics, où
+            je planifie, intègre et maintiens les plateformes web de l'organisation : sites
+            WordPress, optimisation des performances serveur cPanel, animations 3D et référencement
+            SEO. En parallèle, je développe des interfaces dynamiques chez Beaulieu Canada avec les
+            technologies Vue.js et Nuxt.js, en étroite collaboration avec les équipes backend et
+            marketing.
           </p>
 
           <p>
-            Polyvalent et curieux, je possède également des compétences en rédaction et en
-            multimédia, ce qui me permet de collaborer efficacement avec différents profils au sein
-            d'une équipe et de contribuer à des projets de manière globale. Je suis persuadé que
-            cette combinaison de compétences techniques et créatives serait un atout pour votre
-            organisation.
+            Ces expériences m'ont amené à jongler avec des environnements technologiques variés, à
+            respecter des contraintes d'image de marque strictes, et à accompagner des collègues non
+            techniques dans la prise en main d'outils numériques. Je comprends l'importance d'une
+            veille technologique rigoureuse et de proposer des solutions adaptées aux réalités d'une
+            organisation, à savoir des compétences directement transférables au contexte municipal.
           </p>
 
           <p>
-            Je vous remercie d'avance pour l'attention portée à ma candidature. Je reste à votre
-            disposition pour un entretien afin de discuter plus en détail de la manière dont je
-            pourrais contribuer à vos projets.
+            Autonome, structuré et orienté vers le service, je serais heureux de mettre ces
+            compétences au service de la population granbyenne et des équipes de la Ville. Je
+            demeure disponible pour un entretien à votre convenance.
           </p>
         </div>
 
@@ -181,7 +198,7 @@
           <p>Cordialement,</p>
           <!--<div class="signature">Patrick Chartrand</div>-->
           <img
-            style="width: 350px; margin-left: -50px"
+            style="width: 350px; margin-left: -30px"
             src="/site/signature.png"
             alt="Signature de Patrick Chartrand"
           />

@@ -18,7 +18,6 @@
         class="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 pt-8 reveal-text"
         style="animation-delay: 0.4s"
       >
-        <i id="about" class="absolute -top-28" />
         <div class="max-w-xl">
           <p class="text-lg md:text-xl font-light leading-relaxed text-charcoal/80">
             I come from writing and publishing, and this background shapes how I think about

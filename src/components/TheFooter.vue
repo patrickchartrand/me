@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useFileDownload } from '@/composables/useFileDownload'
+
 const year = new Date().getFullYear()
 
 const socialLinks = [
@@ -21,88 +23,6 @@ const socialLinks = [
     path: 'M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.144-.019.287-.041.43-.066-.143.025-.287.047-.43.066-3.876.572-7.297 2.066-2.196 7.054C7.421 23.986 9.37 23.204 12 23.204c2.63 0 4.579.782 7.189-2.539 5.101-4.988 1.68-6.482-2.196-7.054a8.607 8.607 0 0 1-.43-.066c.143.025.286.047.43.066 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.299-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z',
   },
 ]
-
-const downloadCV = async () => {
-  const html2pdf = (await import('html2pdf.js')).default
-
-  // Overlay avec loader
-  const overlay = document.createElement('div')
-  overlay.style.cssText =
-    'position:fixed;inset:0;z-index:9999;background:#3d405b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;'
-  overlay.innerHTML = `
-    <style>
-      @keyframes spin { to { transform: rotate(360deg); } }
-      @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-      .cv-spinner {
-        width: 48px;
-        height: 48px;
-        border: 3px solid rgba(245,243,239,0.15);
-        border-top-color: #F5F3EF;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-      }
-      .cv-label {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.75rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: rgba(245,243,239,0.6);
-        animation: fade-in 0.4s ease forwards;
-      }
-      .cv-dot {
-        display: inline-block;
-        animation: fade-in 0.4s ease infinite alternate;
-      }
-      .cv-dot:nth-child(2) { animation-delay: 0.2s; }
-      .cv-dot:nth-child(3) { animation-delay: 0.4s; }
-    </style>
-    <div class="cv-spinner"></div>
-    <div class="cv-label">
-      Generating PDF
-      <span class="cv-dot">.</span><span class="cv-dot">.</span><span class="cv-dot">.</span>
-    </div>
-  `
-  document.body.appendChild(overlay)
-
-  const response = await fetch('/site/cv.html')
-  const html = await response.text()
-
-  const container = document.createElement('div')
-  container.style.cssText = 'position:fixed;top:0;left:-9999px;width:210mm;'
-  container.innerHTML = html
-  document.body.appendChild(container)
-
-  await new Promise((resolve) => setTimeout(resolve, 800))
-
-  const firstPage = container.querySelector('.page') as HTMLElement
-
-  const worker = html2pdf()
-    .set({
-      margin: 0,
-      filename: 'pchartrand-cv.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    })
-    .from(firstPage)
-
-  await worker
-    .toPdf()
-    .get('pdf')
-    .then((pdf) => {
-      while (pdf.internal.getNumberOfPages() > 1) pdf.deletePage(2)
-    })
-
-  await worker.save()
-
-  document.body.removeChild(container)
-
-  // Fade out overlay
-  overlay.style.transition = 'opacity 0.4s ease'
-  overlay.style.opacity = '0'
-  await new Promise((resolve) => setTimeout(resolve, 400))
-  document.body.removeChild(overlay)
-}
 </script>
 
 <template>
@@ -157,7 +77,9 @@ const downloadCV = async () => {
             <a
               href="#"
               class="group inline-flex items-center gap-4 bg-[#63667b] text-cream px-8 py-4 rounded-full font-medium hover:bg-[#8a8c9c] hover:scale-105 transition-all duration-300"
-              @click.prevent="downloadCV"
+              @click.prevent="
+                useFileDownload({ filename: 'pchartrand-cv.pdf', filepath: '/site/cv.html' })
+              "
             >
               Download CV
               <span
