@@ -30,7 +30,7 @@ export default {
   },
 
   work: {
-    tagline: 'Portfolio',
+    tagline: 'me',
     title: 'Selected Work',
     projects: [
       {

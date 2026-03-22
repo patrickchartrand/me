@@ -30,7 +30,7 @@ export default {
   },
 
   work: {
-    tagline: 'Portfolio',
+    tagline: 'me',
     title: 'Travaux sélectionnés',
     projects: [
       {
@@ -60,7 +60,7 @@ export default {
       { company: 'Beaulieu Canada', role: 'Développeur Frontend', period: 'Depuis 2022' },
       { company: 'DIY Robotics', role: 'Webmestre', period: '2021-2022 (consultant depuis)' },
       { company: 'Avril', role: 'Rédacteur & Gestionnaire des médias sociaux', period: '2021' },
-      { company: 'Sens Public', role: "Chargé d'édition numérique", period: '2017-2020' },
+      { company: 'Sens Public', role: "Chargé d'édition et de communication", period: '2017-2020' },
     ],
     education: [
       {

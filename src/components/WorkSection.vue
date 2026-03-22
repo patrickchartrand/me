@@ -12,11 +12,13 @@ interface ProjectTranslation {
 
 const projects = computed(() => {
   const translations = tm('work.projects') as ProjectTranslation[]
-  return projectsMeta.map((p, i) => ({
-    ...p,
-    title: translations[i]?.title ?? p.title,
-    category: translations[i]?.category ?? p.category,
-  }))
+  return projectsMeta
+    .map((p, i) => ({
+      ...p,
+      title: translations[i]?.title ?? p.title,
+      category: translations[i]?.category ?? p.category,
+    }))
+    .sort((a, b) => Number(b.year) - Number(a.year))
 })
 
 function navigateTo(url: string) {
@@ -51,6 +53,7 @@ function navigateTo(url: string) {
             />
             <img
               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              :class="{ 'scale-80': project.image === '/images/research.png' }"
               :src="project.image"
               :alt="project.imageAlt"
             />

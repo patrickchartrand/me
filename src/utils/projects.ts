@@ -46,8 +46,7 @@ export const projects: Project[] = [
     category: 'Coding, Digital Editing',
     year: '2020',
     link: 'https://www.ecrituresnumeriques.ca',
-    image:
-      'https://storage.googleapis.com/uxpilot-auth.appspot.com/04c3a335f9-63cf1b3f707ca3da0874.png',
+    image: '/images/research.png',
     imageAlt:
       'smartphone mockup showing a fintech dashboard app with dark mode interface, neon accents, futuristic vibe',
     imageHeight: 'h-[480px]',
