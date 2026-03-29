@@ -1,4 +1,10 @@
 export default {
+  app: {
+    title: 'Patrick Chartrand — Designer UI & Développeur Frontend · Webmestre',
+    description:
+      'Je viens de l’écriture et de l’édition, et ce parcours façonne ma façon de penser la structure, la hiérarchie et la clarté. Aujourd’hui, je fais le pont entre le design et le code en construisant des interfaces orientées composants et des systèmes de design aussi faciles à maintenir qu’à utiliser. J’apporte la même rigueur à un bouton qu’à une architecture de page complète.',
+  },
+
   header: {
     nav: {
       work: 'Projets',
@@ -10,7 +16,7 @@ export default {
   },
 
   hero: {
-    tagline: 'Développeur Frontend & Spécialiste Systèmes UI',
+    tagline: 'Designer UI & Développeur Frontend · Webmestre',
     headline1: 'Créer des interfaces',
     headlineHighlight: 'orientées composants',
     headlineEnd: 'qui tiennent la route.',
@@ -30,7 +36,7 @@ export default {
   },
 
   work: {
-    tagline: 'me',
+    tagline: 'portfolio',
     title: 'Travaux sélectionnés',
     projects: [
       {
@@ -79,7 +85,7 @@ export default {
         period: '2015 \u2014 2018',
       },
       {
-        degree: 'DEC Sciences humaines',
+        degree: 'DEC Humanités',
         school: 'Collège Édouard-Montpetit',
         period: '2012 \u2014 2014',
       },

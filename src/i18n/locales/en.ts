@@ -1,4 +1,10 @@
 export default {
+  app: {
+    title: 'Patrick Chartrand — UI Designer & Frontend Developer · Webmaster',
+    description:
+      'I come from writing and publishing, and this background shapes how I think about structure, hierarchy, and clarity. Today I bridge design and code, building component-driven interfaces and design systems that are as easy to maintain as they are to use. I bring the same rigour to a button component as I do to a full page architecture.',
+  },
+
   header: {
     nav: {
       work: 'Work',
@@ -10,7 +16,7 @@ export default {
   },
 
   hero: {
-    tagline: 'Frontend Developer & UI Systems Specialist',
+    tagline: 'UI Designer & Frontend Developer · Webmaster',
     headline1: 'Building component-driven',
     headlineHighlight: 'interfaces',
     headlineEnd: 'that hold up.',
@@ -30,7 +36,7 @@ export default {
   },
 
   work: {
-    tagline: 'me',
+    tagline: 'portfolio',
     title: 'Selected Work',
     projects: [
       {
@@ -79,7 +85,7 @@ export default {
         period: '2015 \u2014 2018',
       },
       {
-        degree: 'DEC Humanities',
+        degree: 'DCS Humanities',
         school: '\u00c9douard-Montpetit College',
         period: '2012 \u2014 2014',
       },

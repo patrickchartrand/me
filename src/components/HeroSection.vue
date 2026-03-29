@@ -14,8 +14,8 @@ const { t } = useI18n()
         class="font-serif text-5xl md:text-7xl lg:text-[8rem] leading-[1.05] font-medium tracking-tight mb-16 reveal-text"
         style="animation-delay: 0.15s"
       >
-        {{ t('hero.headline1') }} <br />
-        <span class="highlight-offset">{{ t('hero.headlineHighlight') }}</span>
+        {{ t('hero.headline1') }}
+        <span class="highlight-offset">{{ t('hero.headlineHighlight') }}</span> <br />
         {{ t('hero.headlineEnd') }}
       </h1>
 
@@ -38,7 +38,7 @@ const { t } = useI18n()
               <span
                 class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"
               ></span>
-              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-700"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
             </span>
             <span class="text-xs text-available font-medium">{{ t('hero.available') }}</span>
           </div>

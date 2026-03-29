@@ -9,14 +9,28 @@ import StackSection from '@/components/StackSection.vue'
 import TheFooter from '@/components/TheFooter.vue'
 import SecretInput from '@/components/SecretInput.vue'
 import { onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useHead } from '@unhead/vue'
+
+const { locale, t } = useI18n()
+
+useHead({
+  htmlAttrs: {
+    lang: locale,
+  },
+  title: t('app.title'),
+  meta: [
+    {
+      name: 'description',
+      content: t('app.description'),
+    },
+  ],
+})
 
 useScrollAnimations()
-
-onMounted(() => {
-  if (window.location.hash) {
-    window.history.replaceState(null, '', window.location.pathname)
-  }
-})
+onMounted(() =>
+  window.location.hash ? window.history.replaceState(null, '', window.location.pathname) : null,
+)
 </script>
 
 <template>
