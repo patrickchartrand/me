@@ -110,7 +110,7 @@ export default {
       },
       {
         name: 'Thalie Blanchard M. Adm.',
-        title: 'Senior Advisor, Business Offerings · Desjardins',
+        title: 'Senior Advisor, Business Offerings',
         date: 'July 2025',
         quote:
           'I had the pleasure of working with Patrick — a person who is both competent and meticulous. He stands out for his ability to analyze situations with rigour and to think creatively when facing challenges. His willingness to explore new avenues, combined with his professionalism, makes him a valuable asset to any organization.',
