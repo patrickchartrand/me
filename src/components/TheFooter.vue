@@ -114,6 +114,8 @@ const socialLinks = [
               :key="link.label"
               :href="link.href"
               :aria-label="link.label"
+              target="_blank"
+              rel="noopener noreferrer"
               class="w-12 h-12 bg-[#63667b] rounded-full flex items-center justify-center hover:bg-[#8a8c9c] transition-all duration-300"
             >
               <svg class="w-5 h-5" fill="currentColor" :viewBox="link.viewBox">
