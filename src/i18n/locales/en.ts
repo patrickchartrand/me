@@ -62,7 +62,7 @@ export default {
     experienceTitle: 'Experience',
     educationTitle: 'Education',
     items: [
-      { company: 'Freelance', role: 'Web Integrator', period: 'Since 2025' },
+      { company: 'Freelance', role: 'Web Developer', period: 'Since 2025' },
       { company: 'Beaulieu Canada', role: 'Frontend Developer', period: 'Since 2022' },
       { company: 'DIY Robotics', role: 'Webmaster', period: '2021-2022 (since then consultant)' },
       { company: 'Avril', role: 'Copywriter & Social Media Manager', period: '2021' },
