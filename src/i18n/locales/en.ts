@@ -97,6 +97,27 @@ export default {
     title: 'Tech I Actually Use',
   },
 
+  testimonials: {
+    tagline: 'Kind words',
+    title: 'What people say',
+    items: [
+      {
+        name: 'Étienne Bourdon',
+        title: 'Territorial Development Agent · Haute-Yamaska',
+        date: 'January 2026',
+        quote:
+          'In the context of creating the website for the Haute-Yamaska Regional Development Table, Patrick stood out for the quality of his communication, his great attention to detail, and his ability to meet deadlines. A wonderful collaborator whom I highly recommend.',
+      },
+      {
+        name: 'Thalie Blanchard M. Adm.',
+        title: 'Senior Advisor, Business Offerings',
+        date: 'July 2025',
+        quote:
+          'I had the pleasure of working with Patrick — a person who is both competent and meticulous. He stands out for his ability to analyze situations with rigour and to think creatively when facing challenges. His willingness to explore new avenues, combined with his professionalism, makes him a valuable asset to any organization.',
+      },
+    ],
+  },
+
   footer: {
     tagline: 'Get in touch',
     headline1: "Let's bring your",

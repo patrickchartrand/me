@@ -6,6 +6,7 @@ import StatsSection from '@/components/StatsSection.vue'
 import WorkSection from '@/components/WorkSection.vue'
 import ExperienceSection from '@/components/ExperienceSection.vue'
 import StackSection from '@/components/StackSection.vue'
+import TestimonialsSection from '@/components/TestimonialsSection.vue'
 import TheFooter from '@/components/TheFooter.vue'
 import SecretInput from '@/components/SecretInput.vue'
 import { onMounted } from 'vue'
@@ -44,6 +45,7 @@ onMounted(() =>
       <WorkSection />
       <ExperienceSection />
       <StackSection />
+      <TestimonialsSection />
       <SecretInput />
     </main>
     <TheFooter />

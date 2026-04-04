@@ -97,6 +97,27 @@ export default {
     title: 'Les technos que j\u2019utilise vraiment',
   },
 
+  testimonials: {
+    tagline: 'Ils en parlent',
+    title: 'Ce qu\u2019ils disent',
+    items: [
+      {
+        name: 'Étienne Bourdon',
+        title: 'Agent de développement territorial · Haute-Yamaska',
+        date: 'Janvier 2026',
+        quote:
+          'Dans le cadre de la création du site web de la Table de développement de la Haute-Yamaska, Patrick s\u2019est démarqué par la qualité de sa communication, son grand souci du détail et sa capacité à respecter les échéanciers. Un merveilleux collaborateur que je recommande chaudement.',
+      },
+      {
+        name: 'Thalie Blanchard M. Adm.',
+        title: 'Conseillère principale — Assemblage d\u2019offres, Entreprises',
+        date: 'Juillet 2025',
+        quote:
+          'J\u2019ai eu le plaisir de travailler avec Patrick, une personne à la fois compétente et minutieuse. Il se distingue par sa capacité à analyser les situations avec rigueur et à faire preuve de créativité pour surmonter les défis. Sa volonté d\u2019explorer de nouvelles avenues, combinée à son professionnalisme, en fait un atout précieux pour toute organisation.',
+      },
+    ],
+  },
+
   footer: {
     tagline: 'Me contacter',
     headline1: 'Donnons vie à vos',
