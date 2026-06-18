@@ -40,20 +40,24 @@ export default {
     title: 'Selected Work',
     projects: [
       {
-        title: 'Haute-Yamaska Regional Development\u00a0Table',
-        category: 'UI/UX Design, Product Thinking',
-      },
-      {
-        title: 'DIY-Robotics.com',
-        category: 'Development, 3D Modeling',
+        title: 'City of Granby\u00a0Intranet\u00a0',
+        category: 'Information Architecture, User Experience',
       },
       {
         title: 'Beaulieu Canada',
-        category: 'Web Design, Development',
+        category: 'UI Design, Web Development',
       },
       {
         title: 'Canada Research Chair on Digital Textualities',
-        category: 'Coding, Digital Editing',
+        category: 'Semantic Text Markup, Layout Coding',
+      },
+      {
+        title: 'Haute-Yamaska Regional Development\u00a0Table',
+        category: 'UI Design, Product Thinking',
+      },
+      {
+        title: 'DIY-Robotics.com',
+        category: 'Web Development, 3D Modeling',
       },
     ],
   },
@@ -62,8 +66,9 @@ export default {
     experienceTitle: 'Experience',
     educationTitle: 'Education',
     items: [
-      { company: 'Freelance', role: 'Web Developer', period: 'Since 2025' },
-      { company: 'Beaulieu Canada', role: 'Frontend Developer', period: 'Since 2022' },
+      { company: 'Town of Granby', role: 'Webmaster', period: 'Since 2026' },
+      { company: 'Freelance', role: 'Web Integrator', period: 'Since 2025' },
+      { company: 'Beaulieu Canada', role: 'Frontend Developer', period: '2022-2026' },
       { company: 'DIY Robotics', role: 'Webmaster', period: '2021-2022 (since then consultant)' },
       { company: 'Avril', role: 'Copywriter & Social Media Manager', period: '2021' },
       { company: 'Sens Public', role: 'Digital Publisher', period: '2017-2020' },

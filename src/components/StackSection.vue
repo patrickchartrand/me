@@ -14,7 +14,7 @@ const technologies = [
   { name: 'Node.js', slug: 'nodedotjs' },
   { name: 'Prisma', slug: 'prisma' },
   { name: 'WordPress', slug: 'wordpress' },
-  { name: 'Git', slug: 'git' },
+  { name: 'Drupal', slug: 'drupal' },
   { name: 'Markdown', slug: 'markdown' },
   { name: 'XML', slug: 'xml' },
 ]

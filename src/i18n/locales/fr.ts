@@ -40,20 +40,24 @@ export default {
     title: 'Travaux sélectionnés',
     projects: [
       {
-        title: 'Table de développement r\u00e9gionale Haute-Yamaska',
-        category: 'Design UI/UX, Vision produit',
-      },
-      {
-        title: 'DIY-Robotics.com',
-        category: 'Développement, Modélisation 3D',
+        title: 'Intranet de la ville\u00a0de\u00a0Granby\u00a0',
+        category: 'Architecture d\u2019information, Expérience utilisateur',
       },
       {
         title: 'Beaulieu Canada',
-        category: 'Design Web, Développement',
+        category: 'Design UI, Développement web',
       },
       {
         title: 'Chaire de recherche du Canada sur les écritures numériques',
-        category: 'Développement, Édition numérique',
+        category: 'Balisage sémantique de texte, Mise en page',
+      },
+      {
+        title: 'Table de développement r\u00e9gionale Haute-Yamaska',
+        category: 'Design UI, Vision produit',
+      },
+      {
+        title: 'DIY-Robotics.com',
+        category: 'Développement web, Modélisation 3D',
       },
     ],
   },
@@ -62,8 +66,9 @@ export default {
     experienceTitle: 'Expérience',
     educationTitle: 'Formation',
     items: [
-      { company: 'Freelance', role: 'Développeur Web', period: 'Depuis 2025' },
-      { company: 'Beaulieu Canada', role: 'Développeur Frontend', period: 'Depuis 2022' },
+      { company: 'Ville de Granby', role: 'Webmestre', period: 'Depuis 2026' },
+      { company: 'Freelance', role: 'Intégrateur Web', period: 'Depuis 2025' },
+      { company: 'Beaulieu Canada', role: 'Développeur Frontend', period: '2022-2026' },
       { company: 'DIY Robotics', role: 'Webmestre', period: '2021-2022 (consultant depuis)' },
       { company: 'Avril', role: 'Rédacteur & Gestionnaire des médias sociaux', period: '2021' },
       { company: 'Sens Public', role: "Chargé d'édition et de communication", period: '2017-2020' },

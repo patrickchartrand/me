@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { projects as projectsMeta } from '@/utils/projects'
 
@@ -10,15 +10,31 @@ interface ProjectTranslation {
   category: string
 }
 
+const isMobile = ref(false)
+let mql: MediaQueryList | null = null
+
+function onMQLChange(e: MediaQueryListEvent) {
+  isMobile.value = e.matches
+}
+
+onMounted(() => {
+  mql = window.matchMedia('(max-width: 767px)')
+  isMobile.value = mql.matches
+  mql.addEventListener('change', onMQLChange)
+})
+
+onUnmounted(() => {
+  mql?.removeEventListener('change', onMQLChange)
+})
+
 const projects = computed(() => {
   const translations = tm('work.projects') as ProjectTranslation[]
-  return projectsMeta
-    .map((p, i) => ({
-      ...p,
-      title: translations[i]?.title ?? p.title,
-      category: translations[i]?.category ?? p.category,
-    }))
-    .sort((a, b) => Number(b.year) - Number(a.year))
+  const mapped = projectsMeta.map((p, i) => ({
+    ...p,
+    title: translations[i]?.title ?? p.title,
+    category: translations[i]?.category ?? p.category,
+  }))
+  return isMobile.value ? [...mapped].sort((a, b) => Number(b.year) - Number(a.year)) : mapped
 })
 
 function navigateTo(url: string) {
@@ -66,7 +82,7 @@ function navigateTo(url: string) {
               />
               <p class="text-sm text-secondary">{{ project.category }}</p>
             </div>
-            <span class="text-xs bg-[#81b29a] text-white rounded-full px-4 py-1.5 mt-1 font-mono">
+            <span class="text-xs bg text-white rounded-full px-4 py-1.5 mt-1 font-mono">
               {{ project.year }}
             </span>
           </div>
@@ -77,6 +93,10 @@ function navigateTo(url: string) {
 </template>
 
 <style scoped>
+.bg {
+  background-color: rgb(224 122 95 / var(--tw-text-opacity, 1));
+}
+
 .masonry-grid {
   columns: 1;
   column-gap: 3rem;

@@ -11,25 +11,14 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: 'Haute-Yamaska Regional Development&nbsp;Table',
-    category: 'UI/UX Design, Product Thinking',
+    title: 'Granby City Intranet',
+    category: 'Information Architecture, User Experience',
     year: '2026',
-    link: 'https://tabledeveloppementhy.ca',
-    image: '/images/haute-yamaska.png',
+    link: 'https://wallace.granby.ca',
+    image: '/images/wallace.png',
     imageAlt:
-      'minimalist laptop mockup showcasing a dark elegant website interface design, high end photography, studio lighting',
-    imageHeight: 'h-[520px]',
-  },
-  {
-    title: 'DIY-Robotics.com',
-    category: 'Development, 3D Modeling',
-    year: '2022',
-    link: 'https://diy-robotics.com/',
-    image: '/images/robotics.png',
-    imageAlt:
-      'isometric laptop mockup displaying a colorful modern digital magazine layout, clean background, soft shadows',
-    imageHeight: 'h-[420px]',
-    offset: true,
+      'Intranet interface for the City of Granby (Wallace), focused on information architecture and user experience, clean neutral UI',
+    imageHeight: 'h-[440px]',
   },
   {
     title: 'Beaulieu Canada',
@@ -50,6 +39,27 @@ export const projects: Project[] = [
     imageAlt:
       'smartphone mockup showing a fintech dashboard app with dark mode interface, neon accents, futuristic vibe',
     imageHeight: 'h-[480px]',
+    offset: true,
+  },
+  {
+    title: 'Haute-Yamaska Regional Development&nbsp;Table',
+    category: 'UI/UX Design, Product Thinking',
+    year: '2026',
+    link: 'https://tabledeveloppementhy.ca',
+    image: '/images/haute-yamaska.png',
+    imageAlt:
+      'minimalist laptop mockup showcasing a dark elegant website interface design, high end photography, studio lighting',
+    imageHeight: 'h-[520px]',
+  },
+  {
+    title: 'DIY-Robotics.com',
+    category: 'Development, 3D Modeling',
+    year: '2022',
+    link: 'https://diy-robotics.com/',
+    image: '/images/robotics.png',
+    imageAlt:
+      'isometric laptop mockup displaying a colorful modern digital magazine layout, clean background, soft shadows',
+    imageHeight: 'h-[420px]',
     offset: true,
   },
 ]
