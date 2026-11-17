@@ -1,22 +1,28 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Font Awesome: CSS only. The JS build weighs 1.47 MB, replaces the
+         glyphs with SVG for no visible gain, and no fa- class appears in src/.
+         The stylesheet stays because public/site/letter.html uses fa- icons in
+         the PDF export. -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@400..700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/src/assets/style.css" />
-    <link rel="icon" href="/favicon.ico" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      window.FontAwesomeConfig = { autoReplaceSvg: 'nest' }
       tailwind.config = {
         theme: {
           extend: {
@@ -39,11 +45,6 @@
         },
       }
     </script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
   </head>
   <body style="overflow-x: hidden">
     <div id="app"></div>

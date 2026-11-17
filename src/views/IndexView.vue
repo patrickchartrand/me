@@ -4,11 +4,11 @@ import { useHead } from '@unhead/vue'
 const { t } = useI18n()
 
 useHead({
-  title: t('app.title'),
+  title: () => t('app.title'),
   meta: [
     {
       name: 'description',
-      content: t('app.description'),
+      content: () => t('app.description'),
     },
   ],
 })

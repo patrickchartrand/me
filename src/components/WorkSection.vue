@@ -34,10 +34,6 @@ const projects = computed(() => {
   }))
   return isMobile.value ? [...mapped].sort((a, b) => Number(b.year) - Number(a.year)) : mapped
 })
-
-function navigateTo(url: string) {
-  window.open(url, '_blank')
-}
 </script>
 
 <template>
@@ -58,32 +54,41 @@ function navigateTo(url: string) {
         <article
           v-for="project in projects"
           :key="project.link"
-          class="masonry-item group cursor-pointer fade-in-up mb-20"
-          @click="navigateTo(project.link)"
+          class="masonry-item group fade-in-up mb-20"
         >
-          <div class="w-full overflow-hidden rounded-lg mb-6 relative" :class="project.imageHeight">
+          <a
+            :href="project.link"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block cursor-pointer rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+          >
             <div
-              class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
-            />
-            <img
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              :class="{ 'scale-80': project.image === '/images/research.png' }"
-              :src="project.image"
-              :alt="project.imageAlt"
-            />
-          </div>
-          <div class="flex justify-between items-start pt-4">
-            <div>
-              <h3
-                class="text-2xl md:text-3xl font-serif mb-1 group-hover:text-primary transition-all duration-300"
-                v-html="project.title"
+              class="w-full overflow-hidden rounded-lg mb-6 relative"
+              :class="project.imageHeight"
+            >
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"
               />
-              <p class="text-sm text-secondary">{{ project.category }}</p>
+              <img
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                :class="{ 'scale-80': project.image === '/images/research.png' }"
+                :src="project.image"
+                :alt="project.imageAlt"
+              />
             </div>
-            <span class="text-xs bg text-white rounded-full px-4 py-1.5 mt-1 font-mono">
-              {{ project.year }}
-            </span>
-          </div>
+            <div class="flex justify-between items-start pt-4">
+              <div>
+                <h3
+                  class="text-2xl md:text-3xl font-serif mb-1 group-hover:text-primary transition-all duration-300"
+                  v-html="project.title"
+                />
+                <p class="text-sm text-secondary">{{ project.category }}</p>
+              </div>
+              <span class="text-xs bg text-white rounded-full px-4 py-1.5 mt-1 font-mono">
+                {{ project.year }}
+              </span>
+            </div>
+          </a>
         </article>
       </div>
     </div>
