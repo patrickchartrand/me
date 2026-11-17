@@ -49,7 +49,7 @@ const socialLinks = [
     <div class="max-w-7xl mx-auto relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end mb-28">
         <div class="fade-in-up">
-          <p class="text-xs uppercase tracking-[0.3em] text-white/40 mb-6">
+          <p class="text-xs uppercase tracking-[0.3em] text-white/65 mb-6">
             {{ t('footer.tagline') }}
           </p>
           <h2 class="text-5xl md:text-7xl lg:text-8xl mb-10 leading-none font-serif">
@@ -111,7 +111,7 @@ const socialLinks = [
             decoding="async"
             class="blob-avatar ml-auto mb-8 h-44 w-44 md:h-56 md:w-56 object-cover ring-1 ring-white/15 shadow-md shadow-black/20"
           />
-          <p class="text-white/50 text-lg max-w-md ml-auto leading-relaxed mb-8">
+          <p class="text-white/70 text-lg max-w-md ml-auto leading-relaxed mb-8">
             {{ t('footer.availability') }}
           </p>
           <div class="flex gap-4 lg:justify-end">
@@ -135,10 +135,10 @@ const socialLinks = [
       <div
         class="pt-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
       >
-        <div class="text-sm text-white/30">
+        <div class="text-sm text-white/60">
           © {{ year }} Patrick Chartrand. {{ t('footer.copyright') }}
         </div>
-        <div class="flex gap-8 text-sm uppercase tracking-widest text-white/40">
+        <div class="flex gap-8 text-sm uppercase tracking-widest text-white/65">
           <a href="#" class="hover:text-white/80 transition-colors">{{ t('footer.topLink') }}</a>
           <a href="#work" class="hover:text-white/80 transition-colors">{{
             t('header.nav.work')

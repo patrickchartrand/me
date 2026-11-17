@@ -47,7 +47,7 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
             <div>
               <p class="font-medium text-charcoal text-sm">{{ item.name }}</p>
               <p class="text-xs text-secondary mt-0.5">{{ item.title }}</p>
-              <p class="text-xs text-secondary/60 font-mono mt-1">{{ item.date }}</p>
+              <p class="text-xs text-secondary font-mono mt-1">{{ item.date }}</p>
             </div>
           </footer>
         </blockquote>

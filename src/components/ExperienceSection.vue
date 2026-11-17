@@ -39,7 +39,7 @@ const education = computed(() => tm('experience.education') as EducationItem[])
                 <h3 class="text-lg font-medium group-hover:text-accent transition-colors">
                   {{ item.company }}
                 </h3>
-                <span class="text-sm text-cream/40 font-mono">{{ item.period }}</span>
+                <span class="text-sm text-cream/60 font-mono">{{ item.period }}</span>
               </div>
               <p class="text-cream/50 text-sm">{{ item.role }}</p>
             </div>
@@ -62,7 +62,7 @@ const education = computed(() => tm('experience.education') as EducationItem[])
                   {{ item.degree }}
                 </h3>
                 <p class="text-sm text-cream/60">{{ item.school }}</p>
-                <span class="text-xs text-cream/30 font-mono mt-1">{{ item.period }}</span>
+                <span class="text-xs text-cream/50 font-mono mt-1">{{ item.period }}</span>
               </div>
             </div>
           </div>
