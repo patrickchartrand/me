@@ -28,10 +28,10 @@ export default {
 
   stats: {
     items: [
-      { display: '08', label: 'Années d\u2019expérience' },
-      { display: '1\u202f458+', label: 'Projets auxquels j\u2019ai contribué' },
-      { display: '100%', label: 'HTML sémantique' },
-      { display: '404', label: 'Bogues corrigés (et ce n\u2019est pas fini)' },
+      { label: 'Années d\u2019expérience' },
+      { label: 'Projets auxquels j\u2019ai contribué' },
+      { label: 'HTML sémantique' },
+      { label: 'Bogues corrigés (et ce n\u2019est pas fini)' },
     ],
   },
 

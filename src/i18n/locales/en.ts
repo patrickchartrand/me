@@ -28,10 +28,10 @@ export default {
 
   stats: {
     items: [
-      { display: '08', label: 'Years Experience' },
-      { display: '1,458+', label: 'Projects Contributed To' },
-      { display: '100%', label: 'Semantic HTML' },
-      { display: '404', label: 'Bugs fixed (and counting)' },
+      { label: 'Years Experience' },
+      { label: 'Projects Contributed To' },
+      { label: 'Semantic HTML' },
+      { label: 'Bugs fixed (and counting)' },
     ],
   },
 

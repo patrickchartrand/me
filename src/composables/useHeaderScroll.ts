@@ -1,5 +1,3 @@
-import { onMounted, onUnmounted } from 'vue'
-
 export function useHeaderScroll() {
   let scrollHandler: (() => void) | null = null
 

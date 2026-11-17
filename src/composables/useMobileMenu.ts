@@ -1,5 +1,3 @@
-import { ref, onUnmounted } from 'vue'
-
 export function useMobileMenu() {
   const mobileMenuOpen = ref(false)
 

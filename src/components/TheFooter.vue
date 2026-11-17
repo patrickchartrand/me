@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n'
-import { useDownload } from '@/composables/useDownload'
-
 const { t, locale } = useI18n()
 const year = new Date().getFullYear()
 
@@ -62,7 +59,7 @@ const socialLinks = [
           </h2>
           <div class="flex flex-col sm:flex-row gap-4">
             <a
-              href="/cdn-cgi/l/email-protection#e999889d9b808a82c78a81889b9d9b88878da99c8486879d9b8c8885c78a88"
+              href="mailto:patrick.chartrand@umontreal.ca"
               class="group inline-flex items-center gap-4 bg-cream text-primary px-8 py-4 rounded-full font-medium hover:scale-105 hover:shadow-lg hover:shadow-cream/20 transition-all duration-300"
             >
               {{ t('footer.ctaProject') }}
@@ -105,6 +102,15 @@ const socialLinks = [
         </div>
 
         <div class="lg:text-right fade-in-up">
+          <img
+            src="/images/profil.jpg"
+            alt="Patrick Chartrand"
+            width="400"
+            height="400"
+            loading="lazy"
+            decoding="async"
+            class="blob-avatar ml-auto mb-8 h-44 w-44 md:h-56 md:w-56 object-cover ring-1 ring-white/15 shadow-md shadow-black/20"
+          />
           <p class="text-white/50 text-lg max-w-md ml-auto leading-relaxed mb-8">
             {{ t('footer.availability') }}
           </p>
@@ -145,3 +151,11 @@ const socialLinks = [
     </div>
   </footer>
 </template>
+
+<style scoped>
+/* Forme organique, en écho au blob décoratif du fond :
+   border-radius à 8 valeurs = rayons horizontaux / rayons verticaux. */
+.blob-avatar {
+  border-radius: 70% 30% 38% 62% / 58% 36% 64% 42%;
+}
+</style>

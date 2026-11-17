@@ -1,5 +1,3 @@
-import { onMounted, onUnmounted } from 'vue'
-
 export function useScrollAnimations() {
   let observer: IntersectionObserver | null = null
 

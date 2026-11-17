@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import { useActiveSection } from '@/composables/useActiveSection'
-import { useMobileMenu } from '@/composables/useMobileMenu'
-import { useHeaderScroll } from '@/composables/useHeaderScroll'
-import { useLocale } from '@/composables/useLocale'
-import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
-
 useHeaderScroll()
 
 const { t } = useI18n()

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useDownload } from '@/composables/useDownload'
-import { useI18n } from 'vue-i18n'
-
 const { locale } = useI18n()
 </script>
 
