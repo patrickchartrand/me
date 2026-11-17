@@ -1,10 +1,26 @@
+/**
+ * Renders one of the static pages in public/site/ to a PDF and saves it.
+ *
+ * The whole run sits behind an opaque overlay with the page scroll locked, so
+ * every exit path has to be guaranteed: without the finally below, any failure
+ * — a network blip, html2canvas choking on a CSS property — would leave the
+ * visitor staring at a frozen screen with no way back but a reload.
+ *
+ * The overlay goes up before the dynamic import, not after: that import pulls
+ * roughly 976 kB, and until it resolves the button would otherwise look inert
+ * and invite a second click.
+ */
+
+/** Shared across both buttons on purpose: one export at a time. */
+let running = false
+
 export async function useDownload(
   locale: string,
   { filename, filepath }: { filename: string; filepath: string },
 ) {
-  const html2pdf = (await import('html2pdf.js')).default
+  if (running) return
+  running = true
 
-  // Overlay avec loader
   document.documentElement.style.overflow = 'hidden'
   const overlay = document.createElement('div')
   overlay.style.cssText =
@@ -28,6 +44,7 @@ export async function useDownload(
         text-transform: uppercase;
         color: rgba(245,243,239,0.6);
         animation: fade-in 0.4s ease forwards;
+        text-align: center;
       }
       .pdf-dot {
         display: inline-block;
@@ -44,62 +61,81 @@ export async function useDownload(
   `
   document.body.appendChild(overlay)
 
-  const response = await fetch(filepath)
-  const html = await response.text()
+  let container: HTMLDivElement | null = null
 
-  const container = document.createElement('div')
-  container.style.cssText = 'position:fixed;top:0;left:-9999px;width:210mm;'
-  container.innerHTML = html
-  document.body.appendChild(container)
+  try {
+    const html2pdf = (await import('html2pdf.js')).default
 
-  const dateEl = container.querySelector('#letter-date') as HTMLElement
-  if (dateEl) {
-    const mois = [
-      'janvier',
-      'février',
-      'mars',
-      'avril',
-      'mai',
-      'juin',
-      'juillet',
-      'août',
-      'septembre',
-      'octobre',
-      'novembre',
-      'décembre',
-    ]
-    const today = new Date()
-    dateEl.textContent = `Granby, le ${today.getDate()} ${mois[today.getMonth()]} ${today.getFullYear()}`
+    const response = await fetch(filepath)
+    if (!response.ok) throw new Error(`${filepath} answered ${response.status}`)
+    const html = await response.text()
+
+    container = document.createElement('div')
+    container.style.cssText = 'position:fixed;top:0;left:-9999px;width:210mm;'
+    container.innerHTML = html
+    document.body.appendChild(container)
+
+    const dateEl = container.querySelector<HTMLElement>('#letter-date')
+    if (dateEl) {
+      const monthNames = [
+        'janvier',
+        'février',
+        'mars',
+        'avril',
+        'mai',
+        'juin',
+        'juillet',
+        'août',
+        'septembre',
+        'octobre',
+        'novembre',
+        'décembre',
+      ]
+      const today = new Date()
+      dateEl.textContent = `Granby, le ${today.getDate()} ${monthNames[today.getMonth()]} ${today.getFullYear()}`
+    }
+
+    // Let the injected stylesheets and webfonts settle before rasterising.
+    await new Promise((resolve) => setTimeout(resolve, 800))
+
+    const firstPage = container.querySelector<HTMLElement>('.page')
+    if (!firstPage) throw new Error(`no .page element found in ${filepath}`)
+
+    const worker = html2pdf()
+      .set({
+        margin: 0,
+        filename,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      })
+      .from(firstPage)
+
+    await worker
+      .toPdf()
+      .get('pdf')
+      .then((pdf) => {
+        while (pdf.internal.getNumberOfPages() > 1) pdf.deletePage(2)
+      })
+
+    await worker.save()
+  } catch (e) {
+    console.error('[useDownload]', e)
+    // Say so on screen rather than fail silently behind the overlay.
+    overlay.querySelector('.pdf-spinner')?.remove()
+    const label = overlay.querySelector('.pdf-label')
+    if (label) {
+      label.textContent =
+        locale === 'en' ? 'Download failed — please try again' : 'Échec du téléchargement'
+    }
+    await new Promise((resolve) => setTimeout(resolve, 1800))
+  } finally {
+    container?.remove()
+    overlay.style.transition = 'opacity 0.4s ease'
+    overlay.style.opacity = '0'
+    await new Promise((resolve) => setTimeout(resolve, 400))
+    overlay.remove()
+    document.documentElement.style.overflow = ''
+    running = false
   }
-
-  await new Promise((resolve) => setTimeout(resolve, 800))
-
-  const firstPage = container.querySelector('.page') as HTMLElement
-  const worker = html2pdf()
-    .set({
-      margin: 0,
-      filename,
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    })
-    .from(firstPage)
-
-  await worker
-    .toPdf()
-    .get('pdf')
-    .then((pdf) => {
-      while (pdf.internal.getNumberOfPages() > 1) pdf.deletePage(2)
-    })
-
-  await worker.save()
-
-  document.body.removeChild(container)
-
-  // Fade out overlay
-  overlay.style.transition = 'opacity 0.4s ease'
-  overlay.style.opacity = '0'
-  await new Promise((resolve) => setTimeout(resolve, 400))
-  document.body.removeChild(overlay)
-  document.documentElement.style.overflow = ''
 }
