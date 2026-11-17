@@ -124,12 +124,12 @@ export default defineConfig({
     AutoImport({
       imports: ['vue', 'vue-i18n'],
       dirs: ['src/composables'],
-      dts: 'src/auto-imports.d.ts',
+      dts: 'src/types/auto-imports.d.ts',
       vueTemplate: true,
     }),
     Components({
       dirs: ['src/components'],
-      dts: 'src/components.d.ts',
+      dts: 'src/types/components.d.ts',
     }),
   ],
   resolve: {

@@ -55,21 +55,19 @@ declare global {
   const toValue: typeof import('vue').toValue
   const triggerRef: typeof import('vue').triggerRef
   const unref: typeof import('vue').unref
-  const useActiveSection: typeof import('./composables/useActiveSection').useActiveSection
+  const useActiveSection: typeof import('../composables/useActiveSection').useActiveSection
   const useAttrs: typeof import('vue').useAttrs
-  const useBudget: typeof import('./composables/useBudget').useBudget
-  const useBudgetMensuel: typeof import('./composables/useBudgetMensuel').useBudgetMensuel
+  const useBudget: typeof import('../composables/useBudget').useBudget
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
-  const useDepenses: typeof import('./composables/useDepenses').useDepenses
-  const useDownload: typeof import('./composables/useDownload').useDownload
-  const useHeaderScroll: typeof import('./composables/useHeaderScroll').useHeaderScroll
+  const useDownload: typeof import('../composables/useDownload').useDownload
+  const useHeaderScroll: typeof import('../composables/useHeaderScroll').useHeaderScroll
   const useI18n: typeof import('vue-i18n').useI18n
   const useId: typeof import('vue').useId
-  const useLocale: typeof import('./composables/useLocale').useLocale
-  const useMobileMenu: typeof import('./composables/useMobileMenu').useMobileMenu
+  const useLocale: typeof import('../composables/useLocale').useLocale
+  const useMobileMenu: typeof import('../composables/useMobileMenu').useMobileMenu
   const useModel: typeof import('vue').useModel
-  const useScrollAnimations: typeof import('./composables/useScrollAnimations').useScrollAnimations
+  const useScrollAnimations: typeof import('../composables/useScrollAnimations').useScrollAnimations
   const useSlots: typeof import('vue').useSlots
   const useTemplateRef: typeof import('vue').useTemplateRef
   const watch: typeof import('vue').watch
@@ -136,19 +134,19 @@ declare module 'vue' {
     readonly toValue: UnwrapRef<typeof import('vue')['toValue']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
-    readonly useActiveSection: UnwrapRef<typeof import('./composables/useActiveSection')['useActiveSection']>
+    readonly useActiveSection: UnwrapRef<typeof import('../composables/useActiveSection')['useActiveSection']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
-    readonly useBudget: UnwrapRef<typeof import('./composables/useBudget')['useBudget']>
+    readonly useBudget: UnwrapRef<typeof import('../composables/useBudget')['useBudget']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
-    readonly useDownload: UnwrapRef<typeof import('./composables/useDownload')['useDownload']>
-    readonly useHeaderScroll: UnwrapRef<typeof import('./composables/useHeaderScroll')['useHeaderScroll']>
+    readonly useDownload: UnwrapRef<typeof import('../composables/useDownload')['useDownload']>
+    readonly useHeaderScroll: UnwrapRef<typeof import('../composables/useHeaderScroll')['useHeaderScroll']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
-    readonly useLocale: UnwrapRef<typeof import('./composables/useLocale')['useLocale']>
-    readonly useMobileMenu: UnwrapRef<typeof import('./composables/useMobileMenu')['useMobileMenu']>
+    readonly useLocale: UnwrapRef<typeof import('../composables/useLocale')['useLocale']>
+    readonly useMobileMenu: UnwrapRef<typeof import('../composables/useMobileMenu')['useMobileMenu']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
-    readonly useScrollAnimations: UnwrapRef<typeof import('./composables/useScrollAnimations')['useScrollAnimations']>
+    readonly useScrollAnimations: UnwrapRef<typeof import('../composables/useScrollAnimations')['useScrollAnimations']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
