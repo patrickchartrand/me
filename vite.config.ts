@@ -4,6 +4,7 @@ import { dirname } from 'node:path'
 
 import { defineConfig, type Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import tailwindcss from '@tailwindcss/vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
@@ -68,19 +69,11 @@ function budgetApiDevServer(): Plugin {
         const url = new URL(request.url ?? '/', 'http://localhost')
         const scope = url.searchParams.get('scope')
 
+        // Read-only, matching production: nothing writes the standing commitments.
         if (scope === 'fixed') {
           if (request.method === 'GET') {
             const stored = read().fixed
             return reply(stored == null ? { empty: true } : stored)
-          }
-          if (request.method === 'PUT') {
-            void body(request).then((received) => {
-              const store = read()
-              store.fixed = received ?? {}
-              write(store)
-              reply(store.fixed)
-            })
-            return
           }
           return reply({ error: 'Method not allowed.' }, 405)
         }
@@ -119,10 +112,11 @@ function budgetApiDevServer(): Plugin {
 export default defineConfig({
   plugins: [
     budgetApiDevServer(),
+    tailwindcss(),
     vue(),
     vueDevTools(),
     AutoImport({
-      imports: ['vue', 'vue-i18n'],
+      imports: ['vue', 'vue-i18n', 'vue-router', { '@unhead/vue': ['useHead'] }],
       dirs: ['src/composables'],
       dts: 'src/types/auto-imports.d.ts',
       vueTemplate: true,

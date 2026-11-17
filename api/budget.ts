@@ -1,41 +1,11 @@
 import { get, put } from '@vercel/blob'
 import { createRemoteJWKSet, jwtVerify } from 'jose'
 
-/**
- * The whole private budget API, in one self-contained function.
- *
- *   GET|PUT /_/api/budget?scope=fixed
- *   GET|PUT /_/api/budget?scope=month&month=YYYY-MM
- *
- * Deliberately one file with no relative imports. The project is ESM
- * ("type": "module"), where an extensionless relative import does not resolve
- * at runtime — an earlier split across api/_access.ts and api/_store.ts failed
- * in production with FUNCTION_INVOCATION_FAILED. Package imports always
- * resolve, so only those are used here.
- *
- * Two Blob options are not negotiable:
- *   - `allowOverwrite` on write, otherwise every save after the first fails;
- *   - `useCache: false` on read, otherwise a freshly written document can be
- *     served stale for up to 60 seconds and a saved expense appears to vanish.
- */
-
-// --- Cloudflare Access -----------------------------------------------------
-//
-// Access guards the patrickchartrand.dev hostname, but not the deployment's
-// *.vercel.app URL: trusting the path alone would leave the data reachable
-// there. The proof is therefore checked here. Neither value below is a secret;
-// both appear in plain text in the Access login URL.
-
 const TEAM_DOMAIN = 'https://yellow-dawn-11c1.cloudflareaccess.com'
 const AUDIENCE = '31a91272a86f7ee28d62885ba013f741997b535ded994e44960fb6525670008e'
 
 const accessKeys = createRemoteJWKSet(new URL(`${TEAM_DOMAIN}/cdn-cgi/access/certs`))
 
-/**
- * True when the assertion is a valid token for this application.
- * Nothing throws: missing, expired, badly signed and wrongly scoped tokens all
- * look the same from outside.
- */
 async function isAuthenticated(assertion: unknown): Promise<boolean> {
   if (typeof assertion !== 'string' || assertion === '') return false
   try {
@@ -46,12 +16,9 @@ async function isAuthenticated(assertion: unknown): Promise<boolean> {
   }
 }
 
-// --- Shapes ----------------------------------------------------------------
-
 interface Expense {
   id: string
-  /** YYYY-MM-DD */
-  date: string
+  date: string /** YYYY-MM-DD */
   label: string
   amount: number
 }
@@ -104,7 +71,6 @@ const rows = (raw: unknown): Record<string, unknown>[] =>
     ? raw.filter((r): r is Record<string, unknown> => typeof r === 'object' && r !== null)
     : []
 
-/** Only recognised shapes are stored — anything else is dropped silently. */
 function cleanMonth(raw: unknown): MonthData {
   const o = (typeof raw === 'object' && raw !== null ? raw : {}) as Record<string, unknown>
   return {
@@ -158,8 +124,6 @@ function cleanFixed(raw: unknown): FixedBudget {
   }
 }
 
-// --- Storage ---------------------------------------------------------------
-
 async function readJson(pathname: string, token: string): Promise<unknown | null> {
   const result = await get(pathname, { access: 'private', useCache: false, token })
   if (!result?.stream) return null
@@ -178,8 +142,6 @@ async function writeJson(pathname: string, value: unknown, token: string): Promi
     token,
   })
 }
-
-// --- Handler ---------------------------------------------------------------
 
 interface ApiRequest {
   method?: string
@@ -215,16 +177,13 @@ export default async function handler(request: ApiRequest, response: ApiResponse
   const method = request.method
 
   try {
+    // Read-only on purpose. The standing commitments are written to private
+    // storage out of band; no caller here can overwrite them, so a stolen
+    // session cannot rewrite the budget itself — only the month's expenses.
     if (scope === 'fixed') {
       if (method === 'GET') {
         const stored = await readJson('budget/fixed.json', token)
-        // `empty` tells the view nothing has been seeded yet.
         return reply(200, stored === null ? { empty: true } : cleanFixed(stored))
-      }
-      if (method === 'PUT') {
-        const data = cleanFixed(request.body)
-        await writeJson('budget/fixed.json', data, token)
-        return reply(200, data)
       }
       return reply(405, { error: 'Method not allowed.' })
     }

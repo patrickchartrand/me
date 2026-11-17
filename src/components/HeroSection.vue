@@ -62,7 +62,7 @@ const { t } = useI18n()
   bottom: -10px;
   left: 18px;
   z-index: -1;
-  background-color: var(--color-lavender);
+  background-color: var(--lavender);
   transition: all 0.3s ease;
 }
 .highlight-offset:hover::before {

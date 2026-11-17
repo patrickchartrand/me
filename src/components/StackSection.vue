@@ -104,7 +104,7 @@ const hovered = ref<string | null>(null)
   bottom: -6px;
   left: 12px;
   z-index: -1;
-  background-color: var(--color-lavender);
+  background-color: var(--lavender);
   transition: all 0.3s ease;
 }
 .highlight-offset-md:hover::before {

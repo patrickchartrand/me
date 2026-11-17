@@ -71,7 +71,7 @@ onMounted(() => {
         class="flex flex-col gap-2 group cursor-default"
       >
         <span
-          class="stat-number text-5xl md:text-7xl font-serif transition-colors duration-500 group-hover:text-primary"
+          class="stat-number text-charcoal text-5xl md:text-7xl font-serif transition-colors duration-500 group-hover:text-primary"
         >
           {{ displayed[index] }}
         </span>
@@ -87,7 +87,6 @@ onMounted(() => {
 .stat-number {
   position: relative;
   display: inline-block;
-  color: #1a1a1a;
 }
 
 .stat-number::after {
@@ -97,7 +96,7 @@ onMounted(() => {
   left: 0;
   width: 0%;
   height: 40%;
-  background-color: var(--color-lavender);
+  background-color: var(--lavender);
   z-index: -1;
   transition: width 0.4s ease;
   transform-origin: left center;

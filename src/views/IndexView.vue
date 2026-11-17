@@ -1,19 +1,9 @@
 <script setup lang="ts">
-import { useHead } from '@unhead/vue'
-
 const { t, locale } = useI18n()
 
 const SITE_URL = 'https://patrickchartrand.dev'
 const SHARE_IMAGE = `${SITE_URL}/images/profil.jpg`
 
-/*
- * Without og: tags a shared link renders as an empty rectangle on LinkedIn and
- * Bluesky. Everything is a getter so the cards follow the language, which the
- * previous one-shot t() calls did not.
- *
- * The card is `summary`, not `summary_large_image`: profil.jpg is 400x400 and
- * a wide card wants roughly 1200x630. A dedicated share image would be better.
- */
 useHead({
   title: () => t('app.title'),
   link: [{ rel: 'canonical', href: SITE_URL }],

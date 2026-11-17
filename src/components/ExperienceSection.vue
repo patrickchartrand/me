@@ -87,7 +87,7 @@ const education = computed(() => tm('experience.education') as EducationItem[])
   bottom: -4px;
   left: 8px;
   z-index: -1;
-  background-color: color-mix(in srgb, var(--color-lavender) 25%, transparent);
+  background-color: color-mix(in srgb, var(--lavender) 25%, transparent);
   transition: all 0.3s ease;
 }
 .highlight-offset-dark:hover::before {

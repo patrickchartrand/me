@@ -71,7 +71,6 @@ const projects = computed(() => {
               />
               <img
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                :class="{ 'scale-80': project.image === '/images/research.jpg' }"
                 :src="project.image"
                 :alt="project.imageAlt"
                 loading="lazy"
@@ -86,7 +85,7 @@ const projects = computed(() => {
                 />
                 <p class="text-sm text-secondary">{{ project.category }}</p>
               </div>
-              <span class="text-xs bg text-charcoal rounded-full px-4 py-1.5 mt-1 font-mono">
+              <span class="text-xs bg-accent text-charcoal rounded-full px-4 py-1.5 mt-1 font-mono">
                 {{ project.year }}
               </span>
             </div>
@@ -98,10 +97,6 @@ const projects = computed(() => {
 </template>
 
 <style scoped>
-.bg {
-  background-color: rgb(224 122 95 / var(--tw-text-opacity, 1));
-}
-
 .masonry-grid {
   columns: 1;
   column-gap: 3rem;
@@ -131,7 +126,7 @@ const projects = computed(() => {
   bottom: -6px;
   left: 12px;
   z-index: -1;
-  background-color: var(--color-lavender);
+  background-color: var(--lavender);
   transition: all 0.3s ease;
 }
 .highlight-offset-md:hover::before {

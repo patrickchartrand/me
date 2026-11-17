@@ -3,32 +3,16 @@ import {
   currentMonth,
   fetchFixed,
   fetchMonth,
-  saveFixed,
   saveMonth,
   today,
-  type Expense,
-  type FixedBudget,
-  type MonthData,
 } from '@/services/budget'
 
 const NOTES_DELAY = 800
 
-/**
- * The whole budget page state: standing commitments plus this month's
- * expenses and notes, all stored privately behind Cloudflare Access.
- *
- * Expense edits are optimistic — the list changes at once and the save
- * follows. If the server refuses, the previous list is restored and the error
- * surfaces: a row that disappears beats a total that lies.
- *
- * Notes are never rolled back. Rewriting text under someone's fingers is
- * worse than showing the error.
- */
 export function useBudget() {
   const month = currentMonth()
 
   const fixed = ref<FixedBudget | null>(null)
-  const needsSeeding = ref(false)
   const expenses = ref<Expense[]>([])
   const notes = ref('')
 
@@ -44,10 +28,9 @@ export function useBudget() {
     try {
       const [standing, current] = await Promise.all([fetchFixed(), fetchMonth(month)])
       if (standing === null) {
-        needsSeeding.value = true
-      } else {
-        fixed.value = standing
+        throw new Error('les charges fixes sont introuvables dans le stockage privé')
       }
+      fixed.value = standing
       expenses.value = current.expenses
       notes.value = current.notes
     } catch (e) {
@@ -99,7 +82,6 @@ export function useBudget() {
     return sync([])
   }
 
-  // Notes save after a pause in typing, not on every keystroke.
   let timer: ReturnType<typeof setTimeout> | undefined
   function notesChanged() {
     clearTimeout(timer)
@@ -109,7 +91,6 @@ export function useBudget() {
     )
   }
 
-  /** Saves immediately — used when the field loses focus. */
   function saveNotes() {
     clearTimeout(timer)
     return push({ expenses: expenses.value, notes: notes.value })
@@ -117,24 +98,9 @@ export function useBudget() {
 
   onUnmounted(() => clearTimeout(timer))
 
-  /** One-time import of the standing commitments, pasted as JSON. */
-  async function seed(json: string) {
-    error.value = null
-    saving.value = true
-    try {
-      fixed.value = await saveFixed(JSON.parse(json) as FixedBudget)
-      needsSeeding.value = false
-    } catch (e) {
-      error.value = e instanceof Error ? e.message : 'unknown error'
-    } finally {
-      saving.value = false
-    }
-  }
-
   return {
     month,
     fixed,
-    needsSeeding,
     expenses,
     notes,
     spent,
@@ -148,6 +114,5 @@ export function useBudget() {
     removeAllExpenses,
     notesChanged,
     saveNotes,
-    seed,
   }
 }

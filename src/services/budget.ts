@@ -1,63 +1,7 @@
-import { PRIVATE_PREFIX } from '@/config'
-
-export interface Expense {
-  id: string
-  /** YYYY-MM-DD */
-  date: string
-  label: string
-  amount: number
-}
-
-/** What changes from one month to the next. */
-export interface MonthData {
-  expenses: Expense[]
-  notes: string
-}
-
-export interface PersonalItem {
-  label: string
-  amount: number
-  note?: string
-  savings?: boolean
-}
-
-export interface SharedItem {
-  label: string
-  total: number
-  share: number
-  note?: string
-}
-
-/** The standing commitments. Stored privately, never in this repository. */
-export interface FixedBudget {
-  updatedAt: string
-  income: {
-    weeklyNet: number
-    weeklyGross: number
-    weeklyDeductions: number
-    weeklyHours: number
-    hourlyRate: number
-    payday: string
-  }
-  personal: PersonalItem[]
-  shared: SharedItem[]
-}
-
-export interface Totals {
-  personal: number
-  shared: number
-  committed: number
-  monthlyIncome: number
-  remaining: number
-  savings: number
-  actualSpending: number
-}
+import { PRIVATE_PREFIX } from '@/router'
 
 const API = `${PRIVATE_PREFIX}/api/budget`
 
-export const EMPTY_MONTH: MonthData = { expenses: [], notes: '' }
-
-/** Current month as YYYY-MM — the key the data is stored under. */
 export function currentMonth(reference = new Date()): string {
   const month = String(reference.getMonth() + 1).padStart(2, '0')
   return `${reference.getFullYear()}-${month}`
@@ -71,7 +15,6 @@ export function today(reference = new Date()): string {
 
 const sum = (values: number[]) => values.reduce((total, n) => total + n, 0)
 
-/** Everything is recomputed from the rows — no total is ever copied. */
 export function computeTotals(fixed: FixedBudget, expenses: Expense[]): Totals {
   const personal = sum(fixed.personal.map((i) => i.amount))
   const shared = sum(fixed.shared.map((i) => i.share))
@@ -99,7 +42,6 @@ export class BudgetUnavailable extends Error {
 }
 
 async function readBody<T>(response: Response): Promise<T> {
-  // The SPA fallback answers 200 with index.html when a route is missing.
   const type = response.headers.get('Content-Type') ?? ''
   if (!type.includes('json')) {
     throw new BudgetUnavailable(
@@ -141,12 +83,7 @@ export async function saveMonth(month: string, data: MonthData): Promise<MonthDa
   return { expenses: body.expenses ?? [], notes: body.notes ?? '' }
 }
 
-/** Resolves to `null` when nothing has been seeded yet. */
 export async function fetchFixed(): Promise<FixedBudget | null> {
   const body = await request<FixedBudget & { empty?: boolean }>(`${API}?scope=fixed`)
   return body.empty ? null : body
-}
-
-export async function saveFixed(data: FixedBudget): Promise<FixedBudget> {
-  return request<FixedBudget>(`${API}?scope=fixed`, asJson(data))
 }

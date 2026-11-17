@@ -27,7 +27,7 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
         <blockquote
           v-for="item in testimonials"
           :key="item.name"
-          class="group relative bg-white/60 border border-charcoal/8 rounded-2xl p-8 md:p-10 flex flex-col gap-6 hover:shadow-lg hover:shadow-charcoal/5 transition-all duration-300"
+          class="group relative bg-white/60 border border-[#e5e7eb] rounded-2xl p-8 md:p-10 flex flex-col gap-6 hover:shadow-lg hover:shadow-charcoal/5 transition-all duration-300"
         >
           <!-- Quote mark -->
           <span
@@ -43,7 +43,7 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
             {{ item.quote }}
           </p>
 
-          <footer class="mt-auto flex items-center gap-4 pt-4 border-t border-charcoal/8">
+          <footer class="mt-auto flex items-center gap-4 pt-4 border-t border-[#e5e7eb]">
             <div>
               <p class="font-medium text-charcoal text-sm">{{ item.name }}</p>
               <p class="text-xs text-secondary mt-0.5">{{ item.title }}</p>
@@ -71,7 +71,7 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
   bottom: -10px;
   left: 18px;
   z-index: -1;
-  background-color: var(--color-lavender);
+  background-color: var(--lavender);
   transition: all 0.3s ease;
 }
 .highlight-offset:hover::before {
@@ -79,6 +79,6 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
 }
 
 .quote-mark {
-  color: color-mix(in srgb, var(--color-lavender) 50%, transparent);
+  color: color-mix(in srgb, var(--lavender) 50%, transparent);
 }
 </style>

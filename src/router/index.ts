@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import IndexView from '@/views/IndexView.vue'
-import { PRIVATE_PREFIX } from '@/config'
+
+export const PRIVATE_PREFIX = '/_'
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -13,7 +14,7 @@ export const router = createRouter({
     {
       path: `${PRIVATE_PREFIX}/codex`,
       name: 'codex',
-      component: () => import('@/views/CodexView.vue'),
+      component: () => import('@/views/BudgetView.vue'),
     },
     {
       path: '/:chemin(.*)*',

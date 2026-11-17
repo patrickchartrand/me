@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { useHead } from '@unhead/vue'
-
 useHead({ title: 'Budget', meta: [{ name: 'robots', content: 'noindex, nofollow' }] })
 
 const {
   fixed,
-  needsSeeding,
   expenses,
   notes,
   spent,
@@ -19,7 +16,6 @@ const {
   removeAllExpenses,
   notesChanged,
   saveNotes,
-  seed,
 } = useBudget()
 
 const label = ref('')
@@ -32,8 +28,6 @@ function submit() {
   amount.value = null
 }
 
-const seedJson = ref('')
-
 const currency = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' })
 const fmt = (n: number) => currency.format(n)
 const percent = (n: number) => `${Math.round(n)} %`
@@ -41,7 +35,7 @@ const percent = (n: number) => `${Math.round(n)} %`
 /*
  * Chart palette.
  *
- * The brand hues (#3d405b, #e07a5f, #81b29a) are deliberately desaturated and
+ * The brand hues (#3d405b, #5dab9d, #137851) are deliberately desaturated and
  * fail categorical encoding: two of them are indistinguishable under deutan
  * vision. This quartet passes all six checks across ALL pairs, not just
  * adjacent ones — the four colours share one bar, so each must stand apart
@@ -126,31 +120,6 @@ function show(event: MouseEvent, text: string) {
       <p v-if="error" class="mb-10 text-sm" :style="{ color: RED }">{{ error }}</p>
 
       <p v-if="loading" class="text-secondary">Chargement…</p>
-
-      <!-- First run: the standing commitments have never been imported. -->
-      <section v-else-if="needsSeeding">
-        <div class="mb-6 flex items-baseline justify-between">
-          <h2 class="font-serif text-2xl">Première mise en place</h2>
-        </div>
-        <p class="mb-5 max-w-prose text-sm text-secondary">
-          Vos charges fixes ne sont pas encore enregistrées. Collez-les ici une fois — elles vivront
-          dans le stockage privé, jamais dans le dépôt.
-        </p>
-        <textarea
-          v-model="seedJson"
-          rows="12"
-          spellcheck="false"
-          class="w-full rounded-2xl border border-charcoal/10 bg-white p-5 font-mono text-xs leading-relaxed focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
-        ></textarea>
-        <button
-          type="button"
-          :disabled="saving || seedJson.trim() === ''"
-          class="mt-4 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-cream transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
-          @click="seed(seedJson)"
-        >
-          Enregistrer
-        </button>
-      </section>
 
       <template v-else-if="fixed && totals">
         <!-- Summary -->
@@ -329,7 +298,7 @@ function show(event: MouseEvent, text: string) {
               <li
                 v-for="e in expenses"
                 :key="e.id"
-                class="flex items-baseline gap-4 border-b border-charcoal/8 py-3 last:border-0"
+                class="flex items-baseline gap-4 border-b border-[#e5e7eb] py-3 last:border-0"
               >
                 <span class="flex-1 text-sm">
                   {{ e.label }}
@@ -369,7 +338,7 @@ function show(event: MouseEvent, text: string) {
             <li
               v-for="item in fixed.personal"
               :key="item.label"
-              class="flex items-baseline gap-4 border-b border-charcoal/8 py-3 last:border-0"
+              class="flex items-baseline gap-4 border-b border-[#e5e7eb] py-3 last:border-0"
             >
               <span class="flex-1 text-sm">
                 {{ item.label }}
@@ -395,7 +364,7 @@ function show(event: MouseEvent, text: string) {
             <li
               v-for="item in fixed.shared"
               :key="item.label"
-              class="flex items-baseline gap-4 border-b border-charcoal/8 py-3 last:border-0"
+              class="flex items-baseline gap-4 border-b border-[#e5e7eb] py-3 last:border-0"
             >
               <span class="flex-1 text-sm">
                 {{ item.label }}

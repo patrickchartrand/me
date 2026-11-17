@@ -27,15 +27,15 @@ export async function useDownload(
     'position:fixed;inset:0;z-index:9999;background:#3d405b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;'
   overlay.innerHTML = `
     <style>
-      @keyframes spin { to { transform: rotate(360deg); } }
-      @keyframes fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes pdf-spin { to { transform: rotate(360deg); } }
+      @keyframes pdf-fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       .pdf-spinner {
         width: 48px;
         height: 48px;
         border: 3px solid rgba(245,243,239,0.15);
         border-top-color: #F5F3EF;
         border-radius: 50%;
-        animation: spin 0.8s linear infinite;
+        animation: pdf-spin 0.8s linear infinite;
       }
       .pdf-label {
         font-family: 'Inter', sans-serif;
@@ -43,12 +43,12 @@ export async function useDownload(
         letter-spacing: 0.2em;
         text-transform: uppercase;
         color: rgba(245,243,239,0.6);
-        animation: fade-in 0.4s ease forwards;
+        animation: pdf-fade-in 0.4s ease forwards;
         text-align: center;
       }
       .pdf-dot {
         display: inline-block;
-        animation: fade-in 0.4s ease infinite alternate;
+        animation: pdf-fade-in 0.4s ease infinite alternate;
       }
       .pdf-dot:nth-child(2) { animation-delay: 0.2s; }
       .pdf-dot:nth-child(3) { animation-delay: 0.4s; }

@@ -117,7 +117,7 @@ const navLinks = computed(() => [
   top: 4px;
   left: 6px;
   z-index: -1;
-  background-color: var(--color-lavender);
+  background-color: var(--lavender);
   opacity: 0;
   transition: all 0.3s ease;
 }
