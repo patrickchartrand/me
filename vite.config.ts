@@ -21,16 +21,65 @@ function budgetApiDevServer(): Plugin {
   const FILE = fileURLToPath(new URL('./node_modules/.tmp/budget-dev.json', import.meta.url))
   const VALID_MONTH = /^\d{4}-(0[1-9]|1[0-2])$/
 
+  interface FixedBudget {
+    updatedAt: string
+    income: {
+      weeklyNet: number
+      weeklyGross: number
+      weeklyDeductions: number
+      weeklyHours: number
+      hourlyRate: number
+      payday: string
+    }
+    personal: { label: string; amount: number; note?: string; savings?: boolean }[]
+    shared: { label: string; total: number; share: number; note?: string }[]
+  }
+
   interface Store {
-    fixed?: unknown
+    fixed?: FixedBudget
     months?: Record<string, { expenses: unknown[]; notes: string }>
+  }
+
+  /**
+   * Obviously-fake standing commitments, so the page is usable under `vite dev`.
+   *
+   * Production reads the real figures from Vercel Blob; they are never written to
+   * disk here, and nothing local can reach them. Before this existed the dev page
+   * only ever showed "les charges fixes sont introuvables" — the seeding screen
+   * that used to fill the gap is gone, deliberately, since the commitments are
+   * now read-only.
+   *
+   * Round numbers and placeholder labels on purpose: nobody should be able to
+   * mistake this for a real budget, or report a bug against its arithmetic.
+   */
+  const SAMPLE: FixedBudget = {
+    updatedAt: '2026-01-01',
+    income: {
+      weeklyNet: 1000,
+      weeklyGross: 1400,
+      weeklyDeductions: 400,
+      weeklyHours: 35,
+      hourlyRate: 40,
+      payday: 'Thursday',
+    },
+    personal: [
+      { label: 'Sample rent', amount: 1200 },
+      { label: 'Sample car payment', amount: 400 },
+      { label: 'Sample phone', amount: 50 },
+      { label: 'Sample savings', amount: 300, savings: true },
+    ],
+    shared: [
+      { label: 'Sample groceries', total: 800, share: 400 },
+      { label: 'Sample utilities', total: 200, share: 100 },
+    ],
   }
 
   const read = (): Store => {
     try {
-      return JSON.parse(readFileSync(FILE, 'utf8')) as Store
+      const store = JSON.parse(readFileSync(FILE, 'utf8')) as Store
+      return { ...store, fixed: store.fixed ?? SAMPLE }
     } catch {
-      return {}
+      return { fixed: SAMPLE }
     }
   }
   const write = (store: Store) => {
