@@ -35,18 +35,27 @@ const percent = (n: number) => `${Math.round(n)} %`
 /*
  * Chart palette.
  *
- * The brand hues (#3d405b, #5dab9d, #137851) are deliberately desaturated and
- * fail categorical encoding: two of them are indistinguishable under deutan
- * vision. This quartet passes all six checks across ALL pairs, not just
- * adjacent ones — the four colours share one bar, so each must stand apart
- * from each. The terracotta sits at #c74a22 rather than the original #d9603a,
- * with which green and it collided under protan vision.
+ * Each chart hue is a site hue raised to chart strength. The brand colours are
+ * deliberately desaturated for text on cream, and that restraint disqualifies
+ * them for categorical encoding: the accent #5dab9d measures chroma 0.081,
+ * under the 0.1 floor, and reads gray inside a bar. So the chart keeps the hue
+ * and lifts the chroma — #34a08e at 180° for the accent's 181°, #5a5fa6 at 279°
+ * for the lavender's 282° and primary's 279°.
+ *
+ * Validated across ALL pairs, not just adjacent ones, because the segments share
+ * one bar and each must stand apart from each. Worst case is shared↔spending at
+ * ΔE 12.9 under deutan vision, against a floor of 8. All three clear 3:1 against
+ * the surface, which the previous yellow did not.
+ *
+ * `remaining` is neutral on purpose: what is left over is not a category
+ * competing for attention. It shares its gray with `other`, which is safe —
+ * the two never appear in the same chart.
  */
 const HUES = {
   personal: '#5a5fa6',
-  shared: '#c74a22',
-  spending: '#d9a441',
-  remaining: '#137851',
+  shared: '#34a08e',
+  spending: '#c74a22',
+  remaining: '#8a8a8a',
   other: '#8a8a8a',
 } as const
 
