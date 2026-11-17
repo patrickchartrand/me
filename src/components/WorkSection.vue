@@ -71,9 +71,11 @@ const projects = computed(() => {
               />
               <img
                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                :class="{ 'scale-80': project.image === '/images/research.png' }"
+                :class="{ 'scale-80': project.image === '/images/research.jpg' }"
                 :src="project.image"
                 :alt="project.imageAlt"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <div class="flex justify-between items-start pt-4">

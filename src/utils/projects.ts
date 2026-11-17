@@ -15,7 +15,7 @@ export const projects: Project[] = [
     category: 'Information Architecture, User Experience',
     year: '2026',
     link: 'https://wallace.granby.ca',
-    image: '/images/wallace.png',
+    image: '/images/wallace.jpg',
     imageAlt:
       'Intranet interface for the City of Granby (Wallace), focused on information architecture and user experience, clean neutral UI',
     imageHeight: 'h-[440px]',
@@ -25,7 +25,7 @@ export const projects: Project[] = [
     category: 'Web Design, Development',
     year: '2024',
     link: 'https://canada.beaulieucanada.com',
-    image: '/images/beaulieu.png',
+    image: '/images/beaulieu.jpg',
     imageAlt:
       'tablet mockup floating in air showing a minimalist furniture ecommerce app, beige background, high fashion aesthetic',
     imageHeight: 'h-[430px]',
@@ -35,7 +35,7 @@ export const projects: Project[] = [
     category: 'Coding, Digital Editing',
     year: '2020',
     link: 'https://www.ecrituresnumeriques.ca',
-    image: '/images/research.png',
+    image: '/images/research.jpg',
     imageAlt:
       'smartphone mockup showing a fintech dashboard app with dark mode interface, neon accents, futuristic vibe',
     imageHeight: 'h-[480px]',
@@ -46,7 +46,7 @@ export const projects: Project[] = [
     category: 'UI/UX Design, Product Thinking',
     year: '2026',
     link: 'https://tabledeveloppementhy.ca',
-    image: '/images/haute-yamaska.png',
+    image: '/images/haute-yamaska.jpg',
     imageAlt:
       'minimalist laptop mockup showcasing a dark elegant website interface design, high end photography, studio lighting',
     imageHeight: 'h-[520px]',
@@ -56,7 +56,7 @@ export const projects: Project[] = [
     category: 'Development, 3D Modeling',
     year: '2022',
     link: 'https://diy-robotics.com/',
-    image: '/images/robotics.png',
+    image: '/images/robotics.jpg',
     imageAlt:
       'isometric laptop mockup displaying a colorful modern digital magazine layout, clean background, soft shadows',
     imageHeight: 'h-[420px]',
