@@ -53,13 +53,17 @@ export function useBudget() {
   let inFlight = 0
   let latest = 0
   async function push(next: MonthData, rollback?: () => void) {
-    error.value = null
+    // The error is cleared on success, not on entry: clearing it here let a
+    // debounced notes save erase a failure the visitor had not read yet.
     const sequence = ++latest
     inFlight++
     saving.value = true
     try {
       const saved = await saveMonth(month, next)
-      if (sequence === latest) expenses.value = saved.expenses
+      if (sequence === latest) {
+        expenses.value = saved.expenses
+        error.value = null
+      }
     } catch (e) {
       if (sequence === latest) {
         rollback?.()

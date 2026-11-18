@@ -39,7 +39,7 @@ const projects = computed(() => {
 <template>
   <section id="work" class="px-6 md:px-12 lg:px-24 mb-40">
     <div class="max-w-7xl mx-auto">
-      <div class="flex justify-between items-end mb-20 fade-in-up">
+      <div class="flex justify-between items-end mb-16 fade-in-up">
         <div>
           <p class="text-xs uppercase tracking-[0.3em] text-secondary mb-4">
             {{ t('work.tagline') }}

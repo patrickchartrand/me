@@ -21,9 +21,11 @@ export const router = createRouter({
       redirect: '/',
     },
   ],
+  // IndexView clears the hash on mount (it keeps the URL clean), so a hash
+  // branch here would be dead code. In-page jumps are plain anchors, handled by
+  // the browser with the scroll-padding-top set in style.css.
   scrollBehavior(to, from, saved) {
     if (saved) return saved
-    if (to.hash) return { el: to.hash, behavior: 'smooth' }
     return { top: 0 }
   },
 })

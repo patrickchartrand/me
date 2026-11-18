@@ -129,7 +129,9 @@ export async function useDownload(
     const label = overlay.querySelector('.pdf-label')
     if (label) {
       label.textContent =
-        locale === 'en' ? 'Download failed — please try again' : 'Échec du téléchargement'
+        locale === 'en'
+          ? 'Download failed — please try again'
+          : 'Échec du téléchargement — veuillez réessayer'
     }
     await new Promise((resolve) => setTimeout(resolve, 1800))
   } finally {
