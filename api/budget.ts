@@ -18,7 +18,8 @@ async function isAuthenticated(assertion: unknown): Promise<boolean> {
 
 interface Expense {
   id: string
-  date: string /** YYYY-MM-DD */
+  /** YYYY-MM-DD */
+  date: string
   label: string
   amount: number
 }

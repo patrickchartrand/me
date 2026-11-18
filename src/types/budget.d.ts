@@ -61,6 +61,4 @@ interface Totals {
   committed: number
   monthlyIncome: number
   remaining: number
-  savings: number
-  actualSpending: number
 }

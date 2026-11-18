@@ -81,8 +81,9 @@ const projects = computed(() => {
               <div>
                 <h3
                   class="text-2xl md:text-3xl font-serif mb-1 group-hover:text-primary transition-all duration-300"
-                  v-html="project.title"
-                />
+                >
+                  {{ project.title }}
+                </h3>
                 <p class="text-sm text-secondary">{{ project.category }}</p>
               </div>
               <span class="text-xs bg-accent text-charcoal rounded-full px-4 py-1.5 mt-1 font-mono">

@@ -37,9 +37,7 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
             "
           </span>
 
-          <p
-            class="mt-8 md:mt-6 text-lg md:text-xl font-light leading-relaxed text-charcoal/80 relative z-10"
-          >
+          <p class="mt-8 md:mt-6 text-lg md:text-xl leading-relaxed text-charcoal/80 relative z-10">
             {{ item.quote }}
           </p>
 

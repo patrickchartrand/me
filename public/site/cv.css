@@ -8,7 +8,7 @@
   --primary: #3d405b;
   --cream: #f5f3ef;
   --charcoal: #1a1a1a;
-  --secondary: #8a8a8a;
+  --secondary: #6e6e6e;
   --lavender: #9d9fbd;
 }
 
@@ -38,7 +38,6 @@ body.cv {
 
 .sidebar-header {
   padding: 1.5rem 1.75rem 1.25rem;
-  /* border-bottom: 1px solid rgba(255, 255, 255, 0.08); */
   margin-bottom: 2rem;
 }
 

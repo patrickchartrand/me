@@ -3,12 +3,14 @@ export function useActiveSection() {
   let navObserver: IntersectionObserver | null = null
 
   onMounted(() => {
-    const sections = document.querySelectorAll('section[id], footer')
+    // `footer` alone also matched the two id-less <footer> elements inside the
+    // testimonial cards, which set activeSection to '' and put the nav indicator out.
+    const sections = document.querySelectorAll('section[id], footer[id]')
 
     navObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (entry.isIntersecting && entry.target.id) {
             activeSection.value = entry.target.id
           }
         })

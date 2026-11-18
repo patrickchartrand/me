@@ -20,9 +20,9 @@ const education = computed(() => tm('experience.education') as EducationItem[])
 <template>
   <section
     id="experience"
-    class="relative w-screen left-1/2 -translate-x-1/2 mb-40 bg-charcoal text-cream py-28"
+    class="relative mb-40 bg-charcoal text-cream py-28 px-6 md:px-12 lg:px-24"
   >
-    <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-24">
+    <div class="max-w-7xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
         <!-- Experience Column -->
         <div class="md:col-span-7 fade-in-up">

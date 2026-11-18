@@ -4,7 +4,8 @@ export function useLocale() {
   function toggle() {
     locale.value = locale.value === 'fr' ? 'en' : 'fr'
     localStorage.setItem('locale', locale.value)
-    document.documentElement.lang = locale.value
+    // The lang attribute belongs to unhead (src/App.vue); writing it here too
+    // just raced it.
   }
 
   return { locale, toggle }

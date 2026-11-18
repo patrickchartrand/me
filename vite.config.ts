@@ -105,7 +105,11 @@ function budgetApiDevServer(): Plugin {
     apply: 'serve',
     configureServer(server) {
       const json =
-        (response: { statusCode: number; setHeader: (n: string, v: string) => void; end: (s: string) => void }) =>
+        (response: {
+          statusCode: number
+          setHeader: (n: string, v: string) => void
+          end: (s: string) => void
+        }) =>
         (data: unknown, code = 200) => {
           response.statusCode = code
           response.setHeader('Content-Type', 'application/json; charset=utf-8')

@@ -28,7 +28,7 @@ const socialLinks = [
 <template>
   <footer
     id="footer"
-    class="bg-primary text-cream px-6 md:px-12 lg:px-24 py-28 md:py-40 !pb-28 relative overflow-hidden"
+    class="bg-primary text-cream px-6 md:px-12 lg:px-24 py-28 md:pt-40 relative overflow-hidden"
   >
     <div
       class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"

@@ -23,7 +23,7 @@ const { t } = useI18n()
         style="animation-delay: 0.4s"
       >
         <div class="max-w-xl">
-          <p class="text-lg md:text-xl font-light leading-relaxed text-charcoal/80">
+          <p class="text-lg md:text-xl leading-relaxed text-charcoal/80">
             {{ t('hero.bio') }}
           </p>
         </div>
@@ -35,7 +35,7 @@ const { t } = useI18n()
           <div class="flex items-center gap-2 mt-2 justify-end">
             <span class="relative flex h-2.5 w-2.5">
               <span
-                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-available opacity-75"
+                class="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-available opacity-75"
               ></span>
               <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-available"></span>
             </span>

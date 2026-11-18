@@ -6,7 +6,6 @@ export interface Project {
   image: string
   imageAlt: string
   imageHeight: string
-  offset?: boolean
 }
 
 export const projects: Project[] = [
@@ -39,7 +38,6 @@ export const projects: Project[] = [
     imageAlt:
       'The Digital Textualities laboratory home page on a phone, its title set over a circuit-board pattern',
     imageHeight: 'h-[480px]',
-    offset: true,
   },
   {
     title: 'Haute-Yamaska Regional Development&nbsp;Table',
@@ -60,6 +58,5 @@ export const projects: Project[] = [
     imageAlt:
       'The DIY Robotics modular products page on a laptop, headed “Find the perfect robotic cell” beside a photo of one',
     imageHeight: 'h-[420px]',
-    offset: true,
   },
 ]

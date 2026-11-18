@@ -29,6 +29,13 @@ const animateCounters = () => {
   if (hasAnimated.value) return
   hasAnimated.value = true
 
+  // These count up on a timer, so the reduced-motion block in style.css cannot
+  // reach them: a visitor who asks for less motion gets the final figures.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    displayed.value = rawValues.map((value, index) => formatNumber(value, index))
+    return
+  }
+
   rawValues.forEach((value, index) => {
     const duration = 1800
     const steps = 60

@@ -18,7 +18,7 @@ const navLinks = computed(() => [
     id="header"
     class="fixed top-0 left-0 w-full z-50 px-6 md:px-12 flex justify-between items-center bg-cream/80 backdrop-blur-md transition-all duration-500 py-6"
   >
-    <div class="text-sm tracking-[0.25em] uppercase font-semibold">
+    <div class="text-sm tracking-[0.25em] uppercase font-bold">
       <a href="#">Patrick Chartrand</a>
     </div>
 

@@ -20,7 +20,6 @@ export function computeTotals(fixed: FixedBudget, expenses: Expense[]): Totals {
   const shared = sum(fixed.shared.map((i) => i.share))
   const committed = personal + shared
   const monthlyIncome = (fixed.income.weeklyNet * 52) / 12
-  const savings = sum(fixed.personal.filter((i) => i.savings).map((i) => i.amount))
   const spent = sum(expenses.map((e) => e.amount))
 
   return {
@@ -29,12 +28,10 @@ export function computeTotals(fixed: FixedBudget, expenses: Expense[]): Totals {
     committed,
     monthlyIncome,
     remaining: monthlyIncome - committed - spent,
-    savings,
-    actualSpending: committed - savings,
   }
 }
 
-export class BudgetUnavailable extends Error {
+class BudgetUnavailable extends Error {
   constructor(reason: string) {
     super(reason)
     this.name = 'BudgetUnavailable'
