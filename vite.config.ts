@@ -143,7 +143,12 @@ function budgetApiDevServer(): Plugin {
           }
           if (request.method === 'PUT') {
             void body(request).then((received) => {
-              const data = (received ?? {}) as { expenses?: unknown[]; notes?: string }
+              // Same refusal as production: a malformed body must not quietly
+              // overwrite the month with an empty one.
+              if (typeof received !== 'object' || received === null || Array.isArray(received)) {
+                return reply({ error: 'Expected a JSON object.' }, 400)
+              }
+              const data = received as { expenses?: unknown[]; notes?: string }
               const entry = { expenses: data.expenses ?? [], notes: data.notes ?? '' }
               const store = read()
               store.months = { ...store.months, [month]: entry }

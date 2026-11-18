@@ -21,11 +21,16 @@ const {
 const label = ref('')
 const amount = ref<number | null>(null)
 
-function submit() {
+// The fields were cleared before the save resolved, so a failed add took the
+// typed values with it and left the visitor nothing to retry from.
+async function submit() {
   if (amount.value === null) return
-  addExpense(label.value, amount.value)
-  label.value = ''
-  amount.value = null
+  const typed = { label: label.value, amount: amount.value }
+  await addExpense(typed.label, typed.amount)
+  if (!error.value) {
+    label.value = ''
+    amount.value = null
+  }
 }
 
 const currency = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' })
@@ -127,7 +132,14 @@ function show(event: MouseEvent, text: string) {
         <p v-if="fixed" class="mt-3 text-sm text-secondary">Mis à jour le {{ fixed.updatedAt }}</p>
       </header>
 
-      <p v-if="error" role="alert" class="mb-10 text-sm" :style="{ color: RED }">{{ error }}</p>
+      <p
+        v-if="error"
+        role="alert"
+        class="sticky top-4 z-10 mb-10 rounded-lg bg-cream/95 py-2 text-sm backdrop-blur"
+        :style="{ color: RED }"
+      >
+        {{ error }}
+      </p>
 
       <p v-if="loading" class="text-secondary">Chargement…</p>
 

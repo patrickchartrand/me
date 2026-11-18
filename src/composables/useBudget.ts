@@ -10,6 +10,9 @@ import {
 const NOTES_DELAY = 800
 
 export function useBudget() {
+  // Captured once, on purpose — the page reads and writes one month's document.
+  // addExpense checks it again, because a tab left open overnight would
+  // otherwise file tomorrow's expense under yesterday.
   const month = currentMonth()
 
   const fixed = ref<FixedBudget | null>(null)
@@ -22,7 +25,9 @@ export function useBudget() {
 
   const spent = computed(() => expenses.value.reduce((total, e) => total + e.amount, 0))
   const totals = computed(() => (fixed.value ? computeTotals(fixed.value, expenses.value) : null))
-  const overspent = computed(() => (totals.value ? totals.value.remaining < 0 : false))
+  // Half a cent of slack, matching the rounding the view already applies: an
+  // exactly balanced month was showing "-0,00 $" in red.
+  const overspent = computed(() => (totals.value ? totals.value.remaining < -0.005 : false))
 
   onMounted(async () => {
     try {
@@ -40,17 +45,28 @@ export function useBudget() {
     }
   })
 
+  /*
+   * Two saves can be in flight at once — delete an expense, then immediately
+   * delete another. Without the sequence check the slower response overwrites
+   * the newer state and the first expense comes back from the dead.
+   */
+  let inFlight = 0
+  let latest = 0
   async function push(next: MonthData, rollback?: () => void) {
     error.value = null
+    const sequence = ++latest
+    inFlight++
     saving.value = true
     try {
       const saved = await saveMonth(month, next)
-      expenses.value = saved.expenses
+      if (sequence === latest) expenses.value = saved.expenses
     } catch (e) {
-      rollback?.()
-      error.value = e instanceof Error ? e.message : 'unknown error'
+      if (sequence === latest) {
+        rollback?.()
+        error.value = e instanceof Error ? e.message : 'unknown error'
+      }
     } finally {
-      saving.value = false
+      saving.value = --inFlight > 0
     }
   }
 
@@ -65,6 +81,10 @@ export function useBudget() {
   function addExpense(label: string, amount: number) {
     const trimmed = label.trim()
     if (trimmed === '' || !Number.isFinite(amount) || amount <= 0) return
+    if (currentMonth() !== month) {
+      error.value = 'le mois a changé depuis l’ouverture de la page — rechargez-la'
+      return
+    }
     const expense: Expense = {
       id: crypto.randomUUID(),
       date: today(),
@@ -83,20 +103,28 @@ export function useBudget() {
   }
 
   let timer: ReturnType<typeof setTimeout> | undefined
+  /** True between a keystroke and the debounced save actually firing. */
+  let notesPending = false
   function notesChanged() {
     clearTimeout(timer)
-    timer = setTimeout(
-      () => void push({ expenses: expenses.value, notes: notes.value }),
-      NOTES_DELAY,
-    )
+    notesPending = true
+    timer = setTimeout(() => {
+      notesPending = false
+      void push({ expenses: expenses.value, notes: notes.value })
+    }, NOTES_DELAY)
   }
 
   function saveNotes() {
     clearTimeout(timer)
+    notesPending = false
     return push({ expenses: expenses.value, notes: notes.value })
   }
 
-  onUnmounted(() => clearTimeout(timer))
+  // Anything typed inside the debounce window was lost on the way out.
+  onUnmounted(() => {
+    clearTimeout(timer)
+    if (notesPending) void push({ expenses: expenses.value, notes: notes.value })
+  })
 
   return {
     month,

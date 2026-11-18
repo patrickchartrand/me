@@ -28,7 +28,15 @@ onMounted(async () => {
     technologies.map(async (tech) => {
       try {
         const res = await fetch(`https://cdn.simpleicons.org/${tech.slug}`)
-        const original = await res.text()
+        if (!res.ok) throw new Error(`${tech.slug}: ${res.status}`)
+        const original = (await res.text()).trim()
+        // This goes into the page through v-html, so a third party's response
+        // decides what runs. An error page, a redirect to something else, or a
+        // compromised CDN would all be injected verbatim. Only an SVG document
+        // is accepted, and a <script> inside one is refused outright.
+        if (!original.startsWith('<svg') || /<script/i.test(original)) {
+          throw new Error(`${tech.slug}: not an svg`)
+        }
         const gray = original.replace(/fill="[^"]*"/g, 'fill="currentColor"')
         svgCache.value[tech.slug] = { gray, colored: original }
       } catch {

@@ -82,7 +82,15 @@ function cleanMonth(raw: unknown): MonthData {
         label: text(e.label),
         amount: Number(e.amount),
       }))
-      .filter((e) => e.id !== '' && e.label !== '' && Number.isFinite(e.amount))
+      // `date` was only length-capped, so any ten characters were accepted and
+      // stored as one. The types promise YYYY-MM-DD; this is what enforces it.
+      .filter(
+        (e) =>
+          e.id !== '' &&
+          e.label !== '' &&
+          VALID_DATE.test(e.date) &&
+          Number.isFinite(e.amount),
+      )
       .slice(0, MAX_EXPENSES),
     notes: typeof o.notes === 'string' ? o.notes.slice(0, MAX_NOTES) : '',
   }
@@ -158,6 +166,7 @@ interface ApiResponse {
 }
 
 const VALID_MONTH = /^\d{4}-(0[1-9]|1[0-2])$/
+const VALID_DATE = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/
 
 export default async function handler(request: ApiRequest, response: ApiResponse) {
   const reply = (code: number, body: unknown) => {
@@ -200,6 +209,12 @@ export default async function handler(request: ApiRequest, response: ApiResponse
         return reply(200, { month, ...cleanMonth(await readJson(pathname, token)) })
       }
       if (method === 'PUT') {
+        // cleanMonth turns anything unrecognisable into an empty month, so
+        // without this guard a malformed body overwrote the real document and
+        // answered 200. Refuse instead of erasing.
+        if (typeof request.body !== 'object' || request.body === null || Array.isArray(request.body)) {
+          return reply(400, { error: 'Expected a JSON object.' })
+        }
         const data = cleanMonth(request.body)
         await writeJson(pathname, data, token)
         return reply(200, { month, ...data })
