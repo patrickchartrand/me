@@ -48,12 +48,12 @@ const socialLinks = [
     </div>
 
     <div class="max-w-7xl mx-auto relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end mb-28">
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-16 items-end mb-28">
         <div class="fade-in-up">
           <p class="text-xs uppercase tracking-[0.3em] text-white/65 mb-6">
             {{ t('footer.tagline') }}
           </p>
-          <h2 class="text-5xl md:text-7xl lg:text-8xl mb-10 leading-none font-serif">
+          <h2 class="text-5xl md:text-7xl mb-10 leading-none font-serif">
             {{ t('footer.headline1') }} <br /><span class="text-white/70">{{
               t('footer.headline2')
             }}</span>
@@ -102,7 +102,7 @@ const socialLinks = [
           </div>
         </div>
 
-        <div class="lg:text-right fade-in-up">
+        <div class="xl:text-right fade-in-up">
           <img
             src="/images/profil.jpg"
             alt="Patrick Chartrand"
@@ -110,7 +110,7 @@ const socialLinks = [
             height="400"
             loading="lazy"
             decoding="async"
-            class="blob-avatar ml-auto mb-8 h-44 w-44 md:h-56 md:w-56 object-cover ring-1 ring-white/15 shadow-md shadow-black/20"
+            class="blob-avatar xl:ml-auto mb-8 h-44 w-44 md:h-56 md:w-56 object-cover ring-1 ring-white/15 shadow-md shadow-black/20"
             @dblclick="
               useDownload(locale, {
                 filename: 'pchartrand-letter.pdf',
@@ -118,10 +118,10 @@ const socialLinks = [
               })
             "
           />
-          <p class="text-white/70 text-lg max-w-md ml-auto leading-relaxed mb-8">
+          <p class="text-white/70 text-lg max-w-md xl:ml-auto leading-relaxed mb-8">
             {{ t('footer.availability') }}
           </p>
-          <div class="flex gap-4 lg:justify-end">
+          <div class="flex gap-4 xl:justify-end">
             <a
               v-for="link in socialLinks"
               :key="link.label"

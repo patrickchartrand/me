@@ -23,7 +23,7 @@ const education = computed(() => tm('experience.education') as EducationItem[])
     class="relative mb-40 bg-charcoal text-cream py-28 px-6 md:px-12 lg:px-24"
   >
     <div class="max-w-7xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-16">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-y-16 gap-x-8 lg:gap-x-16">
         <!-- Experience Column -->
         <div class="md:col-span-7 fade-in-up">
           <h2 class="text-3xl font-serif mb-14">
@@ -36,7 +36,7 @@ const education = computed(() => tm('experience.education') as EducationItem[])
               class="group py-5 hover:bg-cream/5 transition-colors duration-300 -mx-4 px-4 rounded-lg"
             >
               <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
-                <h3 class="text-lg font-medium group-hover:text-accent transition-colors">
+                <h3 class="shrink-0 text-lg font-medium group-hover:text-accent transition-colors">
                   {{ item.company }}
                 </h3>
                 <span class="text-sm text-cream/60 font-mono">{{ item.period }}</span>

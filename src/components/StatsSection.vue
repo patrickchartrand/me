@@ -71,9 +71,7 @@ onMounted(() => {
 
 <template>
   <section id="stats" class="px-6 md:px-12 lg:px-24 mb-40">
-    <div
-      class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 pb-16 stagger-children"
-    >
+    <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 xl:gap-16 stagger-children">
       <div
         v-for="(item, index) in statItems"
         :key="item.label"

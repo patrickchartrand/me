@@ -10,7 +10,7 @@ const { t } = useI18n()
       </p>
 
       <h1
-        class="font-serif text-5xl md:text-7xl lg:text-[8rem] leading-[1.05] font-medium tracking-tight mb-16 reveal-text"
+        class="font-serif text-5xl md:text-7xl xl:text-[8rem] leading-[1.05] font-medium tracking-tight mb-16 reveal-text"
         style="animation-delay: 0.15s"
       >
         {{ t('hero.headline1') }}
@@ -27,7 +27,7 @@ const { t } = useI18n()
             {{ t('hero.bio') }}
           </p>
         </div>
-        <div class="flex flex-col gap-2 text-right">
+        <div class="flex flex-col gap-2 text-right shrink-0">
           <span class="text-xs uppercase tracking-[0.2em] text-secondary">{{
             t('hero.basedLabel')
           }}</span>

@@ -54,7 +54,7 @@ const projects = computed(() => {
         <article
           v-for="project in projects"
           :key="project.link"
-          class="masonry-item group fade-in-up mb-20"
+          class="masonry-item group fade-in-up mb-20 last:mb-0"
         >
           <a
             :href="project.link"

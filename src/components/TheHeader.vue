@@ -16,59 +16,61 @@ const navLinks = computed(() => [
 <template>
   <header
     id="header"
-    class="fixed top-0 left-0 w-full z-50 px-6 md:px-12 flex justify-between items-center bg-cream/80 backdrop-blur-md transition-all duration-500 py-6"
+    class="fixed inset-x-0 top-0 z-50 px-6 md:px-12 lg:px-24 bg-cream/80 backdrop-blur-md transition-all duration-500 py-6"
   >
-    <div class="text-sm tracking-[0.25em] uppercase font-bold">
-      <a href="#">Patrick Chartrand</a>
-    </div>
+    <div class="max-w-7xl mx-auto w-full flex justify-between items-center">
+      <div class="text-sm tracking-[0.25em] uppercase font-bold">
+        <a href="#">Patrick Chartrand</a>
+      </div>
 
-    <nav class="hidden md:flex gap-8 text-sm font-medium tracking-wide items-center">
-      <a
-        v-for="link in navLinks"
-        :key="link.href"
-        :href="link.href"
-        class="nav-link-highlight pb-1"
-        :class="{ 'nav-link-active': link.section && activeSection === link.section }"
-      >
-        {{ link.label }}
-      </a>
+      <nav class="hidden md:flex gap-8 text-sm font-medium tracking-wide items-center">
+        <a
+          v-for="link in navLinks"
+          :key="link.href"
+          :href="link.href"
+          class="nav-link-highlight pb-1"
+          :class="{ 'nav-link-active': link.section && activeSection === link.section }"
+        >
+          {{ link.label }}
+        </a>
+
+        <button
+          class="-mt-1.5 text-xs tracking-[0.2em] uppercase font-medium text-secondary hover:text-charcoal transition-colors duration-200 ml-2"
+          @click="toggle"
+        >
+          {{ locale === 'fr' ? 'EN' : 'FR' }}
+        </button>
+      </nav>
 
       <button
-        class="-mt-1.5 text-xs tracking-[0.2em] uppercase font-medium text-secondary hover:text-charcoal transition-colors duration-200 ml-2"
-        @click="toggle"
+        class="md:hidden text-xl focus:outline-none z-50 relative"
+        :aria-label="mobileMenuOpen ? t('header.ariaClose') : t('header.ariaOpen')"
+        @click="toggleMobileMenu"
       >
-        {{ locale === 'fr' ? 'EN' : 'FR' }}
+        <svg
+          v-if="!mobileMenuOpen"
+          class="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h10M4 18h16"
+          />
+        </svg>
+        <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
       </button>
-    </nav>
-
-    <button
-      class="md:hidden text-xl focus:outline-none z-50 relative"
-      :aria-label="mobileMenuOpen ? t('header.ariaClose') : t('header.ariaOpen')"
-      @click="toggleMobileMenu"
-    >
-      <svg
-        v-if="!mobileMenuOpen"
-        class="w-6 h-6"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 12h10M4 18h16"
-        />
-      </svg>
-      <svg v-else class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"
-        />
-      </svg>
-    </button>
+    </div>
   </header>
 
   <!-- Mobile Menu Overlay -->

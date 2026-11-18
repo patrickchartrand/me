@@ -23,7 +23,7 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
         </h2>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 stagger-children">
+      <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 stagger-children">
         <blockquote
           v-for="item in testimonials"
           :key="item.name"
@@ -37,7 +37,9 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
             "
           </span>
 
-          <p class="mt-8 md:mt-6 text-lg md:text-xl leading-relaxed text-charcoal/80 relative z-10">
+          <p
+            class="mt-8 md:mt-6 max-w-[70ch] text-lg md:text-xl leading-relaxed text-charcoal/80 relative z-10"
+          >
             {{ item.quote }}
           </p>
 
