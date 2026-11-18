@@ -2,7 +2,7 @@ export default {
   app: {
     title: 'Patrick Chartrand — UI Designer & Frontend Developer · Webmaster',
     description:
-      'I come from writing and publishing, and this background shapes how I think about structure, hierarchy, and clarity. Today I bridge design and code, building component-driven interfaces and design systems that are as easy to maintain as they are to use. I bring the same rigour to a button component as I do to a full page architecture.',
+      'I come from writing and publishing, and this background shapes how I think about structure, hierarchy, and clarity. Today I bridge design and code, building component-driven interfaces and design systems that are as easy to maintain as they are to use. I bring the same rigour to a button component as I do to a full-page architecture.',
   },
 
   header: {
@@ -20,7 +20,7 @@ export default {
     headline1: 'Building component-driven',
     headlineHighlight: 'interfaces',
     headlineEnd: 'that hold up.',
-    bio: 'I come from writing and publishing, and this background shapes how I think about structure, hierarchy, and clarity. Today I bridge design and code, building component-driven interfaces and design systems that are as easy to maintain as they are to use. I bring the same rigour to a button component as I do to a full page architecture.',
+    bio: 'I come from writing and publishing, and this background shapes how I think about structure, hierarchy, and clarity. Today I bridge design and code, building component-driven interfaces and design systems that are as easy to maintain as they are to use. I bring the same rigour to a button component as I do to a full-page architecture.',
     basedLabel: 'Based in',
     basedCity: 'Granby, Quebec',
     available: 'Available for work',
@@ -28,7 +28,7 @@ export default {
 
   stats: {
     items: [
-      { label: 'Years Experience' },
+      { label: 'Years of Experience' },
       { label: 'Projects Contributed To' },
       { label: 'Semantic HTML' },
       { label: 'Bugs fixed (and counting)' },
@@ -40,7 +40,7 @@ export default {
     title: 'Selected Work',
     projects: [
       {
-        title: 'City of Granby\u00a0Intranet\u00a0',
+        title: 'City of Granby\u00a0Intranet',
         category: 'Information Architecture, User Experience',
       },
       {
@@ -48,8 +48,8 @@ export default {
         category: 'UI Design, Web Development',
       },
       {
-        title: 'Canada Research Chair on Digital Textualities',
-        category: 'Semantic Text Markup, Layout Coding',
+        title: 'Canada Research Chair in Digital Textualities',
+        category: 'Semantic Text Markup, Page Layout',
       },
       {
         title: 'Haute-Yamaska Regional Development\u00a0Table',
@@ -57,7 +57,7 @@ export default {
       },
       {
         title: 'DIY-Robotics.com',
-        category: 'Web Development, 3D Modeling',
+        category: 'Web Development, 3D Modelling',
       },
     ],
   },
@@ -66,33 +66,33 @@ export default {
     experienceTitle: 'Experience',
     educationTitle: 'Education',
     items: [
-      { company: 'Town of Granby', role: 'Webmaster', period: 'Since 2026' },
+      { company: 'City of Granby', role: 'Webmaster', period: 'Since 2026' },
       { company: 'Freelance', role: 'Web Integrator', period: 'Since 2025' },
       { company: 'Beaulieu Canada', role: 'Frontend Developer', period: '2022-2026' },
-      { company: 'DIY Robotics', role: 'Webmaster', period: '2021-2022 (since then consultant)' },
+      { company: 'DIY Robotics', role: 'Webmaster', period: '2021-2022 (consultant since)' },
       { company: 'Avril', role: 'Copywriter & Social Media Manager', period: '2021' },
       { company: 'Sens Public', role: 'Digital Publisher', period: '2017-2020' },
     ],
     education: [
       {
-        degree: 'PgDip. Digital Editing',
-        school: 'School of Library and Information Science',
-        period: '2019 \u2014 2020',
+        degree: 'PgDip. Digital Publishing',
+        school: '\u00c9cole de biblioth\u00e9conomie et des sciences de l\u2019information',
+        period: '2019-2020',
       },
       {
         degree: 'Internet Programming',
-        school: 'University of Montreal',
+        school: 'Universit\u00e9 de Montr\u00e9al',
         period: '2018',
       },
       {
         degree: 'B. French Literature',
-        school: 'University of Montreal',
-        period: '2015 \u2014 2018',
+        school: 'Universit\u00e9 de Montr\u00e9al',
+        period: '2015-2018',
       },
       {
         degree: 'DCS Humanities',
-        school: '\u00c9douard-Montpetit College',
-        period: '2012 \u2014 2014',
+        school: 'Coll\u00e8ge \u00c9douard-Montpetit',
+        period: '2012-2014',
       },
     ],
   },
@@ -104,7 +104,7 @@ export default {
 
   testimonials: {
     tagline: 'Kind words',
-    title: 'What people say',
+    title: 'What People Say',
     items: [
       {
         name: 'Étienne Bourdon',
@@ -114,7 +114,7 @@ export default {
           'In the context of creating the website for the Haute-Yamaska Regional Development Table, Patrick stood out for the quality of his communication, his great attention to detail, and his ability to meet deadlines. A wonderful collaborator whom I highly recommend.',
       },
       {
-        name: 'Thalie Blanchard M. Adm.',
+        name: 'Thalie Blanchard, M. Adm.',
         title: 'Senior Advisor, Business Offerings',
         date: 'July 2025',
         quote:

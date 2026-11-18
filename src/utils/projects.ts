@@ -11,13 +11,13 @@ export interface Project {
 
 export const projects: Project[] = [
   {
-    title: 'Granby City Intranet',
+    title: 'City of Granby Intranet',
     category: 'Information Architecture, User Experience',
     year: '2026',
     link: 'https://wallace.granby.ca',
     image: '/images/wallace.jpg',
     imageAlt:
-      'Intranet interface for the City of Granby (Wallace), focused on information architecture and user experience, clean neutral UI',
+      'The Wallace intranet home page on a desktop monitor: a deep purple header over a grid of quick-access tiles and a news feed',
     imageHeight: 'h-[440px]',
   },
   {
@@ -27,7 +27,7 @@ export const projects: Project[] = [
     link: 'https://canada.beaulieucanada.com',
     image: '/images/beaulieu.jpg',
     imageAlt:
-      'tablet mockup floating in air showing a minimalist furniture ecommerce app, beige background, high fashion aesthetic',
+      'A Beaulieu Canada laminate product page on a phone, a room photo above the product name and its description',
     imageHeight: 'h-[430px]',
   },
   {
@@ -37,7 +37,7 @@ export const projects: Project[] = [
     link: 'https://www.ecrituresnumeriques.ca',
     image: '/images/research.jpg',
     imageAlt:
-      'smartphone mockup showing a fintech dashboard app with dark mode interface, neon accents, futuristic vibe',
+      'The Digital Textualities laboratory home page on a phone, its title set over a circuit-board pattern',
     imageHeight: 'h-[480px]',
     offset: true,
   },
@@ -48,17 +48,17 @@ export const projects: Project[] = [
     link: 'https://tabledeveloppementhy.ca',
     image: '/images/haute-yamaska.jpg',
     imageAlt:
-      'minimalist laptop mockup showcasing a dark elegant website interface design, high end photography, studio lighting',
+      'The Table de développement Haute-Yamaska home page on a laptop, headed “Agir ensemble pour la vitalité de la Haute-Yamaska”',
     imageHeight: 'h-[520px]',
   },
   {
     title: 'DIY-Robotics.com',
-    category: 'Development, 3D Modeling',
+    category: 'Development, 3D Modelling',
     year: '2022',
     link: 'https://diy-robotics.com/',
     image: '/images/robotics.jpg',
     imageAlt:
-      'isometric laptop mockup displaying a colorful modern digital magazine layout, clean background, soft shadows',
+      'The DIY Robotics modular products page on a laptop, headed “Find the perfect robotic cell” beside a photo of one',
     imageHeight: 'h-[420px]',
     offset: true,
   },
