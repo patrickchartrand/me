@@ -135,14 +135,14 @@ function show(event: MouseEvent, text: string) {
   <main lang="fr" class="min-h-screen px-6 py-24 md:px-12 md:py-32">
     <div class="mx-auto max-w-3xl">
       <header class="mb-20">
-        <h1 class="font-serif text-4xl md:text-5xl">Budget mensuel</h1>
-        <p v-if="fixed" class="mt-3 text-sm text-secondary">Mis à jour le {{ fixed.updatedAt }}</p>
         <RouterLink
           to="/"
-          class="mt-3 inline-block text-xs uppercase tracking-[0.2em] text-secondary underline underline-offset-4 transition-colors hover:text-charcoal"
+          class="mb-8 inline-block text-xs uppercase tracking-[0.2em] text-secondary transition-colors duration-300 hover:text-charcoal"
         >
-          Retour au site
+          ← Retour au site
         </RouterLink>
+        <h1 class="font-serif text-4xl md:text-5xl">Budget mensuel</h1>
+        <p v-if="fixed" class="mt-3 text-sm text-secondary">Mis à jour le {{ fixed.updatedAt }}</p>
       </header>
 
       <p
