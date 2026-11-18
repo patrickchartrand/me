@@ -29,7 +29,7 @@ export default {
   stats: {
     items: [
       { label: 'Années d\u2019expérience' },
-      { label: 'Contributions GitHub en 2025' },
+      { label: 'Contributions GitHub' },
       { label: 'HTML sémantique' },
       { label: 'Bogues corrigés (et ce n\u2019est pas fini)' },
     ],
