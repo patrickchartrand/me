@@ -3,8 +3,20 @@ useHeaderScroll()
 
 const { t } = useI18n()
 const { activeSection } = useActiveSection()
-const { mobileMenuOpen, toggleMobileMenu, closeMobileMenu } = useMobileMenu()
+const { mobileMenuOpen, menuToggle, toggleMobileMenu, closeMobileMenu } = useMobileMenu()
 const { locale, toggle } = useLocale()
+
+/*
+ * The overlay takes focus when it opens, so Escape reaches it and tabbing starts
+ * inside it rather than behind it. closeMobileMenu hands focus back to the
+ * hamburger.
+ */
+const menuPanel = ref<HTMLElement | null>(null)
+watch(mobileMenuOpen, async (open) => {
+  if (!open) return
+  await nextTick()
+  menuPanel.value?.focus()
+})
 
 const navLinks = computed(() => [
   { href: '#work', label: t('header.nav.work'), section: 'work' },
@@ -30,6 +42,7 @@ const navLinks = computed(() => [
           :href="link.href"
           class="nav-link-highlight pb-1"
           :class="{ 'nav-link-active': link.section && activeSection === link.section }"
+          :aria-current="link.section && activeSection === link.section ? 'true' : undefined"
         >
           {{ link.label }}
         </a>
@@ -43,8 +56,11 @@ const navLinks = computed(() => [
       </nav>
 
       <button
-        class="md:hidden text-xl focus:outline-none z-50 relative"
+        ref="menuToggle"
+        class="md:hidden text-xl z-50 relative"
         :aria-label="mobileMenuOpen ? t('header.ariaClose') : t('header.ariaOpen')"
+        :aria-expanded="mobileMenuOpen"
+        aria-controls="mobile-menu"
         @click="toggleMobileMenu"
       >
         <svg
@@ -77,7 +93,13 @@ const navLinks = computed(() => [
   <Transition name="mobile-menu">
     <div
       v-if="mobileMenuOpen"
+      id="mobile-menu"
+      ref="menuPanel"
+      role="dialog"
+      aria-modal="true"
+      tabindex="-1"
       class="fixed inset-0 z-40 bg-cream flex flex-col justify-center items-center gap-10"
+      @keydown.esc="closeMobileMenu"
     >
       <a
         v-for="link in navLinks"

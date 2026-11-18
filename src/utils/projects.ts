@@ -16,7 +16,7 @@ export const projects: Project[] = [
     link: 'https://wallace.granby.ca',
     image: '/images/wallace.jpg',
     imageAlt:
-      'The Wallace intranet home page on a desktop monitor: a deep purple header over a grid of quick-access tiles and a news feed',
+      'The Wallace intranet home page: a purple header over a grid of quick-access tiles and a news feed',
     imageHeight: 'h-[440px]',
   },
   {
@@ -26,7 +26,7 @@ export const projects: Project[] = [
     link: 'https://canada.beaulieucanada.com',
     image: '/images/beaulieu.jpg',
     imageAlt:
-      'A Beaulieu Canada laminate product page on a phone, a room photo above the product name and its description',
+      'A Beaulieu Canada laminate product page, a room photo above the product name and its description',
     imageHeight: 'h-[430px]',
   },
   {
@@ -36,7 +36,7 @@ export const projects: Project[] = [
     link: 'https://www.ecrituresnumeriques.ca',
     image: '/images/research.jpg',
     imageAlt:
-      'The Digital Textualities laboratory home page on a phone, its title set over a circuit-board pattern',
+      'The Digital Textualities laboratory home page, its title set over a circuit-board pattern',
     imageHeight: 'h-[480px]',
   },
   {
@@ -46,7 +46,7 @@ export const projects: Project[] = [
     link: 'https://tabledeveloppementhy.ca',
     image: '/images/haute-yamaska.jpg',
     imageAlt:
-      'The Table de développement Haute-Yamaska home page on a laptop, headed “Agir ensemble pour la vitalité de la Haute-Yamaska”',
+      'The Table de développement Haute-Yamaska home page, headed “Agir ensemble pour la vitalité de la Haute-Yamaska”',
     imageHeight: 'h-[520px]',
   },
   {
@@ -56,7 +56,7 @@ export const projects: Project[] = [
     link: 'https://diy-robotics.com/',
     image: '/images/robotics.jpg',
     imageAlt:
-      'The DIY Robotics modular products page on a laptop, headed “Find the perfect robotic cell” beside a photo of one',
+      'The DIY Robotics modular products page, headed “Find the perfect robotic cell”',
     imageHeight: 'h-[420px]',
   },
 ]

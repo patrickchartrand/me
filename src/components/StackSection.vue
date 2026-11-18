@@ -62,6 +62,7 @@ const hovered = ref<string | null>(null)
           @mouseleave="hovered = null"
         >
           <div
+            aria-hidden="true"
             class="tech-icon w-10 h-10 transition-opacity duration-300"
             :class="hovered === tech.slug ? 'opacity-100' : 'opacity-90'"
             v-html="

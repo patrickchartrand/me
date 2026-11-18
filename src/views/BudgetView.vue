@@ -119,14 +119,14 @@ function show(event: MouseEvent, text: string) {
 </script>
 
 <template>
-  <main class="min-h-screen px-6 py-24 md:px-12 md:py-32">
+  <main lang="fr" class="min-h-screen px-6 py-24 md:px-12 md:py-32">
     <div class="mx-auto max-w-3xl">
       <header class="mb-20">
         <h1 class="font-serif text-4xl md:text-5xl">Budget mensuel</h1>
         <p v-if="fixed" class="mt-3 text-sm text-secondary">Mis à jour le {{ fixed.updatedAt }}</p>
       </header>
 
-      <p v-if="error" class="mb-10 text-sm" :style="{ color: RED }">{{ error }}</p>
+      <p v-if="error" role="alert" class="mb-10 text-sm" :style="{ color: RED }">{{ error }}</p>
 
       <p v-if="loading" class="text-secondary">Chargement…</p>
 
@@ -157,7 +157,7 @@ function show(event: MouseEvent, text: string) {
 
         <!-- Where the income goes -->
         <section class="mb-20">
-          <p class="mb-5 text-xs uppercase tracking-[0.2em] text-secondary">Où part le revenu</p>
+          <h2 class="mb-5 text-xs uppercase tracking-[0.2em] text-secondary">Où part le revenu</h2>
 
           <div
             class="flex h-10 w-full gap-[2px]"
@@ -198,7 +198,7 @@ function show(event: MouseEvent, text: string) {
 
         <!-- Heaviest commitments -->
         <section class="mb-20">
-          <p class="mb-5 text-xs uppercase tracking-[0.2em] text-secondary">Les plus gros postes</p>
+          <h2 class="mb-5 text-xs uppercase tracking-[0.2em] text-secondary">Les plus gros postes</h2>
 
           <ul class="flex flex-col gap-3">
             <li v-for="row in heaviest" :key="row.label">
