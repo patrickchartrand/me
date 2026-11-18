@@ -21,6 +21,15 @@ export async function useDownload(
   if (running) return
   running = true
 
+  /*
+   * The export injects the fetched page into THIS document, stylesheet link and
+   * all, and both PDF stylesheets open with a `*` rule. For the second or so
+   * that the link is live, every margin and padding on the portfolio is wiped,
+   * the page collapses, and the browser clamps the scroll offset to the new
+   * height. The collapse is invisible behind the overlay; the lost scroll
+   * position is not, so it is captured here and put back in the finally.
+   */
+  const scrollTop = window.scrollY
   document.documentElement.style.overflow = 'hidden'
   const overlay = document.createElement('div')
   overlay.style.cssText =
@@ -141,6 +150,7 @@ export async function useDownload(
     await new Promise((resolve) => setTimeout(resolve, 400))
     overlay.remove()
     document.documentElement.style.overflow = ''
+    window.scrollTo({ top: scrollTop, behavior: 'instant' as ScrollBehavior })
     running = false
   }
 }
