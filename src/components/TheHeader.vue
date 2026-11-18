@@ -57,7 +57,7 @@ const navLinks = computed(() => [
 
       <button
         ref="menuToggle"
-        class="md:hidden text-xl z-50 relative"
+        class="md:hidden text-xl z-50 relative focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
         :aria-label="mobileMenuOpen ? t('header.ariaClose') : t('header.ariaOpen')"
         :aria-expanded="mobileMenuOpen"
         aria-controls="mobile-menu"

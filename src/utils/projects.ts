@@ -55,8 +55,7 @@ export const projects: Project[] = [
     year: '2022',
     link: 'https://diy-robotics.com/',
     image: '/images/robotics.jpg',
-    imageAlt:
-      'The DIY Robotics modular products page, headed “Find the perfect robotic cell”',
+    imageAlt: 'The DIY Robotics modular products page, headed “Find the perfect robotic cell”',
     imageHeight: 'h-[420px]',
   },
 ]

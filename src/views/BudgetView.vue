@@ -44,8 +44,9 @@ const percent = (n: number) => `${Math.round(n)}\u00a0%`
  *
  * Validated across ALL pairs, not just adjacent ones, because the segments share
  * one bar and each must stand apart from each. Worst case is shared↔spending at
- * ΔE 12.9 under deutan vision, against a floor of 8. All three clear 3:1 against
- * the surface, which the previous yellow did not.
+ * ΔE 12.9 under deutan vision, against a floor of 8. Against this page's cream
+ * ground `shared` measures 2.89:1 — under 3:1, which is why every segment
+ * carries a visible label in the legend rather than relying on its fill.
  *
  * `remaining` is neutral on purpose: what is left over is not a category
  * competing for attention. It shares its gray with `other`, which is safe —
@@ -198,7 +199,9 @@ function show(event: MouseEvent, text: string) {
 
         <!-- Heaviest commitments -->
         <section class="mb-20">
-          <h2 class="mb-5 text-xs uppercase tracking-[0.2em] text-secondary">Les plus gros postes</h2>
+          <h2 class="mb-5 text-xs uppercase tracking-[0.2em] text-secondary">
+            Les plus gros postes
+          </h2>
 
           <ul class="flex flex-col gap-3">
             <li v-for="row in heaviest" :key="row.label">
@@ -317,7 +320,7 @@ function show(event: MouseEvent, text: string) {
                 <button
                   type="button"
                   :disabled="saving"
-                  class="rounded-full px-2 text-secondary transition-colors hover:text-accent disabled:opacity-50"
+                  class="rounded-full px-2 text-secondary transition-colors hover:text-charcoal disabled:opacity-50"
                   :aria-label="`Retirer ${e.label}`"
                   @click="removeExpense(e.id)"
                 >
@@ -329,7 +332,7 @@ function show(event: MouseEvent, text: string) {
             <button
               type="button"
               :disabled="saving"
-              class="mt-5 text-xs uppercase tracking-[0.2em] text-secondary underline underline-offset-4 transition-colors hover:text-accent disabled:opacity-50"
+              class="mt-5 text-xs uppercase tracking-[0.2em] text-secondary underline underline-offset-4 transition-colors hover:text-charcoal disabled:opacity-50"
               @click="removeAllExpenses()"
             >
               Tout retirer

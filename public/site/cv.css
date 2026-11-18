@@ -224,7 +224,7 @@ body.cv {
 }
 .exp-tag {
   font-size: 0.56rem;
-  color: var(--lavender);
+  color: var(--secondary);
   font-style: italic;
 }
 

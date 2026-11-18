@@ -80,7 +80,7 @@ const socialLinks = [
 
             <a
               href="#"
-              class="group inline-flex items-center gap-4 bg-[#63667b] text-cream px-8 py-4 rounded-full font-medium hover:bg-[#8a8c9c] hover:scale-105 transition-all duration-300"
+              class="group inline-flex items-center gap-4 bg-[#63667b] text-cream px-8 py-4 rounded-full font-medium hover:bg-[#767a90] hover:scale-105 transition-all duration-300"
               @click.prevent="
                 useDownload(locale, { filename: 'pchartrand-cv.pdf', filepath: '/site/cv.html' })
               "

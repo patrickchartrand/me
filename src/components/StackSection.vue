@@ -83,7 +83,7 @@ const hovered = ref<string | null>(null)
 
 <style scoped>
 .tech-icon {
-  color: #8a8a8a;
+  color: #6e6e6e;
 }
 
 .tech-icon :deep(svg) {
