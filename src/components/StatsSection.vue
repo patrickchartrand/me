@@ -13,7 +13,8 @@ const CAREER_START_YEAR = 2017
 const yearsOfExperience = new Date().getFullYear() - CAREER_START_YEAR
 
 const rawValues = [yearsOfExperience, 1453, 100, 404]
-const displayed = ref(rawValues.map(() => '0'))
+/** The counted-up numbers. Formatting is derived, so it follows the locale. */
+const current = ref(rawValues.map(() => 0))
 const hasAnimated = ref(false)
 
 const formatNumber = (val: number, index: number) => {
@@ -25,6 +26,10 @@ const formatNumber = (val: number, index: number) => {
   return val.toString()
 }
 
+const displayed = computed(() => current.value.map((v, i) => formatNumber(v, i)))
+
+const timers: ReturnType<typeof setInterval>[] = []
+
 const animateCounters = () => {
   if (hasAnimated.value) return
   hasAnimated.value = true
@@ -32,7 +37,7 @@ const animateCounters = () => {
   // These count up on a timer, so the reduced-motion block in style.css cannot
   // reach them: a visitor who asks for less motion gets the final figures.
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    displayed.value = rawValues.map((value, index) => formatNumber(value, index))
+    current.value = [...rawValues]
     return
   }
 
@@ -40,32 +45,39 @@ const animateCounters = () => {
     const duration = 1800
     const steps = 60
     const increment = value / steps
-    let current = 0
     let step = 0
 
     const timer = setInterval(() => {
       step++
-      current = Math.min(Math.round(increment * step), value)
-      displayed.value[index] = formatNumber(current, index)
-      if (current >= value) clearInterval(timer)
+      const next = Math.min(Math.round(increment * step), value)
+      current.value[index] = next
+      if (next >= value) clearInterval(timer)
     }, duration / steps)
+    timers.push(timer)
   })
 }
+
+let observer: IntersectionObserver | null = null
 
 onMounted(() => {
   const section = document.getElementById('stats')
   if (!section) return
 
-  const observer = new IntersectionObserver(
+  observer = new IntersectionObserver(
     (entries) => {
       if (entries[0]?.isIntersecting) {
         animateCounters()
-        observer.disconnect()
+        observer?.disconnect()
       }
     },
     { threshold: 0.3 },
   )
   observer.observe(section)
+})
+
+onUnmounted(() => {
+  observer?.disconnect()
+  timers.forEach(clearInterval)
 })
 </script>
 
@@ -78,7 +90,7 @@ onMounted(() => {
         class="flex flex-col gap-2 group cursor-default"
       >
         <span
-          class="stat-number text-charcoal text-5xl md:text-7xl font-serif transition-colors duration-500 group-hover:text-primary"
+          class="stat-number text-charcoal text-5xl md:text-6xl xl:text-7xl font-serif transition-colors duration-500 group-hover:text-primary"
         >
           {{ displayed[index] }}
         </span>

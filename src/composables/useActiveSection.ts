@@ -15,15 +15,21 @@
 const NAV_SECTIONS = ['work', 'experience', 'footer'] as const
 
 export function useActiveSection() {
-  const activeSection = ref('hero')
+  const activeSection = ref('')
   let navObserver: IntersectionObserver | null = null
 
   onMounted(() => {
+    // Both edges matter. Acting only on `isIntersecting` left the last section
+    // crossed highlighted for ever, including back at the top of the page where
+    // the hero has no nav entry at all.
+    const banded = new Set<string>()
     navObserver = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (entry.isIntersecting) activeSection.value = entry.target.id
+          if (entry.isIntersecting) banded.add(entry.target.id)
+          else banded.delete(entry.target.id)
         }
+        activeSection.value = NAV_SECTIONS.find((id) => banded.has(id)) ?? ''
       },
       // A 1px band at the vertical middle of the viewport.
       { threshold: 0, rootMargin: '-50% 0px -50% 0px' },

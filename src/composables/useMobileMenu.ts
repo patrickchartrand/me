@@ -18,17 +18,22 @@ export function useMobileMenu() {
     document.body.style.overflow = locked ? 'hidden' : ''
   }
 
-  const toggleMobileMenu = () => {
-    mobileMenuOpen.value = !mobileMenuOpen.value
-    lockScroll(mobileMenuOpen.value)
-  }
-
   const closeMobileMenu = () => {
     if (!mobileMenuOpen.value) return
     mobileMenuOpen.value = false
     lockScroll(false)
     menuToggle.value?.focus()
   }
+
+  const openMobileMenu = () => {
+    mobileMenuOpen.value = true
+    lockScroll(true)
+  }
+
+  // Delegating matters: closing with the hamburger used to set the flag here and
+  // skip closeMobileMenu entirely, so focus was never handed back — the exact
+  // bug the docblock above claims to fix.
+  const toggleMobileMenu = () => (mobileMenuOpen.value ? closeMobileMenu() : openMobileMenu())
 
   const onBreakpoint = (event: MediaQueryListEvent) => {
     if (event.matches) {
