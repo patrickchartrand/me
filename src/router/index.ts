@@ -8,12 +8,12 @@ export const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'accueil',
+      name: 'portfolio',
       component: IndexView,
     },
     {
-      path: `${PRIVATE_PREFIX}/codex`,
-      name: 'codex',
+      path: `${PRIVATE_PREFIX}/budget`,
+      name: 'budget',
       component: () => import('@/views/BudgetView.vue'),
     },
     {

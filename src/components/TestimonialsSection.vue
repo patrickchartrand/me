@@ -66,16 +66,16 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
   content: '';
   display: block;
   width: 100%;
-  height: 80%;
+  height: 60%;
   position: absolute;
   bottom: -10px;
-  left: 18px;
+  left: 30px;
   z-index: -1;
   background-color: var(--lavender);
   transition: all 0.3s ease;
 }
 .highlight-offset:hover::before {
-  height: 60%;
+  height: 40%;
 }
 
 .quote-mark {

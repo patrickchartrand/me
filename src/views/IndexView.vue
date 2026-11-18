@@ -45,7 +45,6 @@ onMounted(() =>
       <ExperienceSection />
       <StackSection />
       <TestimonialsSection />
-      <SecretInput />
     </main>
     <TheFooter />
   </div>

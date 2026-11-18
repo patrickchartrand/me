@@ -121,15 +121,15 @@ const projects = computed(() => {
   content: '';
   display: block;
   width: 100%;
-  height: 80%;
+  height: 60%;
   position: absolute;
-  bottom: -6px;
-  left: 12px;
+  bottom: -10px;
+  left: 30px;
   z-index: -1;
   background-color: var(--lavender);
   transition: all 0.3s ease;
 }
 .highlight-offset-md:hover::before {
-  height: 60%;
+  height: 40%;
 }
 </style>

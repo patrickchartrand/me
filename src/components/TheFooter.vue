@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const router = useRouter()
 const { t, locale } = useI18n()
 const year = new Date().getFullYear()
 
@@ -141,7 +142,7 @@ const socialLinks = [
       <div
         class="pt-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
       >
-        <div class="text-sm text-white/60">
+        <div class="text-sm text-white/60" @dblclick="router.push({ name: 'budget' })">
           © {{ year }} Patrick Chartrand. {{ t('footer.copyright') }}
         </div>
         <div class="flex gap-8 text-sm uppercase tracking-widest text-white/65">

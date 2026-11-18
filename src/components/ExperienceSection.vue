@@ -82,15 +82,15 @@ const education = computed(() => tm('experience.education') as EducationItem[])
   content: '';
   display: block;
   width: 100%;
-  height: 80%;
+  height: 60%;
   position: absolute;
   bottom: -4px;
-  left: 8px;
+  left: 12px;
   z-index: -1;
   background-color: color-mix(in srgb, var(--lavender) 25%, transparent);
   transition: all 0.3s ease;
 }
 .highlight-offset-dark:hover::before {
-  height: 60%;
+  height: 40%;
 }
 </style>
