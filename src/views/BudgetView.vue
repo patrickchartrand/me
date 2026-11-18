@@ -30,7 +30,7 @@ function submit() {
 
 const currency = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' })
 const fmt = (n: number) => currency.format(n)
-const percent = (n: number) => `${Math.round(n)} %`
+const percent = (n: number) => `${Math.round(n)}\u00a0%`
 
 /*
  * Chart palette.
@@ -99,7 +99,7 @@ const heaviest = computed(() => {
       ? [
           ...head,
           {
-            label: `Autres (${tail.length} postes)`,
+            label: `Autres (${tail.length} poste${tail.length > 1 ? 's' : ''})`,
             amount: tail.reduce((total, i) => total + i.amount, 0),
             colour: HUES.other as string,
           },

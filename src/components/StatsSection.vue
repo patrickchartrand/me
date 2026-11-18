@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { tm } = useI18n()
+const { tm, locale } = useI18n()
 
 interface StatItem {
   label: string
@@ -18,7 +18,9 @@ const hasAnimated = ref(false)
 
 const formatNumber = (val: number, index: number) => {
   if (index === 0) return val.toString().padStart(2, '0')
-  if (index === 1) return val.toLocaleString('en-US') + '+'
+  // The thousands separator has to follow the page, not the developer: a hard
+  // 'en-US' printed "1,458+" under a French label.
+  if (index === 1) return val.toLocaleString(locale.value === 'fr' ? 'fr-CA' : 'en-CA') + '+'
   if (index === 2) return val + '%'
   return val.toString()
 }

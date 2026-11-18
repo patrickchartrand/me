@@ -92,7 +92,9 @@ export async function useDownload(
         'décembre',
       ]
       const today = new Date()
-      dateEl.textContent = `Granby, le ${today.getDate()} ${monthNames[today.getMonth()]} ${today.getFullYear()}`
+      // The first of the month is "1er" in French; every other day is bare.
+      const day = today.getDate()
+      dateEl.textContent = `Granby, le ${day === 1 ? '1er' : day} ${monthNames[today.getMonth()]} ${today.getFullYear()}`
     }
 
     // Let the injected stylesheets and webfonts settle before rasterising.

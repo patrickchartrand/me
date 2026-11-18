@@ -3,7 +3,7 @@ const { locale } = useI18n()
 
 useHead({
   htmlAttrs: {
-    lang: locale,
+    lang: () => (locale.value === 'fr' ? 'fr-CA' : 'en-CA'),
   },
 })
 </script>
