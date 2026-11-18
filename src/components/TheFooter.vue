@@ -48,7 +48,7 @@ const socialLinks = [
     </div>
 
     <div class="max-w-7xl mx-auto relative z-10">
-      <div class="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-16 items-end mb-28">
+      <div class="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-16 items-start mb-28">
         <div class="fade-in-up">
           <p class="text-xs uppercase tracking-[0.3em] text-white/65 mb-6">
             {{ t('footer.tagline') }}
