@@ -29,7 +29,7 @@ export default {
   stats: {
     items: [
       { label: 'Années d\u2019expérience' },
-      { label: 'Projets auxquels j\u2019ai contribué' },
+      { label: 'Contributions GitHub en 2025' },
       { label: 'HTML sémantique' },
       { label: 'Bogues corrigés (et ce n\u2019est pas fini)' },
     ],
@@ -52,7 +52,7 @@ export default {
         category: 'Balisage sémantique de texte, Mise en page',
       },
       {
-        title: 'Table de développement r\u00e9gionale Haute-Yamaska',
+        title: 'Table de développement Haute-Yamaska',
         category: 'Design UI, Vision produit',
       },
       {
@@ -71,7 +71,7 @@ export default {
       { company: 'Beaulieu Canada', role: 'Développeur Frontend', period: '2022-2026' },
       { company: 'DIY Robotics', role: 'Webmestre', period: '2021-2022 (consultant depuis 2022)' },
       { company: 'Avril', role: 'Rédacteur et gestionnaire des médias sociaux', period: '2021' },
-      { company: 'Sens Public', role: 'Chargé d’édition et de communication', period: '2017-2020' },
+      { company: 'Sens Public', role: 'Assistant à l’édition numérique', period: '2017-2020' },
     ],
     education: [
       {
@@ -90,7 +90,7 @@ export default {
         period: '2015-2018',
       },
       {
-        degree: 'DEC Humanités',
+        degree: 'DEC en Sciences humaines',
         school: 'Collège Édouard-Montpetit',
         period: '2012-2014',
       },

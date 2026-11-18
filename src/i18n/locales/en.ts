@@ -29,7 +29,7 @@ export default {
   stats: {
     items: [
       { label: 'Years of Experience' },
-      { label: 'Projects Contributed To' },
+      { label: 'GitHub contributions in 2025' },
       { label: 'Semantic HTML' },
       { label: 'Bugs fixed (and counting)' },
     ],
@@ -52,7 +52,7 @@ export default {
         category: 'Semantic Text Markup, Page Layout',
       },
       {
-        title: 'Haute-Yamaska Regional Development\u00a0Table',
+        title: 'Table de d\u00e9veloppement\u00a0Haute-Yamaska',
         category: 'UI Design, Product Thinking',
       },
       {
@@ -67,11 +67,11 @@ export default {
     educationTitle: 'Education',
     items: [
       { company: 'City of Granby', role: 'Webmaster', period: 'Since 2026' },
-      { company: 'Freelance', role: 'Web Integrator', period: 'Since 2025' },
+      { company: 'Freelance', role: 'Front-End Developer', period: 'Since 2025' },
       { company: 'Beaulieu Canada', role: 'Frontend Developer', period: '2022-2026' },
       { company: 'DIY Robotics', role: 'Webmaster', period: '2021-2022 (consultant since)' },
       { company: 'Avril', role: 'Copywriter & Social Media Manager', period: '2021' },
-      { company: 'Sens Public', role: 'Digital Publisher', period: '2017-2020' },
+      { company: 'Sens Public', role: 'Digital Publishing Assistant', period: '2017-2020' },
     ],
     education: [
       {
@@ -85,12 +85,12 @@ export default {
         period: '2018',
       },
       {
-        degree: 'B. French Literature',
+        degree: 'B.A. French-Language Literatures',
         school: 'Universit\u00e9 de Montr\u00e9al',
         period: '2015-2018',
       },
       {
-        degree: 'DCS Humanities',
+        degree: 'DCS Social Science',
         school: 'Coll\u00e8ge \u00c9douard-Montpetit',
         period: '2012-2014',
       },
@@ -108,17 +108,17 @@ export default {
     items: [
       {
         name: 'Étienne Bourdon',
-        title: 'Territorial Development Agent · Haute-Yamaska',
+        title: 'Territorial Development Officer · Haute-Yamaska',
         date: 'January 2026',
         quote:
-          'In the context of creating the website for the Haute-Yamaska Regional Development Table, Patrick stood out for the quality of his communication, his great attention to detail, and his ability to meet deadlines. A wonderful collaborator whom I highly recommend.',
+          'While creating the website for the Table de développement de la Haute-Yamaska, Patrick stood out for the quality of his communication, his great attention to detail, and his ability to meet deadlines. A wonderful collaborator whom I highly recommend.',
       },
       {
         name: 'Thalie Blanchard, M. Adm.',
-        title: 'Senior Advisor, Business Offerings',
+        title: 'Senior Advisor — Offer Design, Business',
         date: 'July 2025',
         quote:
-          'I had the pleasure of working with Patrick — a person who is both competent and meticulous. He stands out for his ability to analyze situations with rigour and to think creatively when facing challenges. His willingness to explore new avenues, combined with his professionalism, makes him a valuable asset to any organization.',
+          'I had the pleasure of working with Patrick — a person who is both competent and meticulous. He stands out for his ability to analyse situations rigorously and to bring creativity to bear on the obstacles he meets. His willingness to explore new avenues, combined with his professionalism, makes him a valuable asset to any organization.',
       },
     ],
   },

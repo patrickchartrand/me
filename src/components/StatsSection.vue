@@ -9,10 +9,10 @@ const statItems = computed(() => tm('stats.items') as StatItem[])
 
 // Première année d'expérience professionnelle : le compteur se recalcule
 // à chaque chargement, pas besoin d'y revenir chaque 1er janvier.
-const CAREER_START_YEAR = 2018
+const CAREER_START_YEAR = 2017
 const yearsOfExperience = new Date().getFullYear() - CAREER_START_YEAR
 
-const rawValues = [yearsOfExperience, 1458, 100, 404]
+const rawValues = [yearsOfExperience, 1453, 100, 404]
 const displayed = ref(rawValues.map(() => '0'))
 const hasAnimated = ref(false)
 
