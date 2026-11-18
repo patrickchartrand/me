@@ -266,7 +266,7 @@ function show(event: MouseEvent, text: string) {
                 type="text"
                 required
                 maxlength="120"
-                placeholder="Épicerie"
+                placeholder="Dépense…"
                 class="w-full rounded-full border border-charcoal/10 bg-white px-4 py-2.5 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
               />
             </div>
