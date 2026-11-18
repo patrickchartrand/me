@@ -1,24 +1,38 @@
+/**
+ * Which section the nav should mark as current.
+ *
+ * A 0.3 threshold made this height-dependent: a section taller than a third of
+ * the viewport could never reach it, so Work never lit up on short screens,
+ * while a long section that scrolled past its own threshold turned the
+ * indicator off entirely. A zero-height band across the middle of the viewport
+ * asks a different question — "what is under the midline" — which no section
+ * height can defeat.
+ *
+ * Only the three sections the nav actually links to are observed; everything
+ * else was noise, including the two id-less <footer> elements inside the
+ * testimonial cards, which used to blank the indicator.
+ */
+const NAV_SECTIONS = ['work', 'experience', 'footer'] as const
+
 export function useActiveSection() {
   const activeSection = ref('hero')
   let navObserver: IntersectionObserver | null = null
 
   onMounted(() => {
-    // `footer` alone also matched the two id-less <footer> elements inside the
-    // testimonial cards, which set activeSection to '' and put the nav indicator out.
-    const sections = document.querySelectorAll('section[id], footer[id]')
-
     navObserver = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.target.id) {
-            activeSection.value = entry.target.id
-          }
-        })
+        for (const entry of entries) {
+          if (entry.isIntersecting) activeSection.value = entry.target.id
+        }
       },
-      { threshold: 0.3 },
+      // A 1px band at the vertical middle of the viewport.
+      { threshold: 0, rootMargin: '-50% 0px -50% 0px' },
     )
 
-    sections.forEach((section) => navObserver!.observe(section))
+    for (const id of NAV_SECTIONS) {
+      const el = document.getElementById(id)
+      if (el) navObserver.observe(el)
+    }
   })
 
   onUnmounted(() => {

@@ -33,6 +33,13 @@ async function submit() {
   }
 }
 
+// One click used to wipe every expense of the month, with nothing to undo it.
+function confirmRemoveAll() {
+  if (!window.confirm('Retirer toutes les dépenses du mois ? Cette action est irréversible.'))
+    return
+  return removeAllExpenses()
+}
+
 const currency = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' })
 const fmt = (n: number) => currency.format(n)
 const percent = (n: number) => `${Math.round(n)}\u00a0%`
@@ -345,7 +352,7 @@ function show(event: MouseEvent, text: string) {
               type="button"
               :disabled="saving"
               class="mt-5 text-xs uppercase tracking-[0.2em] text-secondary underline underline-offset-4 transition-colors hover:text-charcoal disabled:opacity-50"
-              @click="removeAllExpenses()"
+              @click="confirmRemoveAll"
             >
               Tout retirer
             </button>

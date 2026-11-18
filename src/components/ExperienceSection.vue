@@ -36,7 +36,9 @@ const education = computed(() => tm('experience.education') as EducationItem[])
               class="group py-5 hover:bg-cream/5 transition-colors duration-300 -mx-4 px-4 rounded-lg"
             >
               <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
-                <h3 class="shrink-0 text-lg font-medium group-hover:text-accent transition-colors">
+                <h3
+                  class="shrink-0 text-lg font-medium group-hover:text-accent transition-colors duration-300"
+                >
                   {{ item.company }}
                 </h3>
                 <span class="text-sm text-cream/60 font-mono">{{ item.period }}</span>
@@ -58,7 +60,9 @@ const education = computed(() => tm('experience.education') as EducationItem[])
               class="group py-5 hover:bg-cream/5 transition-colors duration-300 -mx-4 px-4 rounded-lg"
             >
               <div class="flex flex-col gap-1">
-                <h3 class="text-lg font-medium group-hover:text-accent transition-colors">
+                <h3
+                  class="text-lg font-medium group-hover:text-accent transition-colors duration-300"
+                >
                   {{ item.degree }}
                 </h3>
                 <p class="text-sm text-cream/60">{{ item.school }}</p>

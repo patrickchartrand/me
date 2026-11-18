@@ -65,7 +65,7 @@ const socialLinks = [
             >
               {{ t('footer.ctaProject') }}
               <span
-                class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors"
+                class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center group-hover:bg-primary/20 transition-colors duration-300"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -87,7 +87,7 @@ const socialLinks = [
             >
               {{ t('footer.ctaCV') }}
               <span
-                class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors"
+                class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -142,7 +142,7 @@ const socialLinks = [
       <div
         class="pt-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
       >
-        <div class="text-sm text-white/60" @dblclick="router.push({ name: 'budget' })">
+        <div class="text-sm text-white/60" @dblclick.alt="router.push({ name: 'budget' })">
           © {{ year }} Patrick Chartrand. {{ t('footer.copyright') }}
         </div>
         <div class="flex gap-8 text-sm uppercase tracking-widest text-white/65">

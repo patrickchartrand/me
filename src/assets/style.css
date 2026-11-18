@@ -59,6 +59,15 @@
     cursor: pointer;
   }
 
+  /* Only the work cards had a designed focus ring; everything else fell back to
+     whatever the browser draws, which on a cream ground is barely there. */
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid #3d405b;
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+
   /* v4 uses 50%-alpha currentColor, which renders darker and loses the blue cast. */
   input::placeholder,
   textarea::placeholder {
@@ -84,9 +93,9 @@
 /*
  * Layered on purpose. Under the CDN these rules were unlayered but lost ties to
  * utilities on source order, since the CDN appends its <style> last. Native
- * layers invert that — unlayered author CSS outranks any layer — so leaving
- * them unlayered would make `img` below beat `transition-transform duration-700`
- * on the work cards and kill the 700ms hover zoom.
+ * layers invert that — unlayered author CSS outranks any layer. The rule that
+ * forced the issue (a global `img` fade) has since been deleted, but the layer
+ * is still right: the next element selector added here would hit the same wall.
  */
 @layer base {
   ::-webkit-scrollbar {
