@@ -107,7 +107,8 @@ export async function useDownload(
       .set({
         margin: 0,
         filename,
-        image: { type: 'jpeg', quality: 0.98 },
+        // 0.98 put ~149 kB of JPEG artefact budget into a page that is mostly text.
+        image: { type: 'jpeg', quality: 0.92 },
         html2canvas: { scale: 2, useCORS: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       })

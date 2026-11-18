@@ -101,6 +101,10 @@ body {
 .icon {
   position: relative;
   margin-left: 0.4rem;
+  width: 0.78em;
+  height: 0.78em;
+  fill: currentColor;
+  vertical-align: -0.04em;
 }
 
 @media print {
