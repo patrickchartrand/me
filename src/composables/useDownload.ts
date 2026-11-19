@@ -34,10 +34,23 @@ export async function useDownload(
   const overlay = document.createElement('div')
   overlay.style.cssText =
     'position:fixed;inset:0;z-index:9999;background:#3d405b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;'
+  /*
+   * The dots carry `both` for the backwards half: without it a delayed element
+   * keeps its normal style — opacity 1 — for the whole animation-delay and only
+   * snaps to the first keyframe once that delay elapses. The two trailing dots
+   * therefore sat lit at full brightness and blinked out 234 ms and 410 ms after
+   * the overlay appeared, while the label was still fading in. They pulse on
+   * opacity alone, too: pdf-fade-in also bobbed each dot 8px, which is not what
+   * a pulsing ellipsis should do.
+   *
+   * Comments belong here and not in the literal below — that string is injected
+   * into the live document, so anything written inside it ships to the visitor.
+   */
   overlay.innerHTML = `
     <style>
       @keyframes pdf-spin { to { transform: rotate(360deg); } }
       @keyframes pdf-fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes pdf-pulse { from { opacity: 0.25; } to { opacity: 1; } }
       .pdf-spinner {
         width: 48px;
         height: 48px;
@@ -57,7 +70,7 @@ export async function useDownload(
       }
       .pdf-dot {
         display: inline-block;
-        animation: pdf-fade-in 0.4s ease infinite alternate;
+        animation: pdf-pulse 0.6s ease-in-out infinite alternate both;
       }
       .pdf-dot:nth-child(2) { animation-delay: 0.2s; }
       .pdf-dot:nth-child(3) { animation-delay: 0.4s; }
