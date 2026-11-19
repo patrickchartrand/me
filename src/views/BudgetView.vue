@@ -317,10 +317,13 @@ function show(event: MouseEvent, text: string) {
                 class="w-full rounded-full border border-charcoal/10 bg-white px-4 py-2.5 text-right text-sm tabular-nums focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
               />
             </div>
+            <!-- The form wraps below md and the button lands alone on its own
+                 line, where flex-start left it under the inputs; ml-auto sends
+                 it to the right edge. Reset at md, where it sits inline again. -->
             <button
               type="submit"
               :disabled="saving"
-              class="rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-cream transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100"
+              class="ml-auto rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-cream transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 md:ml-0"
             >
               Ajouter
             </button>

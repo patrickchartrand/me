@@ -93,7 +93,7 @@ const hovered = ref<string | null>(null)
         >
           <div
             aria-hidden="true"
-            class="tech-icon w-10 h-10 md:w-12 md:h-12 transition-opacity duration-300"
+            class="tech-icon w-10 h-10 md:w-11 md:h-11 transition-opacity duration-300"
             :class="hovered === tech.name ? 'opacity-100' : 'opacity-90'"
             v-html="hovered === tech.name ? tech.svg : gray(tech.svg)"
           />
