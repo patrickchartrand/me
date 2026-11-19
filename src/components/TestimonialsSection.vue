@@ -77,12 +77,8 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
   background-color: var(--lavender);
   transition: all 0.3s ease;
 }
-/* Hand-gated: a scoped rule is not Tailwind's to put behind a
-   pointer query, and on touch this one stuck after a tap. */
-@media (hover: hover) {
-  .highlight-offset:hover::before {
-    height: 0.4lh;
-  }
+.highlight-offset:hover::before {
+  height: 0.4lh;
 }
 
 .quote-mark {

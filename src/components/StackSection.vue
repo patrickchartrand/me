@@ -139,11 +139,7 @@ const hovered = ref<string | null>(null)
   background-color: var(--lavender);
   transition: all 0.3s ease;
 }
-/* Hand-gated: a scoped rule is not Tailwind's to put behind a
-   pointer query, and on touch this one stuck after a tap. */
-@media (hover: hover) {
-  .highlight-offset-md:hover::before {
-    height: 0.4lh;
-  }
+.highlight-offset-md:hover::before {
+  height: 0.4lh;
 }
 </style>
