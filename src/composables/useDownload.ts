@@ -86,9 +86,9 @@ export async function useDownload(
    * keeps its normal style — opacity 1 — for the whole animation-delay and only
    * snaps to the first keyframe once that delay elapses. The two trailing dots
    * therefore sat lit at full brightness and blinked out 234 ms and 410 ms after
-   * the overlay appeared, while the label was still fading in. They pulse on
-   * opacity alone, too: pdf-fade-in also bobbed each dot 8px, which is not what
-   * a pulsing ellipsis should do.
+   * the overlay appeared. They pulse on opacity alone, too: the fade they used
+   * to share with the label bobbed each dot 8px, which is not what a pulsing
+   * ellipsis should do.
    *
    * Comments belong here and not in the literal below — that string is injected
    * into the live document, so anything written inside it ships to the visitor.
@@ -96,7 +96,6 @@ export async function useDownload(
   overlay.innerHTML = `
     <style>
       @keyframes pdf-spin { to { transform: rotate(360deg); } }
-      @keyframes pdf-fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       @keyframes pdf-pulse { from { opacity: 0.25; } to { opacity: 1; } }
       .pdf-spinner {
         width: 48px;
@@ -112,7 +111,6 @@ export async function useDownload(
         letter-spacing: 0.2em;
         text-transform: uppercase;
         color: rgba(245,243,239,0.6);
-        animation: pdf-fade-in 0.4s ease forwards;
         text-align: center;
       }
       .pdf-dot {
@@ -142,6 +140,16 @@ export async function useDownload(
   document.body.appendChild(overlay)
 
   /*
+   * The label is not animated. It used to fade in over 400ms, and the overlay's
+   * background and spinner do not — so on the first export the dark panel
+   * appeared with no text in it. Measured: opacity still 0 at 107ms across
+   * three frames while the 976 kB chunk was being fetched, then a fade whose
+   * middle lost 218ms to compiling it, jumping 0.41 to 0.96 in one step. The
+   * animation is also pending at insert (startTime null), so its start waits on
+   * the same busy main thread that delays the first paint. Nothing about that
+   * is fixable from inside a 400ms fade; the text simply arrives with the panel
+   * it belongs to.
+   *
    * The announcement is deferred, the visible text is not. A live region
    * inserted with its message already inside counts as initial content and is
    * not announced, so the message has to arrive after the region does — but
