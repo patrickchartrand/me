@@ -3,6 +3,9 @@ import IndexView from '@/views/IndexView.vue'
 
 export const PRIVATE_PREFIX = '/_'
 
+/** Matches the scroll-padding-top the stylesheet uses for anchor jumps. */
+const HEADER_OFFSET = 96
+
 export const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -21,11 +24,19 @@ export const router = createRouter({
       redirect: '/',
     },
   ],
-  // IndexView clears the hash on mount (it keeps the URL clean), so a hash
-  // branch here would be dead code. In-page jumps are plain anchors, handled by
-  // the browser with the scroll-padding-top set in style.css.
+  /*
+   * In-page clicks are plain anchors the browser handles with the
+   * scroll-padding-top in style.css. This branch is for the other case: a
+   * shared or bookmarked /#work that arrives as a cross-document load.
+   * scrollBehavior runs while the hash is still on the URL — IndexView only
+   * strips it afterwards — so without this the visitor landed on the hero with
+   * no sign the link had pointed at a section.
+   */
   scrollBehavior(to, from, saved) {
     if (saved) return saved
+    if (to.hash && document.querySelector(to.hash)) {
+      return { el: to.hash, top: HEADER_OFFSET }
+    }
     return { top: 0 }
   },
 })

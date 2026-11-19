@@ -31,7 +31,10 @@ useHead({
 
 useScrollAnimations()
 onMounted(() =>
-  window.location.hash ? window.history.replaceState(null, '', window.location.pathname) : null,
+  window.location.hash
+    ? // pathname alone drops ?utm_source=… along with the hash.
+      window.history.replaceState(null, '', window.location.pathname + window.location.search)
+    : null,
 )
 </script>
 
