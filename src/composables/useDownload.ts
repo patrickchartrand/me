@@ -121,24 +121,40 @@ export async function useDownload(
       }
       .pdf-dot + .pdf-dot { animation-delay: 0.2s; }
       .pdf-dot + .pdf-dot + .pdf-dot { animation-delay: 0.4s; }
+      .pdf-status {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        border: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
     </style>
     <div class="pdf-spinner" aria-hidden="true"></div>
-    <div class="pdf-label" role="status"><span class="pdf-text"></span><span
+    <div class="pdf-label">${locale === 'en' ? 'Generating PDF' : 'Génération du PDF'}<span
       class="pdf-dot" aria-hidden="true">.</span><span class="pdf-dot" aria-hidden="true">.</span><span
       class="pdf-dot" aria-hidden="true">.</span></div>
+    <div class="pdf-status" role="status"></div>
   `
   document.body.appendChild(overlay)
 
   /*
-   * The text lands a frame after the region does. A live region inserted with
-   * its message already inside counts as initial content, which screen readers
-   * do not announce — so pressing the button said nothing at all until the
-   * failure case replaced the text much later.
+   * The announcement is deferred, the visible text is not. A live region
+   * inserted with its message already inside counts as initial content and is
+   * not announced, so the message has to arrive after the region does — but
+   * doing that to the on-screen label meant the text popped in a frame late,
+   * which read as a flash on the first export, when the main thread is busiest
+   * fetching and compiling html2pdf. The hidden region carries the delay now
+   * and the label is painted complete.
    */
-  void nextFrame().then(() => {
-    const text = overlay.querySelector('.pdf-text')
-    if (text) text.textContent = locale === 'en' ? 'Generating PDF' : 'Génération du PDF'
-  })
+  const announce = (message: string) => {
+    const status = overlay.querySelector('.pdf-status')
+    if (status) status.textContent = message
+  }
+  void nextFrame().then(() => announce(locale === 'en' ? 'Generating PDF' : 'Génération du PDF'))
 
   let container: HTMLDivElement | null = null
 
@@ -211,6 +227,7 @@ export async function useDownload(
         locale === 'en'
           ? 'Download failed — please try again'
           : 'Échec du téléchargement — veuillez réessayer'
+      announce(label.textContent)
     }
     await new Promise((resolve) => setTimeout(resolve, 1800))
   } finally {
