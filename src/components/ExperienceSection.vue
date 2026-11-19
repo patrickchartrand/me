@@ -40,12 +40,12 @@ const { spotlit: spotlitEducation } = useScrollSpotlight(educationList, educatio
             <div
               v-for="(item, i) in experiences"
               :key="item.company"
-              class="group py-5 hover:bg-cream/5 transition-colors duration-300 -mx-4 px-4 rounded-lg"
+              class="exp-row py-5 transition-colors duration-300 -mx-4 px-4 rounded-lg"
               :class="{ 'bg-cream/5': i === spotlitExperience }"
             >
               <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
                 <h3
-                  class="shrink-0 text-lg font-medium group-hover:text-accent transition-colors duration-300"
+                  class="shrink-0 text-lg font-medium transition-colors duration-300"
                   :class="{ 'text-accent': i === spotlitExperience }"
                 >
                   {{ item.company }}
@@ -66,12 +66,12 @@ const { spotlit: spotlitEducation } = useScrollSpotlight(educationList, educatio
             <div
               v-for="(item, i) in education"
               :key="item.degree"
-              class="group py-5 hover:bg-cream/5 transition-colors duration-300 -mx-4 px-4 rounded-lg"
+              class="exp-row py-5 transition-colors duration-300 -mx-4 px-4 rounded-lg"
               :class="{ 'bg-cream/5': i === spotlitEducation }"
             >
               <div class="flex flex-col gap-1">
                 <h3
-                  class="text-lg font-medium group-hover:text-accent transition-colors duration-300"
+                  class="text-lg font-medium transition-colors duration-300"
                   :class="{ 'text-accent': i === spotlitEducation }"
                 >
                   {{ item.degree }}
@@ -88,6 +88,23 @@ const { spotlit: spotlitEducation } = useScrollSpotlight(educationList, educatio
 </template>
 
 <style scoped>
+/*
+ * Scoped rather than Tailwind's hover: utilities, because the project
+ * deliberately keeps the ungated v3 variant (see style.css) and these rows are
+ * the one place that cannot have it. A tap leaves :hover stuck, and since the
+ * row under the midline already lights up, that left two rows lit at once.
+ * Behind @media (hover: hover) the scroll is the only thing that marks a row
+ * on a touch screen, and a pointer still works as before everywhere else.
+ */
+@media (hover: hover) {
+  .exp-row:hover {
+    background-color: color-mix(in srgb, var(--color-cream) 5%, transparent);
+  }
+  .exp-row:hover h3 {
+    color: var(--color-accent);
+  }
+}
+
 .highlight-offset-dark {
   position: relative;
   display: inline-block;
