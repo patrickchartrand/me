@@ -425,6 +425,7 @@ function show(event: MouseEvent, text: string) {
           </div>
           <label for="notes" class="sr-only">Notes personnelles</label>
           <textarea
+            maxlength="20000"
             id="notes"
             v-model="notes"
             rows="8"
