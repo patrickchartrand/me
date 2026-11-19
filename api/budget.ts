@@ -86,10 +86,7 @@ function cleanMonth(raw: unknown): MonthData {
       // stored as one. The types promise YYYY-MM-DD; this is what enforces it.
       .filter(
         (e) =>
-          e.id !== '' &&
-          e.label !== '' &&
-          VALID_DATE.test(e.date) &&
-          Number.isFinite(e.amount),
+          e.id !== '' && e.label !== '' && VALID_DATE.test(e.date) && Number.isFinite(e.amount),
       )
       .slice(0, MAX_EXPENSES),
     notes: typeof o.notes === 'string' ? o.notes.slice(0, MAX_NOTES) : '',
@@ -212,7 +209,11 @@ export default async function handler(request: ApiRequest, response: ApiResponse
         // cleanMonth turns anything unrecognisable into an empty month, so
         // without this guard a malformed body overwrote the real document and
         // answered 200. Refuse instead of erasing.
-        if (typeof request.body !== 'object' || request.body === null || Array.isArray(request.body)) {
+        if (
+          typeof request.body !== 'object' ||
+          request.body === null ||
+          Array.isArray(request.body)
+        ) {
           return reply(400, { error: 'Expected a JSON object.' })
         }
         const data = cleanMonth(request.body)

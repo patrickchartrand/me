@@ -1,0 +1,7 @@
+dist
+node_modules
+
+# Written by unplugin-auto-import / unplugin-vue-components on every build, so
+# formatting them only drifts back on the next run.
+src/types/auto-imports.d.ts
+src/types/components.d.ts
