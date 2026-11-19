@@ -52,7 +52,7 @@ export default {
         category: 'Semantic Text Markup, Page Layout',
       },
       {
-        title: 'Table de d\u00e9veloppement\u00a0Haute-Yamaska',
+        title: 'Table de d\u00e9veloppement Haute-Yamaska',
         category: 'UI Design, Product Thinking',
       },
       {

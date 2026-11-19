@@ -40,7 +40,7 @@ export const projects: Project[] = [
     imageHeight: 'h-[480px]',
   },
   {
-    title: 'Table de développement\u00a0Haute-Yamaska',
+    title: 'Table de développement Haute-Yamaska',
     category: 'UI/UX Design, Product Thinking',
     year: '2026',
     link: 'https://tabledeveloppementhy.ca',

@@ -56,7 +56,7 @@ const { t } = useI18n()
 .highlight-offset::before {
   content: '';
   display: block;
-  width: 100%;
+  width: calc(100% - 30px);
   height: 50%;
   position: absolute;
   bottom: -10px;

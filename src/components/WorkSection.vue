@@ -121,7 +121,7 @@ const projects = computed(() => {
 .highlight-offset-md::before {
   content: '';
   display: block;
-  width: 100%;
+  width: calc(100% - 30px);
   height: 60%;
   position: absolute;
   bottom: -10px;

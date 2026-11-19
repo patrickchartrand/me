@@ -65,7 +65,7 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
 .highlight-offset::before {
   content: '';
   display: block;
-  width: 100%;
+  width: calc(100% - 30px);
   height: 60%;
   position: absolute;
   bottom: -10px;
