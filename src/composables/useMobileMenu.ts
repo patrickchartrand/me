@@ -14,20 +14,35 @@ export function useMobileMenu() {
 
   let desktop: MediaQueryList | null = null
 
-  const lockScroll = (locked: boolean) => {
+  /*
+   * Scrolling was locked but the tab order was not, so tabbing past the last
+   * menu item walked into the thirteen links sitting invisible behind the
+   * overlay. aria-modal tells a screen reader to ignore them; it does nothing
+   * about focus. The overlay is z-40 and the header z-50, so only what sits
+   * below it goes inert — the hamburger and the wordmark stay reachable,
+   * which is how the menu gets closed again.
+   */
+  // #footer, not footer: the testimonial cards each close with their own
+  // id-less <footer>, which main already covers.
+  const background = () => document.querySelectorAll('main, #footer')
+
+  const lockBackground = (locked: boolean) => {
     document.body.style.overflow = locked ? 'hidden' : ''
+    background().forEach((el) =>
+      locked ? el.setAttribute('inert', '') : el.removeAttribute('inert'),
+    )
   }
 
   const closeMobileMenu = () => {
     if (!mobileMenuOpen.value) return
     mobileMenuOpen.value = false
-    lockScroll(false)
+    lockBackground(false)
     menuToggle.value?.focus()
   }
 
   const openMobileMenu = () => {
     mobileMenuOpen.value = true
-    lockScroll(true)
+    lockBackground(true)
   }
 
   // Delegating matters: closing with the hamburger used to set the flag here and
@@ -38,7 +53,7 @@ export function useMobileMenu() {
   const onBreakpoint = (event: MediaQueryListEvent) => {
     if (event.matches) {
       mobileMenuOpen.value = false
-      lockScroll(false)
+      lockBackground(false)
     }
   }
 
@@ -50,7 +65,7 @@ export function useMobileMenu() {
 
   onUnmounted(() => {
     desktop?.removeEventListener('change', onBreakpoint)
-    lockScroll(false)
+    lockBackground(false)
   })
 
   return { mobileMenuOpen, menuToggle, toggleMobileMenu, closeMobileMenu }
