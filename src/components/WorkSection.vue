@@ -6,6 +6,7 @@ const { t, tm } = useI18n()
 interface ProjectTranslation {
   title: string
   category: string
+  imageAlt: string
 }
 
 const isMobile = ref(false)
@@ -31,6 +32,9 @@ const projects = computed(() => {
     ...p,
     title: translations[i]?.title ?? p.title,
     category: translations[i]?.category ?? p.category,
+    // These were the only user-facing strings left in English on the fr page:
+    // a screen reader read them out with French phonetics.
+    imageAlt: translations[i]?.imageAlt ?? p.imageAlt,
   }))
   return isMobile.value ? [...mapped].sort((a, b) => Number(b.year) - Number(a.year)) : mapped
 })

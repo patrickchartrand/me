@@ -43,22 +43,32 @@ export default {
       {
         title: 'Intranet de la Ville\u00a0de\u00a0Granby',
         category: 'Architecture de l\u2019information, Expérience utilisateur',
+        imageAlt:
+          'La page d’accueil de l’intranet Wallace : un bandeau mauve au-dessus d’une grille de tuiles d’accès rapide et d’un fil d’actualités',
       },
       {
         title: 'Beaulieu Canada',
         category: 'Design UI, Développement Web',
+        imageAlt:
+          'Une page de produit de stratifié Beaulieu Canada, une photo de pièce au-dessus du nom du produit et de sa description',
       },
       {
         title: 'Chaire de recherche du Canada sur les écritures numériques',
         category: 'Balisage sémantique de texte, Mise en page',
+        imageAlt:
+          'La page d’accueil du laboratoire Textualités numériques, son titre posé sur un motif de circuit imprimé',
       },
       {
         title: 'Table de développement Haute-Yamaska',
         category: 'Design UI, Vision produit',
+        imageAlt:
+          'La page d’accueil de la Table de développement Haute-Yamaska, titrée « Agir ensemble pour la vitalité de la Haute-Yamaska »',
       },
       {
         title: 'DIY-Robotics.com',
         category: 'Développement web, Modélisation 3D',
+        imageAlt:
+          'La page des produits modulaires de DIY Robotics, titrée « Find the perfect robotic cell »',
       },
     ],
   },

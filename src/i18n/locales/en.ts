@@ -43,22 +43,31 @@ export default {
       {
         title: 'City of Granby\u00a0Intranet',
         category: 'Information Architecture, User Experience',
+        imageAlt:
+          'The Wallace intranet home page: a purple header over a grid of quick-access tiles and a news feed',
       },
       {
         title: 'Beaulieu Canada',
         category: 'UI Design, Web Development',
+        imageAlt:
+          'A Beaulieu Canada laminate product page, a room photo above the product name and its description',
       },
       {
         title: 'Canada Research Chair in Digital Textualities',
         category: 'Semantic Text Markup, Page Layout',
+        imageAlt:
+          'The Digital Textualities laboratory home page, its title set over a circuit-board pattern',
       },
       {
         title: 'Table de d\u00e9veloppement Haute-Yamaska',
         category: 'UI Design, Product Thinking',
+        imageAlt:
+          'The Table de développement Haute-Yamaska home page, headed “Agir ensemble pour la vitalité de la Haute-Yamaska”',
       },
       {
         title: 'DIY-Robotics.com',
         category: 'Web Development, 3D Modelling',
+        imageAlt: 'The DIY Robotics modular products page, headed “Find the perfect robotic cell”',
       },
     ],
   },
