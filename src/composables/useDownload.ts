@@ -81,13 +81,9 @@ export async function useDownload(
   const overlay = document.createElement('div')
   overlay.style.cssText =
     'position:fixed;inset:0;z-index:9999;background:#3d405b;display:flex;flex-direction:column;' +
-    // Its own compositing layer, and painting contained to it. html2pdf drops a
-    // full-viewport fixed element of its own underneath this one partway through
-    // (measured arriving at ~870ms), and html2canvas then allocates a 1588x2545
-    // raster, all while the main thread is blocked in stretches of 595ms and
-    // 653ms — long enough that a repaint of this panel cannot be serviced. On its
-    // own layer it is rasterised once and keeps being composited regardless.
-    'align-items:center;justify-content:center;gap:1.5rem;will-change:transform;contain:paint;'
+    // contain:paint keeps this panel's painting to itself. The companion rule in
+    // the stylesheet below is what actually clears the viewport for it.
+    'align-items:center;justify-content:center;gap:1.5rem;contain:paint;'
   /*
    * The dots carry `both` for the backwards half: without it a delayed element
    * keeps its normal style — opacity 1 — for the whole animation-delay and only
@@ -126,6 +122,26 @@ export async function useDownload(
       }
       .pdf-dot + .pdf-dot { animation-delay: 0.2s; }
       .pdf-dot + .pdf-dot + .pdf-dot { animation-delay: 0.4s; }
+      /*
+       * html2pdf parks its working surface in the middle of the screen. It
+       * builds a fixed, full-viewport div at inset 0, z-index 1000, holding a
+       * white A4 page with the whole document cloned into it, and only hides it
+       * with opacity 0 (worker.js:105-125). So from the moment it appears —
+       * measured at 881ms, thirteen milliseconds before the main thread blocks
+       * for 1187ms across three frames — a viewport-sized layer sits directly
+       * under this panel while the browser can barely present a frame.
+       *
+       * Out of the viewport it stops competing. The library itself does exactly
+       * this in its other code path: the bundle carries a second copy of this
+       * routine that parks the overlay at left:-100000px. Capture is unaffected,
+       * since html2canvas reads layout, and the element it captures already
+       * lives off-screen at left:-9999px.
+       */
+      .html2pdf__overlay {
+        left: -100000px !important;
+        right: auto !important;
+        width: 100vw !important;
+      }
       .pdf-status {
         position: absolute;
         width: 1px;
