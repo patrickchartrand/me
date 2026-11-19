@@ -93,7 +93,7 @@ const hovered = ref<string | null>(null)
         >
           <div
             aria-hidden="true"
-            class="tech-icon w-10 h-10 transition-opacity duration-300"
+            class="tech-icon w-10 h-10 md:w-14 md:h-14 transition-opacity duration-300"
             :class="hovered === tech.name ? 'opacity-100' : 'opacity-90'"
             v-html="hovered === tech.name ? tech.svg : gray(tech.svg)"
           />
@@ -115,8 +115,11 @@ const hovered = ref<string | null>(null)
 }
 
 .tech-icon :deep(svg) {
+  /* height was 1lh, which resolved to the 24px line-height: the svg box came
+     out 40x24 while its viewBox is square, so the glyph met the smaller side
+     and drew at 24px inside a 40px container. Filling the box squares it. */
   width: 100%;
-  height: 1lh;
+  height: 100%;
 }
 
 .highlight-offset-md {
