@@ -74,6 +74,7 @@ declare global {
   const useRoute: typeof import('vue-router').useRoute
   const useRouter: typeof import('vue-router').useRouter
   const useScrollAnimations: typeof import('../composables/useScrollAnimations').useScrollAnimations
+  const useScrollSpotlight: typeof import('../composables/useScrollSpotlight').useScrollSpotlight
   const useSlots: typeof import('vue').useSlots
   const useTemplateRef: typeof import('vue').useTemplateRef
   const watch: typeof import('vue').watch
@@ -159,6 +160,7 @@ declare module 'vue' {
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useScrollAnimations: UnwrapRef<typeof import('../composables/useScrollAnimations')['useScrollAnimations']>
+    readonly useScrollSpotlight: UnwrapRef<typeof import('../composables/useScrollSpotlight')['useScrollSpotlight']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useTemplateRef: UnwrapRef<typeof import('vue')['useTemplateRef']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>

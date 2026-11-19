@@ -15,6 +15,13 @@ interface EducationItem {
 
 const experiences = computed(() => tm('experience.items') as ExperienceItem[])
 const education = computed(() => tm('experience.education') as EducationItem[])
+
+// The rows only light up on hover, which a touch screen never delivers; below
+// md the highlight follows the scroll instead.
+const experienceList = ref<HTMLElement | null>(null)
+const educationList = ref<HTMLElement | null>(null)
+const { spotlit: spotlitExperience } = useScrollSpotlight(experienceList, experiences)
+const { spotlit: spotlitEducation } = useScrollSpotlight(educationList, education)
 </script>
 
 <template>
@@ -29,15 +36,17 @@ const education = computed(() => tm('experience.education') as EducationItem[])
           <h2 class="text-3xl font-serif mb-14">
             <span class="highlight-offset-dark">{{ t('experience.experienceTitle') }}</span>
           </h2>
-          <div class="space-y-0 stagger-children">
+          <div ref="experienceList" class="space-y-0 stagger-children">
             <div
-              v-for="item in experiences"
+              v-for="(item, i) in experiences"
               :key="item.company"
               class="group py-5 hover:bg-cream/5 transition-colors duration-300 -mx-4 px-4 rounded-lg"
+              :class="{ 'bg-cream/5': i === spotlitExperience }"
             >
               <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-2 mb-2">
                 <h3
                   class="shrink-0 text-lg font-medium group-hover:text-accent transition-colors duration-300"
+                  :class="{ 'text-accent': i === spotlitExperience }"
                 >
                   {{ item.company }}
                 </h3>
@@ -53,15 +62,17 @@ const education = computed(() => tm('experience.education') as EducationItem[])
           <h2 class="text-3xl font-serif mb-14">
             <span class="highlight-offset-dark">{{ t('experience.educationTitle') }}</span>
           </h2>
-          <div class="space-y-0 stagger-children">
+          <div ref="educationList" class="space-y-0 stagger-children">
             <div
-              v-for="item in education"
+              v-for="(item, i) in education"
               :key="item.degree"
               class="group py-5 hover:bg-cream/5 transition-colors duration-300 -mx-4 px-4 rounded-lg"
+              :class="{ 'bg-cream/5': i === spotlitEducation }"
             >
               <div class="flex flex-col gap-1">
                 <h3
                   class="text-lg font-medium group-hover:text-accent transition-colors duration-300"
+                  :class="{ 'text-accent': i === spotlitEducation }"
                 >
                   {{ item.degree }}
                 </h3>
