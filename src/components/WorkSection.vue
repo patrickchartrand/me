@@ -94,7 +94,7 @@ const projects = computed(() => {
                 <p class="text-sm text-secondary">{{ project.category }}</p>
               </div>
               <span
-                class="shrink-0 text-xs bg-accent text-charcoal rounded-full px-4 py-1.5 mt-1 font-mono"
+                class="shrink-0 text-xs bg-accent text-cream rounded-full px-4 py-1.5 mt-1 font-mono"
               >
                 {{ project.year }}
               </span>
