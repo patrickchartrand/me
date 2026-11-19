@@ -123,6 +123,26 @@ export function useBudget() {
     return serialise(() => write(next, options))
   }
 
+  const CHANGED_ELSEWHERE = 'ce budget a changé ailleurs — la page a été rechargée'
+
+  /**
+   * Pull the server's prose into the field and say so, but only when it really
+   * differs. The replay writes `notes: fresh.notes` so the other client's text
+   * survives an expense edit — and then the textarea still held ours, so the
+   * next ordinary save sent the stale copy against a version that was current
+   * again. 200, no conflict, their note gone: the same lost update the ETag was
+   * added to stop, one write later. The guarantee has to reach the UI, not just
+   * the wire.
+   */
+  function reconcileNotes(serverNotes: string): boolean {
+    if (serverNotes === notes.value) return false
+    notes.value = serverNotes
+    // Nothing of theirs is pending any more; the field now mirrors the server.
+    notesPending = false
+    clearTimeout(timer)
+    return true
+  }
+
   async function write(next: MonthData, options: PushOptions) {
     // The error is cleared on success, not on entry: clearing it here let a
     // debounced notes save erase a failure the visitor had not read yet.
@@ -131,6 +151,7 @@ export function useBudget() {
     saving.value = true
     try {
       let saved: MonthSnapshot
+      let changedElsewhere = false
       try {
         saved = await saveMonth(month, next, version, options.keepalive)
       } catch (e) {
@@ -140,24 +161,51 @@ export function useBudget() {
         if (!options.reapply) {
           if (sequence === latest) {
             adopt(fresh)
-            notes.value = fresh.data.notes
-            error.value = 'ce budget a changé ailleurs — la page a été rechargée'
+            reconcileNotes(fresh.data.notes)
+            error.value = CHANGED_ELSEWHERE
           }
           return
         }
+        changedElsewhere = true
         saved = await saveMonth(month, options.reapply(fresh.data), version)
       }
       if (sequence === latest) {
         adopt(saved)
-        error.value = null
+        const notesMoved = changedElsewhere && reconcileNotes(saved.data.notes)
+        // A conflict notice outlives the write that reported it: clearing it
+        // here is what let the next successful save wipe a warning the visitor
+        // had not read.
+        error.value = notesMoved
+          ? CHANGED_ELSEWHERE
+          : error.value === CHANGED_ELSEWHERE
+            ? error.value
+            : null
       } else {
         // A newer save is already in flight; keep the version so it can write.
         version = saved.etag
       }
     } catch (e) {
       if (sequence === latest) {
-        options.rollback?.()
-        error.value = e instanceof Error ? e.message : 'unknown error'
+        if (e instanceof BudgetConflict) {
+          /*
+           * The replay conflicted too — two clients writing faster than this can
+           * settle. Rolling back to this tab's previous expenses would show
+           * figures that are not on the server and never were; the honest thing
+           * is the server's own state.
+           */
+          try {
+            const fresh = await fetchMonth(month)
+            version = fresh.etag
+            adopt(fresh)
+            reconcileNotes(fresh.data.notes)
+          } catch {
+            options.rollback?.()
+          }
+          error.value = CHANGED_ELSEWHERE
+        } else {
+          options.rollback?.()
+          error.value = e instanceof Error ? e.message : 'unknown error'
+        }
       }
     } finally {
       saving.value = --inFlight > 0
@@ -231,6 +279,8 @@ export function useBudget() {
   /** True between a keystroke and the debounced save actually firing. */
   let notesPending = false
   function notesChanged() {
+    // Typing is the acknowledgement: the visitor has seen the reloaded text.
+    if (error.value === CHANGED_ELSEWHERE) error.value = null
     clearTimeout(timer)
     notesPending = true
     timer = setTimeout(() => {
