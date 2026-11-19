@@ -150,7 +150,13 @@ export async function useDownload(
    * fetching and compiling html2pdf. The hidden region carries the delay now
    * and the label is painted complete.
    */
-  const announce = (message: string) => {
+  let settled = false
+  const announce = (message: string, final = false) => {
+    // A fast failure — a 404 on the page, an import that rejects at once — can
+    // reach the catch before the deferred progress message has landed, and the
+    // late one would then bury the only thing worth hearing.
+    if (settled) return
+    settled = final
     const status = overlay.querySelector('.pdf-status')
     if (status) status.textContent = message
   }
@@ -227,7 +233,7 @@ export async function useDownload(
         locale === 'en'
           ? 'Download failed — please try again'
           : 'Échec du téléchargement — veuillez réessayer'
-      announce(label.textContent)
+      announce(label.textContent, true)
     }
     await new Promise((resolve) => setTimeout(resolve, 1800))
   } finally {

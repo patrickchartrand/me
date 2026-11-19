@@ -81,13 +81,14 @@ async function request<T>(
   return { body: await readBody<T>(response), etag: response.headers.get('ETag') }
 }
 
-const asJson = (value: unknown, etag: string | null): RequestInit => ({
+const asJson = (value: unknown, etag: string | null, keepalive: boolean): RequestInit => ({
   method: 'PUT',
+  keepalive,
   headers: {
     'Content-Type': 'application/json',
     // Absent for a month with no document yet; the server then writes only if
     // one still does not exist.
-    ...(etag === null ? {} : { 'If-Match': etag }),
+    ...(etag ? { 'If-Match': etag } : {}),
   },
   body: JSON.stringify(value),
 })
@@ -107,10 +108,11 @@ export async function saveMonth(
   month: string,
   data: MonthData,
   etag: string | null,
+  keepalive = false,
 ): Promise<MonthSnapshot> {
   const { body, etag: next } = await request<Partial<MonthData>>(
     `${API}?scope=month&month=${month}`,
-    asJson(data, etag),
+    asJson(data, etag, keepalive),
   )
   return { data: asMonth(body), etag: next }
 }

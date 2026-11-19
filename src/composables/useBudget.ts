@@ -69,8 +69,21 @@ export function useBudget() {
    * which is the only thing the ETag was ever meant to catch.
    */
   let queue: Promise<void> = Promise.resolve()
+  let inQueue = 0
   const serialise = (work: () => Promise<void>): Promise<void> => {
-    const next = queue.then(work, work)
+    /*
+     * Idle means start now, in this very task, not on the next microtask. The
+     * visibilitychange flush exists for the visitor closing the tab mid
+     * sentence, and chaining it onto an already-settled promise pushed its
+     * request out of the handler — measured at 32ms late, which a closing tab
+     * does not owe anyone. Queuing only matters when something is actually in
+     * flight, which is the case this guard was written for.
+     */
+    inQueue++
+    const done = () => {
+      inQueue--
+    }
+    const next = inQueue === 1 ? work().finally(done) : queue.then(work, work).finally(done)
     queue = next.catch(() => {})
     return next
   }
@@ -99,17 +112,18 @@ export function useBudget() {
    * cannot: merging two people's prose produces nonsense, so a notes conflict
    * surfaces instead.
    */
-  function push(
-    next: MonthData,
-    options: { rollback?: () => void; reapply?: (fresh: MonthData) => MonthData } = {},
-  ): Promise<void> {
+  interface PushOptions {
+    rollback?: () => void
+    reapply?: (fresh: MonthData) => MonthData
+    /** Let the request outlive the page, for saves issued as the tab closes. */
+    keepalive?: boolean
+  }
+
+  function push(next: MonthData, options: PushOptions = {}): Promise<void> {
     return serialise(() => write(next, options))
   }
 
-  async function write(
-    next: MonthData,
-    options: { rollback?: () => void; reapply?: (fresh: MonthData) => MonthData },
-  ) {
+  async function write(next: MonthData, options: PushOptions) {
     // The error is cleared on success, not on entry: clearing it here let a
     // debounced notes save erase a failure the visitor had not read yet.
     const sequence = ++latest
@@ -118,7 +132,7 @@ export function useBudget() {
     try {
       let saved: MonthSnapshot
       try {
-        saved = await saveMonth(month, next, version)
+        saved = await saveMonth(month, next, version, options.keepalive)
       } catch (e) {
         if (!(e instanceof BudgetConflict)) throw e
         const fresh = await fetchMonth(month)
@@ -231,11 +245,11 @@ export function useBudget() {
     return push({ expenses: expenses.value, notes: notes.value })
   }
 
-  function flushNotes() {
+  function flushNotes(keepalive = false) {
     if (!notesPending) return
     clearTimeout(timer)
     notesPending = false
-    void push({ expenses: expenses.value, notes: notes.value })
+    void push({ expenses: expenses.value, notes: notes.value }, { keepalive })
   }
 
   /*
@@ -248,7 +262,7 @@ export function useBudget() {
    * an ordinary fetch still goes out.
    */
   const onHide = () => {
-    if (document.visibilityState === 'hidden') flushNotes()
+    if (document.visibilityState === 'hidden') flushNotes(true)
   }
   onMounted(() => document.addEventListener('visibilitychange', onHide))
   onUnmounted(() => {

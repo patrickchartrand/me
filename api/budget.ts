@@ -144,7 +144,11 @@ interface StoredJson {
 async function readJson(pathname: string, token: string): Promise<StoredJson> {
   const result = await get(pathname, { access: 'private', useCache: false, token })
   if (!result?.stream) return { data: null, etag: null }
-  const etag = typeof result.blob?.etag === 'string' ? result.blob.etag : null
+  // An empty string is not a version: passing it on would make the client send
+  // a blank If-Match, which this handler reads as "no precondition", so every
+  // save would take the create-only path and be refused forever.
+  const raw = result.blob?.etag
+  const etag = typeof raw === 'string' && raw !== '' ? raw : null
   try {
     return { data: JSON.parse(await new Response(result.stream).text()), etag }
   } catch {
