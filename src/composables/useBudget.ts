@@ -55,6 +55,26 @@ export function useBudget() {
   let inFlight = 0
   let latest = 0
 
+  /*
+   * One write at a time from this tab. Every save is conditional on `version`,
+   * and `version` only advances when a save returns, so two overlapping saves
+   * from the same page both carried the older one and the loser was refused by
+   * our own earlier write. Measured on a slowed connection: typing a note —
+   * which arms the 800 ms debounce — and adding an expense inside that window
+   * produced a 412 against this tab's own previous save, and the replay then
+   * appended an expense the winning save had already stored, leaving the month
+   * holding it twice.
+   *
+   * The queue removes the whole class: a conflict now means another client,
+   * which is the only thing the ETag was ever meant to catch.
+   */
+  let queue: Promise<void> = Promise.resolve()
+  const serialise = (work: () => Promise<void>): Promise<void> => {
+    const next = queue.then(work, work)
+    queue = next.catch(() => {})
+    return next
+  }
+
   /**
    * The version this page last read or wrote. Every save is conditional on it,
    * so a second tab cannot silently overwrite the first: the server refuses and
@@ -79,9 +99,16 @@ export function useBudget() {
    * cannot: merging two people's prose produces nonsense, so a notes conflict
    * surfaces instead.
    */
-  async function push(
+  function push(
     next: MonthData,
     options: { rollback?: () => void; reapply?: (fresh: MonthData) => MonthData } = {},
+  ): Promise<void> {
+    return serialise(() => write(next, options))
+  }
+
+  async function write(
+    next: MonthData,
+    options: { rollback?: () => void; reapply?: (fresh: MonthData) => MonthData },
   ) {
     // The error is cleared on success, not on entry: clearing it here let a
     // debounced notes save erase a failure the visitor had not read yet.
@@ -163,7 +190,13 @@ export function useBudget() {
       label: trimmed,
       amount: Math.round(amount * 100) / 100,
     }
-    await sync([...expenses.value, expense], (fresh) => [...fresh.expenses, expense])
+    await sync([...expenses.value, expense], (fresh) =>
+      // Idempotent by id: a replay must never append what the server already
+      // holds, or one expense becomes two.
+      fresh.expenses.some((e) => e.id === expense.id)
+        ? fresh.expenses
+        : [...fresh.expenses, expense],
+    )
     return true
   }
 
