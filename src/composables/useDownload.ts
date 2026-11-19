@@ -108,6 +108,20 @@ export async function useDownload(
         border-radius: 50%;
         animation: pdf-spin 0.8s linear infinite;
       }
+      /*
+       * will-change earns its place here, on 154x18 pixels.
+       *
+       * The spinner never blinked and this text did, which is the whole answer:
+       * the spinner animates a transform forever, so the compositor gives it a
+       * layer of its own and keeps presenting it while the main thread is busy.
+       * The dots animate opacity forever and get the same treatment. The words
+       * were the one part of the panel with no animation at all, so they were
+       * painted into the overlay's shared layer — the layer that cannot be
+       * repainted during the 1187ms the export blocks for.
+       *
+       * A layer of its own is what the spinner has and what this needs. The
+       * texture is tiny, unlike the viewport-sized one this was tried on before.
+       */
       .pdf-label {
         font-family: 'Inter', sans-serif;
         font-size: 0.75rem;
@@ -115,6 +129,7 @@ export async function useDownload(
         text-transform: uppercase;
         color: rgba(245,243,239,0.6);
         text-align: center;
+        will-change: transform;
       }
       .pdf-dot {
         display: inline-block;
