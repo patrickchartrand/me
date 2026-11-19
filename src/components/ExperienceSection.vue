@@ -108,7 +108,11 @@ const { spotlit: spotlitEducation } = useScrollSpotlight(educationList, educatio
   background-color: color-mix(in srgb, var(--lavender) 25%, transparent);
   transition: all 0.3s ease;
 }
-.highlight-offset-dark:hover::before {
-  height: 0.4lh;
+/* Hand-gated: a scoped rule is not Tailwind's to put behind a
+   pointer query, and on touch this one stuck after a tap. */
+@media (hover: hover) {
+  .highlight-offset-dark:hover::before {
+    height: 0.4lh;
+  }
 }
 </style>

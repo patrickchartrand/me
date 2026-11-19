@@ -9,12 +9,14 @@
 @source not '../../api';
 
 /*
- * v4 gates every hover: and group-hover: behind @media (hover: hover); v3.4 did
- * not. Restoring the ungated variant keeps all 28 hover call sites behaving as
- * they do today. Dropping this line is a deliberate design decision about touch
- * devices, not a cleanup.
+ * The ungated v3 variant used to be restored here, so hover: fired on touch as
+ * well. That is what made a tap leave a row lit, and once the experience list
+ * also lit the row under the midline you got two highlights at once. v4's
+ * default — @media (hover: hover) — is back, which is the decision the old
+ * comment here said was waiting to be made. All 38 call sites are decorative:
+ * colours, scale, shadows and one gradient wash, nothing that reveals or
+ * enables anything, so a touch screen simply does not get them.
  */
-@custom-variant hover (&:hover);
 
 /*
  * `inline` is load-bearing. Without it v4 compiles bg-available to

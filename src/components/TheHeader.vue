@@ -146,10 +146,17 @@ const navLinks = computed(() => [
   opacity: 0;
   transition: all 0.3s ease;
 }
-.nav-link-highlight:hover::before,
+/* Split on purpose: .nav-link-active is driven by the scroll and must keep
+   working on touch, so only the :hover half goes behind the pointer query. */
 .nav-link-active::before {
   opacity: 1;
   height: 60%;
+}
+@media (hover: hover) {
+  .nav-link-highlight:hover::before {
+    opacity: 1;
+    height: 60%;
+  }
 }
 
 .mobile-menu-enter-active,

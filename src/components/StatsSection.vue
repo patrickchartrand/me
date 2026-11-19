@@ -121,7 +121,9 @@ onUnmounted(() => {
   transform-origin: left center;
 }
 
-.group:hover .stat-number::after {
-  width: 95%;
+@media (hover: hover) {
+  .group:hover .stat-number::after {
+    width: 95%;
+  }
 }
 </style>
