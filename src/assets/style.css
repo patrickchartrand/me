@@ -50,6 +50,15 @@
 @layer base {
   /* The header is fixed and 72px tall, so an anchor jump has to stop short of it
      or it lands the section's first line underneath. */
+  /* The cream lived on App.vue's wrapper div inside #app, leaving the canvas
+     the browser's white: a white band on overscroll, and a white first paint
+     until the bundle mounts. The canvas is painted from html, not from an
+     in-flow child. */
+  html,
+  body {
+    background-color: #f5f3ef;
+  }
+
   html {
     scroll-padding-top: 6rem;
   }
@@ -60,11 +69,19 @@
   }
 
   /* Only the work cards had a designed focus ring; everything else fell back to
-     whatever the browser draws, which on a cream ground is barely there. */
+     whatever the browser draws, which on a cream ground is barely there.
+
+     Two rings, because the site has two grounds. A single #3d405b ring was the
+     footer's own bg-primary — 1.00:1, literally invisible for all eight of its
+     controls — and only 1.78:1 on #experience's bg-charcoal. The cream band
+     hugs the element and carries the dark sections (9.1:1 on the footer,
+     15.7:1 on charcoal); the charcoal ring just outside it carries the cream
+     ground (15.7:1), where the band itself disappears. */
   a:focus-visible,
   button:focus-visible {
-    outline: 2px solid #3d405b;
-    outline-offset: 4px;
+    outline: 2px solid #1a1a1a;
+    outline-offset: 3px;
+    box-shadow: 0 0 0 3px #f5f3ef;
     border-radius: 2px;
   }
 
