@@ -5,6 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <!-- A static baseline for everything that does not run JavaScript: Slack,
+         Discord, LinkedIn, iMessage and every other unfurler parse this shell
+         and nothing else, so without these a shared link rendered as a bare URL
+         with no headline, summary or thumbnail. useHead in IndexView overrides
+         all of it once the bundle mounts, and follows the chosen locale; these
+         carry the default locale (en) that i18n/index.ts falls back to. -->
+    <title>Patrick Chartrand — UI Designer &amp; Frontend Developer · Webmaster</title>
+    <meta
+      name="description"
+      content="I come from writing and publishing, and this background shapes how I think about structure, hierarchy, and clarity. Today I bridge design and code, building component-driven interfaces and design systems that are as easy to maintain as they are to use."
+    />
+    <meta name="author" content="Patrick Chartrand" />
+    <link rel="canonical" href="https://patrickchartrand.dev" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Patrick Chartrand" />
+    <meta property="og:url" content="https://patrickchartrand.dev" />
+    <meta property="og:locale" content="en_CA" />
+    <meta
+      property="og:title"
+      content="Patrick Chartrand — UI Designer &amp; Frontend Developer · Webmaster"
+    />
+    <meta
+      property="og:description"
+      content="I come from writing and publishing, and this background shapes how I think about structure, hierarchy, and clarity. Today I bridge design and code, building component-driven interfaces and design systems that are as easy to maintain as they are to use."
+    />
+    <meta property="og:image" content="https://patrickchartrand.dev/images/profil.jpg" />
+    <meta property="og:image:width" content="400" />
+    <meta property="og:image:height" content="400" />
+    <meta property="og:image:alt" content="Patrick Chartrand" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="Patrick Chartrand — UI Designer &amp; Frontend Developer · Webmaster"
+    />
+    <meta
+      name="twitter:description"
+      content="I come from writing and publishing, and this background shapes how I think about structure, hierarchy, and clarity. Today I bridge design and code, building component-driven interfaces and design systems that are as easy to maintain as they are to use."
+    />
+    <meta name="twitter:image" content="https://patrickchartrand.dev/images/profil.jpg" />
+
     <!-- Font Awesome: CSS only. The JS build weighs 1.47 MB, replaces the
          glyphs with SVG for no visible gain, and no fa- class appears in src/.
          The stylesheet stays because public/site/letter.html uses fa- icons in
