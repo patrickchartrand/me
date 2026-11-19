@@ -80,7 +80,14 @@ export async function useDownload(
 
   const overlay = document.createElement('div')
   overlay.style.cssText =
-    'position:fixed;inset:0;z-index:9999;background:#3d405b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;'
+    'position:fixed;inset:0;z-index:9999;background:#3d405b;display:flex;flex-direction:column;' +
+    // Its own compositing layer, and painting contained to it. html2pdf drops a
+    // full-viewport fixed element of its own underneath this one partway through
+    // (measured arriving at ~870ms), and html2canvas then allocates a 1588x2545
+    // raster, all while the main thread is blocked in stretches of 595ms and
+    // 653ms — long enough that a repaint of this panel cannot be serviced. On its
+    // own layer it is rasterised once and keeps being composited regardless.
+    'align-items:center;justify-content:center;gap:1.5rem;will-change:transform;contain:paint;'
   /*
    * The dots carry `both` for the backwards half: without it a delayed element
    * keeps its normal style — opacity 1 — for the whole animation-delay and only
