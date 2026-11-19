@@ -84,6 +84,8 @@ const socialLinks = [
             <button
               type="button"
               class="group inline-flex items-center gap-4 bg-[#63667b] text-cream px-8 py-4 rounded-full font-medium hover:bg-[#767a90] hover:scale-105 transition-all duration-300"
+              @pointerenter="prefetchExporter()"
+              @focus="prefetchExporter()"
               @click="
                 useDownload(locale, { filename: 'pchartrand-cv.pdf', filepath: '/site/cv.html' })
               "
@@ -114,6 +116,7 @@ const socialLinks = [
             loading="lazy"
             decoding="async"
             class="blob-avatar xl:ml-auto mb-8 h-44 w-44 md:h-56 md:w-56 object-cover ring-1 ring-white/15 shadow-md shadow-black/20"
+            @pointerenter="prefetchExporter()"
             @dblclick="
               useDownload(locale, {
                 filename: 'pchartrand-letter.pdf',

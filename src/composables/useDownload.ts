@@ -15,6 +15,27 @@
 let running = false
 
 /**
+ * Warms the 976 kB exporter so the first export is not also its first fetch.
+ *
+ * The visitor reports the loading label blinking only on the first export of a
+ * page load, and that is the run where this import is still being fetched and
+ * compiled: long-animation-frame puts the main thread under 1187ms of blocking
+ * across three frames, with renders landing 400 to 750ms apart. The label is
+ * the one part of the panel made of glyphs — the spinner is a bordered circle
+ * and never blinks — and glyphs cannot be re-rasterised while the thread is
+ * held like that.
+ *
+ * Called on hover and focus of the two controls, so the module is usually
+ * compiled before the click. Idempotent, and the export awaits the same promise
+ * rather than starting a second one.
+ */
+let exporter: Promise<typeof import('html2pdf.js')> | null = null
+export function prefetchExporter() {
+  exporter ??= import('html2pdf.js')
+  return exporter
+}
+
+/**
  * A frame, or 50 ms, whichever comes first.
  *
  * requestAnimationFrame does not fire in a backgrounded tab. Awaiting a bare
@@ -211,7 +232,7 @@ export async function useDownload(
   let container: HTMLDivElement | null = null
 
   try {
-    const html2pdf = (await import('html2pdf.js')).default
+    const html2pdf = (await prefetchExporter()).default
 
     const response = await fetch(filepath)
     if (!response.ok) throw new Error(`${filepath} answered ${response.status}`)
