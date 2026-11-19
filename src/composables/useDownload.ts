@@ -14,6 +14,28 @@
 /** Shared across both buttons on purpose: one export at a time. */
 let running = false
 
+/**
+ * A frame, or 50 ms, whichever comes first.
+ *
+ * requestAnimationFrame does not fire in a backgrounded tab. Awaiting a bare
+ * one inside the teardown meant a visitor who clicked download and switched
+ * tabs could leave the finally parked indefinitely — overlay up, #app inert,
+ * `running` still true, the buttons dead until they came back. The timeout is
+ * the floor that keeps every exit path moving.
+ */
+function nextFrame(): Promise<void> {
+  return new Promise((resolve) => {
+    let settled = false
+    const finish = () => {
+      if (settled) return
+      settled = true
+      resolve()
+    }
+    requestAnimationFrame(finish)
+    setTimeout(finish, 50)
+  })
+}
+
 export async function useDownload(
   locale: string,
   { filename, filepath }: { filename: string; filepath: string },
@@ -39,6 +61,13 @@ export async function useDownload(
    * the page scrolling, it does nothing for focus.
    */
   const appRoot = document.getElementById('app')
+  /*
+   * inert blurs whatever had focus, and the browser drops it on <body> — which
+   * sends a keyboard visitor back to the top of the document, the very thing
+   * useMobileMenu was fixed for. Remember the trigger and hand it back.
+   */
+  const trigger = document.activeElement
+  const returnFocusTo = trigger instanceof HTMLElement && trigger !== document.body ? trigger : null
   appRoot?.setAttribute('inert', '')
 
   const overlay = document.createElement('div')
@@ -82,16 +111,26 @@ export async function useDownload(
         display: inline-block;
         animation: pdf-pulse 0.6s ease-in-out infinite alternate both;
       }
-      .pdf-dot:nth-child(2) { animation-delay: 0.2s; }
-      .pdf-dot:nth-child(3) { animation-delay: 0.4s; }
+      .pdf-dot + .pdf-dot { animation-delay: 0.2s; }
+      .pdf-dot + .pdf-dot + .pdf-dot { animation-delay: 0.4s; }
     </style>
     <div class="pdf-spinner" aria-hidden="true"></div>
-    <div class="pdf-label" role="status">
-      ${locale === 'en' ? 'Generating PDF' : 'Génération du PDF'}
-      <span class="pdf-dot">.</span><span class="pdf-dot">.</span><span class="pdf-dot">.</span>
-    </div>
+    <div class="pdf-label" role="status"><span class="pdf-text"></span><span
+      class="pdf-dot" aria-hidden="true">.</span><span class="pdf-dot" aria-hidden="true">.</span><span
+      class="pdf-dot" aria-hidden="true">.</span></div>
   `
   document.body.appendChild(overlay)
+
+  /*
+   * The text lands a frame after the region does. A live region inserted with
+   * its message already inside counts as initial content, which screen readers
+   * do not announce — so pressing the button said nothing at all until the
+   * failure case replaced the text much later.
+   */
+  void nextFrame().then(() => {
+    const text = overlay.querySelector('.pdf-text')
+    if (text) text.textContent = locale === 'en' ? 'Generating PDF' : 'Génération du PDF'
+  })
 
   let container: HTMLDivElement | null = null
 
@@ -169,6 +208,7 @@ export async function useDownload(
   } finally {
     container?.remove()
     appRoot?.removeAttribute('inert')
+    returnFocusTo?.focus()
 
     /*
      * html2pdf appends an overlay of its own to <body> — fixed, inset 0,
@@ -196,7 +236,7 @@ export async function useDownload(
      */
     document.documentElement.style.overflow = ''
     for (let frame = 0; frame < 10 && window.scrollY !== scrollTop; frame++) {
-      await new Promise((resolve) => requestAnimationFrame(resolve))
+      await nextFrame()
       window.scrollTo({ top: scrollTop, behavior: 'instant' as ScrollBehavior })
     }
 
