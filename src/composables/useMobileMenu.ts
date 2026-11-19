@@ -51,9 +51,19 @@ export function useMobileMenu() {
   const toggleMobileMenu = () => (mobileMenuOpen.value ? closeMobileMenu() : openMobileMenu())
 
   const onBreakpoint = (event: MediaQueryListEvent) => {
-    if (event.matches) {
-      mobileMenuOpen.value = false
-      lockBackground(false)
+    if (!event.matches) return
+    /*
+     * Widening past md pulls the overlay out from under the keyboard, and
+     * closeMobileMenu is no help here: the hamburger it hands focus back to is
+     * md:hidden by now, so focus would land on <body>. Send it to the nav that
+     * just replaced the overlay instead — but only if it was inside, or this
+     * would steal focus from wherever the visitor actually was.
+     */
+    const cameFromInside = document.activeElement?.closest('#mobile-menu') != null
+    mobileMenuOpen.value = false
+    lockBackground(false)
+    if (cameFromInside) {
+      document.querySelector<HTMLElement>('#header nav a')?.focus()
     }
   }
 

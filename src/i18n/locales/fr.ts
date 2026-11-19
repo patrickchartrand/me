@@ -13,6 +13,7 @@ export default {
     },
     ariaOpen: 'Ouvrir le menu',
     ariaClose: 'Fermer le menu',
+    ariaMenu: 'Menu de navigation',
   },
 
   hero: {

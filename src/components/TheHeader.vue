@@ -97,6 +97,7 @@ const navLinks = computed(() => [
       ref="menuPanel"
       role="dialog"
       aria-modal="true"
+      :aria-label="t('header.ariaMenu')"
       tabindex="-1"
       class="fixed inset-0 z-40 bg-cream flex flex-col justify-center items-center gap-10"
       @keydown.esc="closeMobileMenu"
