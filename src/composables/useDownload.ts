@@ -52,6 +52,14 @@ export async function useDownload(
    * position is not, so it is captured here and put back in the finally.
    */
   const scrollTop = window.scrollY
+  /*
+   * Which page that offset belongs to. Nothing cancels this function on
+   * unmount — it is called straight from a template handler — and inert does
+   * not reach the browser's own Back button, so a visitor who navigates during
+   * the several seconds of opaque overlay would otherwise have the teardown
+   * force the portfolio's offset onto whatever page is showing by then.
+   */
+  const scrollOrigin = window.location.pathname
   document.documentElement.style.overflow = 'hidden'
 
   /*
@@ -235,9 +243,24 @@ export async function useDownload(
      * still-opaque overlay; a visitor who never scrolled exits on the first test.
      */
     document.documentElement.style.overflow = ''
-    for (let frame = 0; frame < 10 && window.scrollY !== scrollTop; frame++) {
-      await nextFrame()
-      window.scrollTo({ top: scrollTop, behavior: 'instant' as ScrollBehavior })
+    if (window.location.pathname === scrollOrigin) {
+      /*
+       * Hold the offset until it stops moving, rather than until it first
+       * matches. Exiting on the first match let the loop finish before the
+       * height had finished coming back, and scroll anchoring then nudged the
+       * page 12px once it did — measured against a control that showed no
+       * drift at all over ten seconds without an export.
+       */
+      let stable = 0
+      for (let frame = 0; frame < 10 && stable < 3; frame++) {
+        await nextFrame()
+        if (window.scrollY === scrollTop) {
+          stable++
+        } else {
+          stable = 0
+          window.scrollTo({ top: scrollTop, behavior: 'instant' as ScrollBehavior })
+        }
+      }
     }
 
     overlay.style.transition = 'opacity 0.4s ease'
