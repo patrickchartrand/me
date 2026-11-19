@@ -82,12 +82,22 @@ export function useBudget() {
     })
   }
 
-  function addExpense(label: string, amount: number) {
+  /**
+   * Resolves false when the entry was refused, so the caller knows not to clear
+   * the form. BudgetView used to read `!error.value` as success, but the
+   * validation refusals below never set `error` — a whitespace-only label got
+   * past the input's `required`, was dropped here, and took the typed amount
+   * with it when the fields were cleared.
+   */
+  async function addExpense(label: string, amount: number): Promise<boolean> {
     const trimmed = label.trim()
-    if (trimmed === '' || !Number.isFinite(amount) || amount <= 0) return
+    if (trimmed === '' || !Number.isFinite(amount) || amount <= 0) {
+      error.value = 'une dépense a besoin d’un libellé et d’un montant supérieur à zéro'
+      return false
+    }
     if (currentMonth() !== month) {
       error.value = 'le mois a changé depuis l’ouverture de la page — rechargez-la'
-      return
+      return false
     }
     const expense: Expense = {
       id: crypto.randomUUID(),
@@ -95,7 +105,8 @@ export function useBudget() {
       label: trimmed,
       amount: Math.round(amount * 100) / 100,
     }
-    return sync([...expenses.value, expense])
+    await sync([...expenses.value, expense])
+    return true
   }
 
   function removeExpense(id: string) {
@@ -124,10 +135,30 @@ export function useBudget() {
     return push({ expenses: expenses.value, notes: notes.value })
   }
 
-  // Anything typed inside the debounce window was lost on the way out.
-  onUnmounted(() => {
+  function flushNotes() {
+    if (!notesPending) return
     clearTimeout(timer)
-    if (notesPending) void push({ expenses: expenses.value, notes: notes.value })
+    notesPending = false
+    void push({ expenses: expenses.value, notes: notes.value })
+  }
+
+  /*
+   * onUnmounted covers an SPA route change, but Vue does not unmount on page
+   * unload, and the other flush — @blur — needs focus to move. Closing the tab
+   * mid-sentence therefore dropped everything typed inside the 800 ms debounce,
+   * which re-arms on every keystroke and so never fires while you are still
+   * typing. visibilitychange is the one event that fires reliably on tab close,
+   * tab switch and mobile backgrounding, and the page is still alive there, so
+   * an ordinary fetch still goes out.
+   */
+  const onHide = () => {
+    if (document.visibilityState === 'hidden') flushNotes()
+  }
+  onMounted(() => document.addEventListener('visibilitychange', onHide))
+  onUnmounted(() => {
+    document.removeEventListener('visibilitychange', onHide)
+    clearTimeout(timer)
+    flushNotes()
   })
 
   return {

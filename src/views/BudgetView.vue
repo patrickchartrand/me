@@ -26,8 +26,8 @@ const amount = ref<number | null>(null)
 async function submit() {
   if (amount.value === null) return
   const typed = { label: label.value, amount: amount.value }
-  await addExpense(typed.label, typed.amount)
-  if (!error.value) {
+  const added = await addExpense(typed.label, typed.amount)
+  if (added && !error.value) {
     label.value = ''
     amount.value = null
   }
