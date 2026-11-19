@@ -27,12 +27,12 @@ const { t } = useI18n()
             {{ t('hero.bio') }}
           </p>
         </div>
-        <div class="flex flex-col gap-2 text-right shrink-0">
+        <div class="flex flex-col gap-2 shrink-0 md:text-right">
           <span class="text-xs uppercase tracking-[0.2em] text-secondary">{{
             t('hero.basedLabel')
           }}</span>
           <span class="text-xl font-serif">{{ t('hero.basedCity') }}</span>
-          <div class="flex items-center gap-2 mt-2 justify-end">
+          <div class="flex items-center gap-2 mt-2 md:justify-end">
             <span class="relative flex h-2.5 w-2.5">
               <span
                 class="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-available opacity-75"
