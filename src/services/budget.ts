@@ -38,7 +38,20 @@ class BudgetUnavailable extends Error {
   }
 }
 
+/**
+ * The server refused the write because the month moved since it was read —
+ * another tab or device saved in between. Separate from BudgetUnavailable
+ * because it is recoverable: re-read, re-apply, write again.
+ */
+export class BudgetConflict extends Error {
+  constructor() {
+    super('ce budget a changé ailleurs depuis son chargement')
+    this.name = 'BudgetConflict'
+  }
+}
+
 async function readBody<T>(response: Response): Promise<T> {
+  if (response.status === 412) throw new BudgetConflict()
   const type = response.headers.get('Content-Type') ?? ''
   if (!type.includes('json')) {
     throw new BudgetUnavailable(
@@ -52,7 +65,11 @@ async function readBody<T>(response: Response): Promise<T> {
   return body
 }
 
-async function request<T>(url: string, init?: RequestInit): Promise<T> {
+/** The ETag travels beside the body: callers need the version, not just the data. */
+async function request<T>(
+  url: string,
+  init?: RequestInit,
+): Promise<{ body: T; etag: string | null }> {
   let response: Response
   try {
     response = await fetch(url, { cache: 'no-store', ...init })
@@ -61,26 +78,44 @@ async function request<T>(url: string, init?: RequestInit): Promise<T> {
       e instanceof Error ? `request failed (${e.message})` : 'request failed',
     )
   }
-  return readBody<T>(response)
+  return { body: await readBody<T>(response), etag: response.headers.get('ETag') }
 }
 
-const asJson = (value: unknown): RequestInit => ({
+const asJson = (value: unknown, etag: string | null): RequestInit => ({
   method: 'PUT',
-  headers: { 'Content-Type': 'application/json' },
+  headers: {
+    'Content-Type': 'application/json',
+    // Absent for a month with no document yet; the server then writes only if
+    // one still does not exist.
+    ...(etag === null ? {} : { 'If-Match': etag }),
+  },
   body: JSON.stringify(value),
 })
 
-export async function fetchMonth(month: string): Promise<MonthData> {
-  const body = await request<Partial<MonthData>>(`${API}?scope=month&month=${month}`)
-  return { expenses: body.expenses ?? [], notes: body.notes ?? '' }
+const asMonth = (body: Partial<MonthData>): MonthData => ({
+  expenses: body.expenses ?? [],
+  notes: body.notes ?? '',
+})
+
+export async function fetchMonth(month: string): Promise<MonthSnapshot> {
+  const { body, etag } = await request<Partial<MonthData>>(`${API}?scope=month&month=${month}`)
+  return { data: asMonth(body), etag }
 }
 
-export async function saveMonth(month: string, data: MonthData): Promise<MonthData> {
-  const body = await request<Partial<MonthData>>(`${API}?scope=month&month=${month}`, asJson(data))
-  return { expenses: body.expenses ?? [], notes: body.notes ?? '' }
+/** Throws BudgetConflict when `etag` is no longer the current version. */
+export async function saveMonth(
+  month: string,
+  data: MonthData,
+  etag: string | null,
+): Promise<MonthSnapshot> {
+  const { body, etag: next } = await request<Partial<MonthData>>(
+    `${API}?scope=month&month=${month}`,
+    asJson(data, etag),
+  )
+  return { data: asMonth(body), etag: next }
 }
 
 export async function fetchFixed(): Promise<FixedBudget | null> {
-  const body = await request<FixedBudget & { empty?: boolean }>(`${API}?scope=fixed`)
+  const { body } = await request<FixedBudget & { empty?: boolean }>(`${API}?scope=fixed`)
   return body.empty ? null : body
 }

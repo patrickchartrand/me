@@ -1,4 +1,4 @@
-import { get, put } from '@vercel/blob'
+import { BlobPreconditionFailedError, get, put } from '@vercel/blob'
 import { createRemoteJWKSet, jwtVerify } from 'jose'
 
 const TEAM_DOMAIN = 'https://yellow-dawn-11c1.cloudflareaccess.com'
@@ -130,23 +130,54 @@ function cleanFixed(raw: unknown): FixedBudget {
   }
 }
 
-async function readJson(pathname: string, token: string): Promise<unknown | null> {
+/**
+ * The ETag comes back with the document because every write is conditional on
+ * it. `etag` is null when the blob does not exist yet, which is a real state —
+ * a month nobody has saved into — and the caller's first write is then
+ * conditional on it still not existing.
+ */
+interface StoredJson {
+  data: unknown | null
+  etag: string | null
+}
+
+async function readJson(pathname: string, token: string): Promise<StoredJson> {
   const result = await get(pathname, { access: 'private', useCache: false, token })
-  if (!result?.stream) return null
+  if (!result?.stream) return { data: null, etag: null }
+  const etag = typeof result.blob?.etag === 'string' ? result.blob.etag : null
   try {
-    return JSON.parse(await new Response(result.stream).text())
+    return { data: JSON.parse(await new Response(result.stream).text()), etag }
   } catch {
-    return null
+    return { data: null, etag }
   }
 }
 
-async function writeJson(pathname: string, value: unknown, token: string): Promise<void> {
-  await put(pathname, JSON.stringify(value), {
+/**
+ * Returns the ETag of what was just written, so the caller can keep writing.
+ * With no ifMatch the write is create-only: that is the first save of a month,
+ * and it must still lose if another client created the document meanwhile.
+ */
+async function writeJson(
+  pathname: string,
+  value: unknown,
+  token: string,
+  ifMatch: string | null,
+): Promise<string> {
+  const result = await put(pathname, JSON.stringify(value), {
     access: 'private',
-    allowOverwrite: true,
     contentType: 'application/json',
     token,
+    ...(ifMatch === null ? { allowOverwrite: false } : { allowOverwrite: true, ifMatch }),
   })
+  return result.etag
+}
+
+/** put() reports a lost race either as a failed precondition or, on the
+ *  create-only path, as the blob already existing. Both mean the same thing to
+ *  the caller: you were working from a version that is no longer current. */
+function isLostRace(e: unknown): boolean {
+  if (e instanceof BlobPreconditionFailedError) return true
+  return e instanceof Error && /already exists|precondition/i.test(e.message)
 }
 
 interface ApiRequest {
@@ -189,8 +220,8 @@ export default async function handler(request: ApiRequest, response: ApiResponse
     // session cannot rewrite the budget itself — only the month's expenses.
     if (scope === 'fixed') {
       if (method === 'GET') {
-        const stored = await readJson('budget/fixed.json', token)
-        return reply(200, stored === null ? { empty: true } : cleanFixed(stored))
+        const { data } = await readJson('budget/fixed.json', token)
+        return reply(200, data === null ? { empty: true } : cleanFixed(data))
       }
       return reply(405, { error: 'Method not allowed.' })
     }
@@ -203,7 +234,9 @@ export default async function handler(request: ApiRequest, response: ApiResponse
       const pathname = `budget/${month}.json`
 
       if (method === 'GET') {
-        return reply(200, { month, ...cleanMonth(await readJson(pathname, token)) })
+        const { data, etag } = await readJson(pathname, token)
+        if (etag !== null) response.setHeader('ETag', etag)
+        return reply(200, { month, ...cleanMonth(data) })
       }
       if (method === 'PUT') {
         // cleanMonth turns anything unrecognisable into an empty month, so
@@ -217,7 +250,23 @@ export default async function handler(request: ApiRequest, response: ApiResponse
           return reply(400, { error: 'Expected a JSON object.' })
         }
         const data = cleanMonth(request.body)
-        await writeJson(pathname, data, token)
+        const header = request.headers['if-match']
+        const ifMatch = typeof header === 'string' && header !== '' ? header : null
+        try {
+          response.setHeader('ETag', await writeJson(pathname, data, token, ifMatch))
+        } catch (e) {
+          if (!isLostRace(e)) throw e
+          /*
+           * The document moved under this client — another tab or device wrote
+           * it between their read and this write. Refusing is the whole point:
+           * the body they sent is a full month assembled from a stale snapshot,
+           * so applying it would silently erase whatever the other write added.
+           */
+          return reply(412, {
+            error: 'Ce budget a changé ailleurs depuis son chargement.',
+            conflict: true,
+          })
+        }
         return reply(200, { month, ...data })
       }
       return reply(405, { error: 'Method not allowed.' })

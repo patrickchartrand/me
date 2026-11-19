@@ -37,7 +37,7 @@ function budgetApiDevServer(): Plugin {
 
   interface Store {
     fixed?: FixedBudget
-    months?: Record<string, { expenses: unknown[]; notes: string }>
+    months?: Record<string, { expenses: unknown[]; notes: string; etag?: string }>
   }
 
   /**
@@ -139,6 +139,9 @@ function budgetApiDevServer(): Plugin {
 
           if (request.method === 'GET') {
             const stored = read().months?.[month]
+            // Mirrors production: no document yet means no version, and the
+            // client's first write is then conditional on it still being absent.
+            if (stored?.etag) response.setHeader('ETag', stored.etag)
             return reply({ month, expenses: stored?.expenses ?? [], notes: stored?.notes ?? '' })
           }
           if (request.method === 'PUT') {
@@ -149,11 +152,31 @@ function budgetApiDevServer(): Plugin {
                 return reply({ error: 'Expected a JSON object.' }, 400)
               }
               const data = received as { expenses?: unknown[]; notes?: string }
-              const entry = { expenses: data.expenses ?? [], notes: data.notes ?? '' }
               const store = read()
+              const current = store.months?.[month]
+              /*
+               * The same optimistic-concurrency check the Blob store performs in
+               * production. Without it here the conflict path would be
+               * unreachable under `vite dev` and so never exercised.
+               */
+              const sent = request.headers['if-match']
+              const expected = current?.etag ?? null
+              const given = typeof sent === 'string' && sent !== '' ? sent : null
+              if (given !== expected) {
+                return reply(
+                  { error: 'Ce budget a changé ailleurs depuis son chargement.', conflict: true },
+                  412,
+                )
+              }
+              const entry = {
+                expenses: data.expenses ?? [],
+                notes: data.notes ?? '',
+                etag: `"dev-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}"`,
+              }
               store.months = { ...store.months, [month]: entry }
               write(store)
-              reply({ month, ...entry })
+              response.setHeader('ETag', entry.etag)
+              reply({ month, expenses: entry.expenses, notes: entry.notes })
             })
             return
           }

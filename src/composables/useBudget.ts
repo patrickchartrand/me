@@ -1,4 +1,5 @@
 import {
+  BudgetConflict,
   computeTotals,
   currentMonth,
   fetchFixed,
@@ -36,8 +37,9 @@ export function useBudget() {
         throw new Error('les charges fixes sont introuvables dans le stockage privé')
       }
       fixed.value = standing
-      expenses.value = current.expenses
-      notes.value = current.notes
+      expenses.value = current.data.expenses
+      notes.value = current.data.notes
+      version = current.etag
     } catch (e) {
       error.value = e instanceof Error ? e.message : 'unknown error'
     } finally {
@@ -52,21 +54,68 @@ export function useBudget() {
    */
   let inFlight = 0
   let latest = 0
-  async function push(next: MonthData, rollback?: () => void) {
+
+  /**
+   * The version this page last read or wrote. Every save is conditional on it,
+   * so a second tab cannot silently overwrite the first: the server refuses and
+   * we re-read before trying again.
+   */
+  let version: string | null = null
+
+  function adopt(snapshot: MonthSnapshot) {
+    expenses.value = snapshot.data.expenses
+    version = snapshot.etag
+  }
+
+  /**
+   * `reapply` turns the refusal into a retry. On a conflict the whole-document
+   * body we sent is stale by definition, so it is thrown away and the same
+   * intent — add this expense, drop that id — is replayed against whatever the
+   * server actually holds now. One retry only: a second conflict means two
+   * clients are writing faster than this can settle, and the honest answer is
+   * to show the server's state and stop.
+   *
+   * Expense edits can reapply because they are deltas with stable ids. Notes
+   * cannot: merging two people's prose produces nonsense, so a notes conflict
+   * surfaces instead.
+   */
+  async function push(
+    next: MonthData,
+    options: { rollback?: () => void; reapply?: (fresh: MonthData) => MonthData } = {},
+  ) {
     // The error is cleared on success, not on entry: clearing it here let a
     // debounced notes save erase a failure the visitor had not read yet.
     const sequence = ++latest
     inFlight++
     saving.value = true
     try {
-      const saved = await saveMonth(month, next)
+      let saved: MonthSnapshot
+      try {
+        saved = await saveMonth(month, next, version)
+      } catch (e) {
+        if (!(e instanceof BudgetConflict)) throw e
+        const fresh = await fetchMonth(month)
+        version = fresh.etag
+        if (!options.reapply) {
+          if (sequence === latest) {
+            adopt(fresh)
+            notes.value = fresh.data.notes
+            error.value = 'ce budget a changé ailleurs — la page a été rechargée'
+          }
+          return
+        }
+        saved = await saveMonth(month, options.reapply(fresh.data), version)
+      }
       if (sequence === latest) {
-        expenses.value = saved.expenses
+        adopt(saved)
         error.value = null
+      } else {
+        // A newer save is already in flight; keep the version so it can write.
+        version = saved.etag
       }
     } catch (e) {
       if (sequence === latest) {
-        rollback?.()
+        options.rollback?.()
         error.value = e instanceof Error ? e.message : 'unknown error'
       }
     } finally {
@@ -74,12 +123,21 @@ export function useBudget() {
     }
   }
 
-  function sync(next: Expense[]) {
+  /** `reapply` replays the same change onto the server's current expenses. */
+  function sync(next: Expense[], reapply: (fresh: MonthData) => Expense[]) {
     const previous = expenses.value
     expenses.value = next
-    return push({ expenses: next, notes: notes.value }, () => {
-      expenses.value = previous
-    })
+    return push(
+      { expenses: next, notes: notes.value },
+      {
+        rollback: () => {
+          expenses.value = previous
+        },
+        // notes come from the server, never from this tab: the conflict means
+        // someone else wrote, and their notes must survive an expense edit.
+        reapply: (fresh) => ({ expenses: reapply(fresh), notes: fresh.notes }),
+      },
+    )
   }
 
   /**
@@ -105,16 +163,21 @@ export function useBudget() {
       label: trimmed,
       amount: Math.round(amount * 100) / 100,
     }
-    await sync([...expenses.value, expense])
+    await sync([...expenses.value, expense], (fresh) => [...fresh.expenses, expense])
     return true
   }
 
   function removeExpense(id: string) {
-    return sync(expenses.value.filter((e) => e.id !== id))
+    return sync(
+      expenses.value.filter((e) => e.id !== id),
+      (fresh) => fresh.expenses.filter((e) => e.id !== id),
+    )
   }
 
   function removeAllExpenses() {
-    return sync([])
+    // Clearing the month is absolute: it means every expense, including any the
+    // other tab added while this one was open.
+    return sync([], () => [])
   }
 
   let timer: ReturnType<typeof setTimeout> | undefined
