@@ -15,27 +15,6 @@
 let running = false
 
 /**
- * Warms the 976 kB exporter so the first export is not also its first fetch.
- *
- * The visitor reports the loading label blinking only on the first export of a
- * page load, and that is the run where this import is still being fetched and
- * compiled: long-animation-frame puts the main thread under 1187ms of blocking
- * across three frames, with renders landing 400 to 750ms apart. The label is
- * the one part of the panel made of glyphs — the spinner is a bordered circle
- * and never blinks — and glyphs cannot be re-rasterised while the thread is
- * held like that.
- *
- * Called on hover and focus of the two controls, so the module is usually
- * compiled before the click. Idempotent, and the export awaits the same promise
- * rather than starting a second one.
- */
-let exporter: Promise<typeof import('html2pdf.js')> | null = null
-export function prefetchExporter() {
-  exporter ??= import('html2pdf.js')
-  return exporter
-}
-
-/**
  * A frame, or 50 ms, whichever comes first.
  *
  * requestAnimationFrame does not fire in a backgrounded tab. Awaiting a bare
@@ -101,18 +80,15 @@ export async function useDownload(
 
   const overlay = document.createElement('div')
   overlay.style.cssText =
-    'position:fixed;inset:0;z-index:9999;background:#3d405b;display:flex;flex-direction:column;' +
-    // contain:paint keeps this panel's painting to itself. The companion rule in
-    // the stylesheet below is what actually clears the viewport for it.
-    'align-items:center;justify-content:center;gap:1.5rem;contain:paint;'
+    'position:fixed;inset:0;z-index:9999;background:#3d405b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;'
   /*
    * The dots carry `both` for the backwards half: without it a delayed element
    * keeps its normal style — opacity 1 — for the whole animation-delay and only
    * snaps to the first keyframe once that delay elapses. The two trailing dots
    * therefore sat lit at full brightness and blinked out 234 ms and 410 ms after
-   * the overlay appeared. They pulse on opacity alone, too: the fade they used
-   * to share with the label bobbed each dot 8px, which is not what a pulsing
-   * ellipsis should do.
+   * the overlay appeared, while the label was still fading in. They pulse on
+   * opacity alone, too: pdf-fade-in also bobbed each dot 8px, which is not what
+   * a pulsing ellipsis should do.
    *
    * Comments belong here and not in the literal below — that string is injected
    * into the live document, so anything written inside it ships to the visitor.
@@ -120,6 +96,7 @@ export async function useDownload(
   overlay.innerHTML = `
     <style>
       @keyframes pdf-spin { to { transform: rotate(360deg); } }
+      @keyframes pdf-fade-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
       @keyframes pdf-pulse { from { opacity: 0.25; } to { opacity: 1; } }
       .pdf-spinner {
         width: 48px;
@@ -129,36 +106,14 @@ export async function useDownload(
         border-radius: 50%;
         animation: pdf-spin 0.8s linear infinite;
       }
-      /*
-       * will-change earns its place here, on 154x18 pixels.
-       *
-       * The spinner never blinked and this text did, which is the whole answer:
-       * the spinner animates a transform forever, so the compositor gives it a
-       * layer of its own and keeps presenting it while the main thread is busy.
-       * The dots animate opacity forever and get the same treatment. The words
-       * were the one part of the panel with no animation at all, so they were
-       * painted into the overlay's shared layer — the layer that cannot be
-       * repainted during the 1187ms the export blocks for.
-       *
-       * A layer of its own is what the spinner has and what this needs. The
-       * texture is tiny, unlike the viewport-sized one this was tried on before.
-       */
       .pdf-label {
         font-family: 'Inter', sans-serif;
         font-size: 0.75rem;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-        /*
-         * #ababb4 is rgba(245,243,239,0.6) already composited over the panel's
-         * #3d405b — same pixels, same 4.42:1, but no alpha to blend at paint
-         * time. The words were the only thing here that needed compositing
-         * against a backdrop: the spinner's visible edge is an opaque #F5F3EF
-         * and the rest of its border is 15% alpha, near enough to nothing. The
-         * spinner never blinked and the words did.
-         */
-        color: #ababb4;
+        color: rgba(245,243,239,0.6);
+        animation: pdf-fade-in 0.4s ease forwards;
         text-align: center;
-        will-change: transform;
       }
       .pdf-dot {
         display: inline-block;
@@ -166,88 +121,29 @@ export async function useDownload(
       }
       .pdf-dot + .pdf-dot { animation-delay: 0.2s; }
       .pdf-dot + .pdf-dot + .pdf-dot { animation-delay: 0.4s; }
-      /*
-       * html2pdf parks its working surface in the middle of the screen. It
-       * builds a fixed, full-viewport div at inset 0, z-index 1000, holding a
-       * white A4 page with the whole document cloned into it, and only hides it
-       * with opacity 0 (worker.js:105-125). So from the moment it appears —
-       * measured at 881ms, thirteen milliseconds before the main thread blocks
-       * for 1187ms across three frames — a viewport-sized layer sits directly
-       * under this panel while the browser can barely present a frame.
-       *
-       * Out of the viewport it stops competing. The library itself does exactly
-       * this in its other code path: the bundle carries a second copy of this
-       * routine that parks the overlay at left:-100000px. Capture is unaffected,
-       * since html2canvas reads layout, and the element it captures already
-       * lives off-screen at left:-9999px.
-       */
-      .html2pdf__overlay {
-        left: -100000px !important;
-        right: auto !important;
-        width: 100vw !important;
-      }
-      .pdf-status {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        margin: -1px;
-        padding: 0;
-        border: 0;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-      }
     </style>
     <div class="pdf-spinner" aria-hidden="true"></div>
-    <div class="pdf-label"><span class="pdf-text"></span><span
+    <div class="pdf-label" role="status"><span class="pdf-text"></span><span
       class="pdf-dot" aria-hidden="true">.</span><span class="pdf-dot" aria-hidden="true">.</span><span
       class="pdf-dot" aria-hidden="true">.</span></div>
-    <div class="pdf-status" role="status"></div>
   `
   document.body.appendChild(overlay)
 
   /*
-   * The words land after the panel is on screen, not with it.
-   *
-   * This is empirical, and it is the opposite of what the code used to assume.
-   * The panel shipped with its text inline for a while, on the reasoning that
-   * anything arriving late must be what was seen blinking. It was the other way
-   * round: with the text inline the blink is there, and with it filled in after
-   * a couple of frames it is not. The visitor watched both. Instrumentation
-   * never saw either — through every export the DOM is static, the label never
-   * disconnects, and its colour, opacity, font, width and height are identical
-   * on every frame — so the difference is in rasterisation, which script cannot
-   * observe. Two frames of quiet before the glyphs are asked for is apparently
-   * enough, and the fallback inside nextFrame keeps it from stalling in a
-   * background tab.
-   *
-   * The announcement rides the same delay, which it needs anyway: a live region
-   * inserted with its message already inside counts as initial content and is
-   * never announced.
+   * The text lands a frame after the region does. A live region inserted with
+   * its message already inside counts as initial content, which screen readers
+   * do not announce — so pressing the button said nothing at all until the
+   * failure case replaced the text much later.
    */
-  let settled = false
-  const announce = (message: string, final = false) => {
-    // A fast failure — a 404 on the page, an import that rejects at once — can
-    // reach the catch before the deferred progress message has landed, and the
-    // late one would then bury the only thing worth hearing.
-    if (settled) return
-    settled = final
-    const status = overlay.querySelector('.pdf-status')
-    if (status) status.textContent = message
-  }
-  const progress = locale === 'en' ? 'Generating PDF' : 'Génération du PDF'
-  void nextFrame()
-    .then(nextFrame)
-    .then(() => {
-      const text = overlay.querySelector('.pdf-text')
-      if (text) text.textContent = progress
-      announce(progress)
-    })
+  void nextFrame().then(() => {
+    const text = overlay.querySelector('.pdf-text')
+    if (text) text.textContent = locale === 'en' ? 'Generating PDF' : 'Génération du PDF'
+  })
 
   let container: HTMLDivElement | null = null
 
   try {
-    const html2pdf = (await prefetchExporter()).default
+    const html2pdf = (await import('html2pdf.js')).default
 
     const response = await fetch(filepath)
     if (!response.ok) throw new Error(`${filepath} answered ${response.status}`)
@@ -315,7 +211,6 @@ export async function useDownload(
         locale === 'en'
           ? 'Download failed — please try again'
           : 'Échec du téléchargement — veuillez réessayer'
-      announce(label.textContent, true)
     }
     await new Promise((resolve) => setTimeout(resolve, 1800))
   } finally {
