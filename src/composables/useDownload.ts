@@ -148,7 +148,15 @@ export async function useDownload(
         font-size: 0.75rem;
         letter-spacing: 0.2em;
         text-transform: uppercase;
-        color: rgba(245,243,239,0.6);
+        /*
+         * #ababb4 is rgba(245,243,239,0.6) already composited over the panel's
+         * #3d405b — same pixels, same 4.42:1, but no alpha to blend at paint
+         * time. The words were the only thing here that needed compositing
+         * against a backdrop: the spinner's visible edge is an opaque #F5F3EF
+         * and the rest of its border is 15% alpha, near enough to nothing. The
+         * spinner never blinked and the words did.
+         */
+        color: #ababb4;
         text-align: center;
         will-change: transform;
       }
