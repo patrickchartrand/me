@@ -199,7 +199,7 @@ export async function useDownload(
       }
     </style>
     <div class="pdf-spinner" aria-hidden="true"></div>
-    <div class="pdf-label">${locale === 'en' ? 'Generating PDF' : 'Génération du PDF'}<span
+    <div class="pdf-label"><span class="pdf-text"></span><span
       class="pdf-dot" aria-hidden="true">.</span><span class="pdf-dot" aria-hidden="true">.</span><span
       class="pdf-dot" aria-hidden="true">.</span></div>
     <div class="pdf-status" role="status"></div>
@@ -207,23 +207,23 @@ export async function useDownload(
   document.body.appendChild(overlay)
 
   /*
-   * The label is not animated. It used to fade in over 400ms, and the overlay's
-   * background and spinner do not — so on the first export the dark panel
-   * appeared with no text in it. Measured: opacity still 0 at 107ms across
-   * three frames while the 976 kB chunk was being fetched, then a fade whose
-   * middle lost 218ms to compiling it, jumping 0.41 to 0.96 in one step. The
-   * animation is also pending at insert (startTime null), so its start waits on
-   * the same busy main thread that delays the first paint. Nothing about that
-   * is fixable from inside a 400ms fade; the text simply arrives with the panel
-   * it belongs to.
+   * The words land after the panel is on screen, not with it.
    *
-   * The announcement is deferred, the visible text is not. A live region
+   * This is empirical, and it is the opposite of what the code used to assume.
+   * The panel shipped with its text inline for a while, on the reasoning that
+   * anything arriving late must be what was seen blinking. It was the other way
+   * round: with the text inline the blink is there, and with it filled in after
+   * a couple of frames it is not. The visitor watched both. Instrumentation
+   * never saw either — through every export the DOM is static, the label never
+   * disconnects, and its colour, opacity, font, width and height are identical
+   * on every frame — so the difference is in rasterisation, which script cannot
+   * observe. Two frames of quiet before the glyphs are asked for is apparently
+   * enough, and the fallback inside nextFrame keeps it from stalling in a
+   * background tab.
+   *
+   * The announcement rides the same delay, which it needs anyway: a live region
    * inserted with its message already inside counts as initial content and is
-   * not announced, so the message has to arrive after the region does — but
-   * doing that to the on-screen label meant the text popped in a frame late,
-   * which read as a flash on the first export, when the main thread is busiest
-   * fetching and compiling html2pdf. The hidden region carries the delay now
-   * and the label is painted complete.
+   * never announced.
    */
   let settled = false
   const announce = (message: string, final = false) => {
@@ -235,7 +235,14 @@ export async function useDownload(
     const status = overlay.querySelector('.pdf-status')
     if (status) status.textContent = message
   }
-  void nextFrame().then(() => announce(locale === 'en' ? 'Generating PDF' : 'Génération du PDF'))
+  const progress = locale === 'en' ? 'Generating PDF' : 'Génération du PDF'
+  void nextFrame()
+    .then(nextFrame)
+    .then(() => {
+      const text = overlay.querySelector('.pdf-text')
+      if (text) text.textContent = progress
+      announce(progress)
+    })
 
   let container: HTMLDivElement | null = null
 
