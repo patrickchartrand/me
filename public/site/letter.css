@@ -25,6 +25,11 @@ body {
   max-width: 920px;
   margin: 0 auto;
   background: var(--cream);
+  /* One A4 sheet. The export renders this at width: 210mm, so stating the
+     height in mm too makes the cream fill exactly one page — it used to be
+     stretched by 1600px of padding under the signature, which rasterised
+     2.36 pages and shipped the two deleted ones' images inside the PDF. */
+  min-height: 297mm;
 }
 
 .page-header {
@@ -89,7 +94,7 @@ body {
 
 .letter-closing {
   margin-top: 10rem;
-  padding-bottom: 100rem;
+  padding-bottom: 3rem;
 }
 
 .letter-closing p {
