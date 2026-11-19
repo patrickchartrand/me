@@ -31,6 +31,16 @@ export async function useDownload(
    */
   const scrollTop = window.scrollY
   document.documentElement.style.overflow = 'hidden'
+
+  /*
+   * The overlay covers the page but lives outside #app, so the app behind it
+   * keeps its place in the tab order and in the accessibility tree. `inert`
+   * takes it out of both for the duration — overflow:hidden above only stops
+   * the page scrolling, it does nothing for focus.
+   */
+  const appRoot = document.getElementById('app')
+  appRoot?.setAttribute('inert', '')
+
   const overlay = document.createElement('div')
   overlay.style.cssText =
     'position:fixed;inset:0;z-index:9999;background:#3d405b;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;'
@@ -75,8 +85,8 @@ export async function useDownload(
       .pdf-dot:nth-child(2) { animation-delay: 0.2s; }
       .pdf-dot:nth-child(3) { animation-delay: 0.4s; }
     </style>
-    <div class="pdf-spinner"></div>
-    <div class="pdf-label">
+    <div class="pdf-spinner" aria-hidden="true"></div>
+    <div class="pdf-label" role="status">
       ${locale === 'en' ? 'Generating PDF' : 'Génération du PDF'}
       <span class="pdf-dot">.</span><span class="pdf-dot">.</span><span class="pdf-dot">.</span>
     </div>
@@ -158,6 +168,7 @@ export async function useDownload(
     await new Promise((resolve) => setTimeout(resolve, 1800))
   } finally {
     container?.remove()
+    appRoot?.removeAttribute('inert')
 
     /*
      * html2pdf appends an overlay of its own to <body> — fixed, inset 0,
