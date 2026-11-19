@@ -54,10 +54,13 @@ const { t } = useI18n()
   z-index: 1;
 }
 .highlight-offset::before {
+  /* lh, not %: a percentage is a share of the whole box, so a heading that
+     wrapped to two lines got a bar 48px tall against a 40px line and swallowed
+     the second one. One line's worth, however many lines there are. */
   content: '';
   display: block;
   width: calc(100% - 30px);
-  height: 50%;
+  height: 0.5lh;
   position: absolute;
   bottom: -10px;
   left: 30px;
@@ -66,6 +69,6 @@ const { t } = useI18n()
   transition: all 0.3s ease;
 }
 .highlight-offset:hover::before {
-  height: 30%;
+  height: 0.3lh;
 }
 </style>

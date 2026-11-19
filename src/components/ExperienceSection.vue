@@ -83,10 +83,13 @@ const education = computed(() => tm('experience.education') as EducationItem[])
   z-index: 1;
 }
 .highlight-offset-dark::before {
+  /* lh, not %: a percentage is a share of the whole box, so a heading that
+     wrapped to two lines got a bar 48px tall against a 40px line and swallowed
+     the second one. One line's worth, however many lines there are. */
   content: '';
   display: block;
   width: 100%;
-  height: 60%;
+  height: 0.6lh;
   position: absolute;
   bottom: -4px;
   left: 12px;
@@ -95,6 +98,6 @@ const education = computed(() => tm('experience.education') as EducationItem[])
   transition: all 0.3s ease;
 }
 .highlight-offset-dark:hover::before {
-  height: 40%;
+  height: 0.4lh;
 }
 </style>

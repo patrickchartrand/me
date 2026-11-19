@@ -128,10 +128,13 @@ const projects = computed(() => {
   z-index: 1;
 }
 .highlight-offset-md::before {
+  /* lh, not %: a percentage is a share of the whole box, so a heading that
+     wrapped to two lines got a bar 48px tall against a 40px line and swallowed
+     the second one. One line's worth, however many lines there are. */
   content: '';
   display: block;
   width: calc(100% - 30px);
-  height: 60%;
+  height: 0.6lh;
   position: absolute;
   bottom: -10px;
   left: 30px;
@@ -140,6 +143,6 @@ const projects = computed(() => {
   transition: all 0.3s ease;
 }
 .highlight-offset-md:hover::before {
-  height: 40%;
+  height: 0.4lh;
 }
 </style>

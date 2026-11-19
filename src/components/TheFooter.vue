@@ -37,7 +37,10 @@ const socialLinks = [
       class="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"
     />
 
-    <div class="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
+    <!-- Full width below xl: at w-1/2 it measured 188px against the photo's 176px
+         and started at x=188 where the photo ends at x=200, so the two read as a
+         competing pair rather than one sitting on the other. -->
+    <div class="absolute top-0 right-0 w-full xl:w-1/2 h-full opacity-10 pointer-events-none">
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
         <path
           fill="#ffffff"
@@ -142,8 +145,10 @@ const socialLinks = [
         </div>
       </div>
 
+      <!-- col-reverse below md so the copyright sits under the links, which are
+           the useful thing to reach; the row order is unchanged from md up. -->
       <div
-        class="pt-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6"
+        class="pt-10 flex flex-col-reverse md:flex-row justify-between items-start md:items-center gap-6"
       >
         <div class="text-sm text-white/60" @dblclick="router.push({ name: 'budget' })">
           © {{ year }} Patrick Chartrand. {{ t('footer.copyright') }}
