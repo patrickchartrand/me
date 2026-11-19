@@ -172,12 +172,30 @@ async function writeJson(
   return result.etag
 }
 
-/** put() reports a lost race either as a failed precondition or, on the
- *  create-only path, as the blob already existing. Both mean the same thing to
- *  the caller: you were working from a version that is no longer current. */
-function isLostRace(e: unknown): boolean {
+/**
+ * Did this write lose a race rather than fail outright?
+ *
+ * With an ifMatch the library says so with a typed error. Without one — the
+ * create-only first save of a month — the refusal comes from the remote Blob
+ * API, and the SDK ships no message for it: `already exists` appears nowhere in
+ * the package, because `x-allow-overwrite` is just a header the server decides
+ * on. Matching its wording would be betting on a string nothing promises, so
+ * this asks the store instead: if the document is there now, someone created it
+ * while we were writing, and that is the same lost race.
+ */
+async function isLostRace(
+  e: unknown,
+  pathname: string,
+  token: string,
+  conditional: boolean,
+): Promise<boolean> {
   if (e instanceof BlobPreconditionFailedError) return true
-  return e instanceof Error && /already exists|precondition/i.test(e.message)
+  if (conditional) return false
+  try {
+    return (await readJson(pathname, token)).etag !== null
+  } catch {
+    return false
+  }
 }
 
 interface ApiRequest {
@@ -255,7 +273,7 @@ export default async function handler(request: ApiRequest, response: ApiResponse
         try {
           response.setHeader('ETag', await writeJson(pathname, data, token, ifMatch))
         } catch (e) {
-          if (!isLostRace(e)) throw e
+          if (!(await isLostRace(e, pathname, token, ifMatch !== null))) throw e
           /*
            * The document moved under this client — another tab or device wrote
            * it between their read and this write. Refusing is the whole point:
