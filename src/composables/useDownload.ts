@@ -158,12 +158,41 @@ export async function useDownload(
     await new Promise((resolve) => setTimeout(resolve, 1800))
   } finally {
     container?.remove()
+
+    /*
+     * html2pdf appends an overlay of its own to <body> — fixed, inset 0,
+     * z-index 1000, opacity 0, no pointer-events — and removes it only inside
+     * the .then() that follows html2canvas. Any render rejection skips that
+     * removal, and because opacity 0 is still hit-tested the visitor is left
+     * with a page that looks untouched and swallows every click, including the
+     * retry the error message just asked for. Only a reload would recover.
+     * Clearing it here is what makes the docblock's promise above true.
+     */
+    document.querySelectorAll('.html2pdf__overlay').forEach((el) => el.remove())
+
+    /*
+     * Scroll before the fade, not after: fading out first would reveal the page
+     * at the offset the collapse clamped it to for the whole 400 ms and then
+     * snap. Unlocking while the overlay is still fully opaque also hides the
+     * scrollbar coming back.
+     *
+     * The offset is re-asserted rather than set once. Dropping the injected
+     * stylesheet invalidates styles, but the page's real height comes back a
+     * frame or more later — forcing a reflow is not enough (measured 10984px
+     * against a true 11680px) — and a scrollTo issued before that lands clamped
+     * short of the target. Bounded at ten frames, every one of them behind the
+     * still-opaque overlay; a visitor who never scrolled exits on the first test.
+     */
+    document.documentElement.style.overflow = ''
+    for (let frame = 0; frame < 10 && window.scrollY !== scrollTop; frame++) {
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+      window.scrollTo({ top: scrollTop, behavior: 'instant' as ScrollBehavior })
+    }
+
     overlay.style.transition = 'opacity 0.4s ease'
     overlay.style.opacity = '0'
     await new Promise((resolve) => setTimeout(resolve, 400))
     overlay.remove()
-    document.documentElement.style.overflow = ''
-    window.scrollTo({ top: scrollTop, behavior: 'instant' as ScrollBehavior })
     running = false
   }
 }
