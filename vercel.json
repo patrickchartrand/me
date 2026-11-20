@@ -6,7 +6,7 @@
       "destination": "/api/budget"
     },
     {
-      "source": "/((?!api/).*)",
+      "source": "/((?!api/|assets/).*)",
       "destination": "/index.html"
     }
   ],
