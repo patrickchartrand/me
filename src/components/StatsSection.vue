@@ -17,16 +17,16 @@ const rawValues = [yearsOfExperience, 1453, 100, 404]
 const current = ref(rawValues.map(() => 0))
 const hasAnimated = ref(false)
 
-const formatNumber = (val: number, index: number) => {
-  if (index === 0) return val.toString().padStart(2, '0')
+const formatNumber = (value: number, index: number) => {
+  if (index === 0) return value.toString().padStart(2, '0')
   // The thousands separator has to follow the page, not the developer: a hard
   // 'en-US' printed "1,458+" under a French label.
-  if (index === 1) return val.toLocaleString(locale.value === 'fr' ? 'fr-CA' : 'en-CA') + '+'
-  if (index === 2) return val + '%'
-  return val.toString()
+  if (index === 1) return value.toLocaleString(locale.value === 'fr' ? 'fr-CA' : 'en-CA') + '+'
+  if (index === 2) return value + '%'
+  return value.toString()
 }
 
-const displayed = computed(() => current.value.map((v, i) => formatNumber(v, i)))
+const displayed = computed(() => current.value.map((value, index) => formatNumber(value, index)))
 
 const timers: ReturnType<typeof setInterval>[] = []
 

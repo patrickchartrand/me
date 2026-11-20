@@ -13,8 +13,8 @@ export function useScrollAnimations() {
       { threshold: 0.1, rootMargin: '0px 0px -50px 0px' },
     )
 
-    document.querySelectorAll('.fade-in-up, .stagger-children').forEach((el) => {
-      observer!.observe(el)
+    document.querySelectorAll('.fade-in-up, .stagger-children').forEach((element) => {
+      observer!.observe(element)
     })
   })
 

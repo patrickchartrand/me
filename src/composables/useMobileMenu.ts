@@ -28,8 +28,8 @@ export function useMobileMenu() {
 
   const lockBackground = (locked: boolean) => {
     document.body.style.overflow = locked ? 'hidden' : ''
-    background().forEach((el) =>
-      locked ? el.setAttribute('inert', '') : el.removeAttribute('inert'),
+    background().forEach((element) =>
+      locked ? element.setAttribute('inert', '') : element.removeAttribute('inert'),
     )
   }
 

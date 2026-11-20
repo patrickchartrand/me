@@ -10,31 +10,31 @@ interface ProjectTranslation {
 }
 
 const isMobile = ref(false)
-let mql: MediaQueryList | null = null
+let mobileQuery: MediaQueryList | null = null
 
-function onMQLChange(e: MediaQueryListEvent) {
-  isMobile.value = e.matches
+function onBreakpointChange(event: MediaQueryListEvent) {
+  isMobile.value = event.matches
 }
 
 onMounted(() => {
-  mql = window.matchMedia('(max-width: 767px)')
-  isMobile.value = mql.matches
-  mql.addEventListener('change', onMQLChange)
+  mobileQuery = window.matchMedia('(max-width: 767px)')
+  isMobile.value = mobileQuery.matches
+  mobileQuery.addEventListener('change', onBreakpointChange)
 })
 
 onUnmounted(() => {
-  mql?.removeEventListener('change', onMQLChange)
+  mobileQuery?.removeEventListener('change', onBreakpointChange)
 })
 
 const projects = computed(() => {
   const translations = tm('work.projects') as ProjectTranslation[]
-  const mapped = projectsMeta.map((p, i) => ({
-    ...p,
-    title: translations[i]?.title ?? p.title,
-    category: translations[i]?.category ?? p.category,
+  const mapped = projectsMeta.map((project, index) => ({
+    ...project,
+    title: translations[index]?.title ?? project.title,
+    category: translations[index]?.category ?? project.category,
     // These were the only user-facing strings left in English on the fr page:
     // a screen reader read them out with French phonetics.
-    imageAlt: translations[i]?.imageAlt ?? p.imageAlt,
+    imageAlt: translations[index]?.imageAlt ?? project.imageAlt,
   }))
   return isMobile.value ? [...mapped].sort((a, b) => Number(b.year) - Number(a.year)) : mapped
 })

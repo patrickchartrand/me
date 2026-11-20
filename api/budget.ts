@@ -64,43 +64,45 @@ const MAX_NOTES = 20_000
 
 const text = (value: unknown, max = MAX_LABEL) => String(value ?? '').slice(0, max)
 const num = (value: unknown) => {
-  const n = Number(value)
-  return Number.isFinite(n) ? n : 0
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : 0
 }
 const rows = (raw: unknown): Record<string, unknown>[] =>
   Array.isArray(raw)
-    ? raw.filter((r): r is Record<string, unknown> => typeof r === 'object' && r !== null)
+    ? raw.filter((row): row is Record<string, unknown> => typeof row === 'object' && row !== null)
     : []
 
 function cleanMonth(raw: unknown): MonthData {
-  const o = (typeof raw === 'object' && raw !== null ? raw : {}) as Record<string, unknown>
+  const source = (typeof raw === 'object' && raw !== null ? raw : {}) as Record<string, unknown>
   return {
-    expenses: rows(o.expenses)
-      .map((e) => ({
-        id: text(e.id, 64),
-        date: text(e.date, 10),
-        label: text(e.label),
-        amount: Number(e.amount),
+    expenses: rows(source.expenses)
+      .map((expense) => ({
+        id: text(expense.id, 64),
+        date: text(expense.date, 10),
+        label: text(expense.label),
+        amount: Number(expense.amount),
       }))
       // `date` was only length-capped, so any ten characters were accepted and
       // stored as one. The types promise YYYY-MM-DD; this is what enforces it.
       .filter(
-        (e) =>
-          e.id !== '' && e.label !== '' && VALID_DATE.test(e.date) && Number.isFinite(e.amount),
+        (expense) =>
+          expense.id !== '' &&
+          expense.label !== '' &&
+          VALID_DATE.test(expense.date) &&
+          Number.isFinite(expense.amount),
       )
       .slice(0, MAX_EXPENSES),
-    notes: typeof o.notes === 'string' ? o.notes.slice(0, MAX_NOTES) : '',
+    notes: typeof source.notes === 'string' ? source.notes.slice(0, MAX_NOTES) : '',
   }
 }
 
 function cleanFixed(raw: unknown): FixedBudget {
-  const o = (typeof raw === 'object' && raw !== null ? raw : {}) as Record<string, unknown>
-  const income = (typeof o.income === 'object' && o.income !== null ? o.income : {}) as Record<
-    string,
-    unknown
-  >
+  const source = (typeof raw === 'object' && raw !== null ? raw : {}) as Record<string, unknown>
+  const income = (
+    typeof source.income === 'object' && source.income !== null ? source.income : {}
+  ) as Record<string, unknown>
   return {
-    updatedAt: text(o.updatedAt, 10),
+    updatedAt: text(source.updatedAt, 10),
     income: {
       weeklyNet: num(income.weeklyNet),
       weeklyGross: num(income.weeklyGross),
@@ -109,23 +111,23 @@ function cleanFixed(raw: unknown): FixedBudget {
       hourlyRate: num(income.hourlyRate),
       payday: text(income.payday, 40),
     },
-    personal: rows(o.personal)
-      .map((i) => ({
-        label: text(i.label),
-        amount: num(i.amount),
-        ...(i.note ? { note: text(i.note) } : {}),
-        ...(i.savings ? { savings: true } : {}),
+    personal: rows(source.personal)
+      .map((item) => ({
+        label: text(item.label),
+        amount: num(item.amount),
+        ...(item.note ? { note: text(item.note) } : {}),
+        ...(item.savings ? { savings: true } : {}),
       }))
-      .filter((i) => i.label !== '')
+      .filter((item) => item.label !== '')
       .slice(0, MAX_ITEMS),
-    shared: rows(o.shared)
-      .map((i) => ({
-        label: text(i.label),
-        total: num(i.total),
-        share: num(i.share),
-        ...(i.note ? { note: text(i.note) } : {}),
+    shared: rows(source.shared)
+      .map((item) => ({
+        label: text(item.label),
+        total: num(item.total),
+        share: num(item.share),
+        ...(item.note ? { note: text(item.note) } : {}),
       }))
-      .filter((i) => i.label !== '')
+      .filter((item) => item.label !== '')
       .slice(0, MAX_ITEMS),
   }
 }
@@ -188,12 +190,12 @@ async function writeJson(
  * while we were writing, and that is the same lost race.
  */
 async function isLostRace(
-  e: unknown,
+  cause: unknown,
   pathname: string,
   token: string,
   conditional: boolean,
 ): Promise<boolean> {
-  if (e instanceof BlobPreconditionFailedError) return true
+  if (cause instanceof BlobPreconditionFailedError) return true
   if (conditional) return false
   try {
     return (await readJson(pathname, token)).etag !== null

@@ -227,7 +227,7 @@ export async function useDownload(
      * retry the error message just asked for. Only a reload would recover.
      * Clearing it here is what makes the docblock's promise above true.
      */
-    document.querySelectorAll('.html2pdf__overlay').forEach((el) => el.remove())
+    document.querySelectorAll('.html2pdf__overlay').forEach((stranded) => stranded.remove())
 
     /*
      * Scroll before the fade, not after: fading out first would reveal the page

@@ -79,7 +79,7 @@ function budgetApiDevServer(): Plugin {
     writeFileSync(FILE, JSON.stringify(store, null, 2))
   }
 
-  const body = (request: { on: (e: string, cb: (chunk: Buffer) => void) => void }) =>
+  const body = (request: { on: (event: string, listener: (chunk: Buffer) => void) => void }) =>
     new Promise<unknown>((resolve) => {
       const chunks: Buffer[] = []
       request.on('data', (chunk) => chunks.push(chunk))
@@ -99,8 +99,8 @@ function budgetApiDevServer(): Plugin {
       const json =
         (response: {
           statusCode: number
-          setHeader: (n: string, v: string) => void
-          end: (s: string) => void
+          setHeader: (name: string, value: string) => void
+          end: (body: string) => void
         }) =>
         (data: unknown, code = 200) => {
           response.statusCode = code

@@ -24,7 +24,7 @@ export function useBudget() {
   const saving = ref(false)
   const error = ref<string | null>(null)
 
-  const spent = computed(() => expenses.value.reduce((total, e) => total + e.amount, 0))
+  const spent = computed(() => expenses.value.reduce((total, expense) => total + expense.amount, 0))
   const totals = computed(() => (fixed.value ? computeTotals(fixed.value, expenses.value) : null))
   // Half a cent of slack, matching the rounding the view already applies: an
   // exactly balanced month was showing "-0,00 $" in red.
@@ -255,7 +255,7 @@ export function useBudget() {
     await sync([...expenses.value, expense], (fresh) =>
       // Idempotent by id: a replay must never append what the server already
       // holds, or one expense becomes two.
-      fresh.expenses.some((e) => e.id === expense.id)
+      fresh.expenses.some((stored) => stored.id === expense.id)
         ? fresh.expenses
         : [...fresh.expenses, expense],
     )
@@ -264,8 +264,8 @@ export function useBudget() {
 
   function removeExpense(id: string) {
     return sync(
-      expenses.value.filter((e) => e.id !== id),
-      (fresh) => fresh.expenses.filter((e) => e.id !== id),
+      expenses.value.filter((expense) => expense.id !== id),
+      (fresh) => fresh.expenses.filter((expense) => expense.id !== id),
     )
   }
 

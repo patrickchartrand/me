@@ -36,8 +36,8 @@ export function useActiveSection() {
     )
 
     for (const id of NAV_SECTIONS) {
-      const el = document.getElementById(id)
-      if (el) navObserver.observe(el)
+      const element = document.getElementById(id)
+      if (element) navObserver.observe(element)
     }
   })
 

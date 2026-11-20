@@ -13,14 +13,14 @@ export function today(reference = new Date()): string {
   return `${reference.getFullYear()}-${month}-${day}`
 }
 
-const sum = (values: number[]) => values.reduce((total, n) => total + n, 0)
+const sum = (values: number[]) => values.reduce((total, value) => total + value, 0)
 
 export function computeTotals(fixed: FixedBudget, expenses: Expense[]): Totals {
-  const personal = sum(fixed.personal.map((i) => i.amount))
-  const shared = sum(fixed.shared.map((i) => i.share))
+  const personal = sum(fixed.personal.map((item) => item.amount))
+  const shared = sum(fixed.shared.map((item) => item.share))
   const committed = personal + shared
   const monthlyIncome = (fixed.income.weeklyNet * 52) / 12
-  const spent = sum(expenses.map((e) => e.amount))
+  const spent = sum(expenses.map((expense) => expense.amount))
 
   return {
     personal,

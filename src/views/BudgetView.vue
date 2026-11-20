@@ -41,8 +41,8 @@ function confirmRemoveAll() {
 }
 
 const currency = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: 'CAD' })
-const fmt = (n: number) => currency.format(n)
-const percent = (n: number) => `${Math.round(n)}\u00a0%`
+const formatMoney = (amount: number) => currency.format(amount)
+const percent = (share: number) => `${Math.round(share)}\u00a0%`
 
 /*
  * Chart palette.
@@ -93,14 +93,14 @@ const TOP = 6
 const heaviest = computed(() => {
   if (!fixed.value) return []
   const all = [
-    ...fixed.value.personal.map((i) => ({
-      label: i.label,
-      amount: i.amount,
+    ...fixed.value.personal.map((item) => ({
+      label: item.label,
+      amount: item.amount,
       colour: HUES.personal as string,
     })),
-    ...fixed.value.shared.map((i) => ({
-      label: i.label,
-      amount: i.share,
+    ...fixed.value.shared.map((item) => ({
+      label: item.label,
+      amount: item.share,
       colour: HUES.shared as string,
     })),
   ].sort((a, b) => b.amount - a.amount)
@@ -113,14 +113,14 @@ const heaviest = computed(() => {
           ...head,
           {
             label: `Autres (${tail.length} poste${tail.length > 1 ? 's' : ''})`,
-            amount: tail.reduce((total, i) => total + i.amount, 0),
+            amount: tail.reduce((total, item) => total + item.amount, 0),
             colour: HUES.other as string,
           },
         ]
       : head
 
-  const ceiling = Math.max(...rows.map((r) => r.amount))
-  return rows.map((r) => ({ ...r, share: (r.amount / ceiling) * 100 }))
+  const ceiling = Math.max(...rows.map((row) => row.amount))
+  return rows.map((row) => ({ ...row, share: (row.amount / ceiling) * 100 }))
 })
 
 /** Tooltip shared by both charts. */
@@ -165,11 +165,13 @@ function show(event: MouseEvent, text: string) {
         <section class="mb-20 grid gap-10 sm:grid-cols-3">
           <div>
             <p class="text-xs uppercase tracking-[0.2em] text-secondary">Revenu</p>
-            <p class="mt-3 font-serif text-3xl tabular-nums">{{ fmt(totals.monthlyIncome) }}</p>
+            <p class="mt-3 font-serif text-3xl tabular-nums">
+              {{ formatMoney(totals.monthlyIncome) }}
+            </p>
           </div>
           <div>
             <p class="text-xs uppercase tracking-[0.2em] text-secondary">À payer</p>
-            <p class="mt-3 font-serif text-3xl tabular-nums">{{ fmt(totals.committed) }}</p>
+            <p class="mt-3 font-serif text-3xl tabular-nums">{{ formatMoney(totals.committed) }}</p>
           </div>
           <div>
             <p class="text-xs uppercase tracking-[0.2em] text-secondary">Reste</p>
@@ -177,10 +179,10 @@ function show(event: MouseEvent, text: string) {
               class="mt-3 font-serif text-3xl tabular-nums"
               :style="overspent ? { color: RED } : undefined"
             >
-              {{ fmt(totals.remaining) }}
+              {{ formatMoney(totals.remaining) }}
             </p>
             <p v-if="spent > 0" class="mt-1 text-xs text-secondary">
-              dont {{ fmt(spent) }} de dépenses ce mois-ci
+              dont {{ formatMoney(spent) }} de dépenses ce mois-ci
             </p>
           </div>
         </section>
@@ -193,7 +195,9 @@ function show(event: MouseEvent, text: string) {
             class="flex h-10 w-full gap-[2px]"
             role="img"
             :aria-label="
-              breakdown.map((p) => `${p.label} ${fmt(p.amount)}, ${percent(p.share)}`).join('. ')
+              breakdown
+                .map((part) => `${part.label} ${formatMoney(part.amount)}, ${percent(part.share)}`)
+                .join('. ')
             "
           >
             <div
@@ -201,7 +205,7 @@ function show(event: MouseEvent, text: string) {
               :key="part.label"
               class="h-full first:rounded-l-full last:rounded-r-full"
               :style="{ width: `${part.share}%`, backgroundColor: part.colour }"
-              @mouseenter="show($event, `${part.label} — ${fmt(part.amount)}`)"
+              @mouseenter="show($event, `${part.label} — ${formatMoney(part.amount)}`)"
               @mouseleave="hover = null"
             />
           </div>
@@ -222,7 +226,7 @@ function show(event: MouseEvent, text: string) {
           </ul>
 
           <p v-if="overspent" class="mt-5 text-sm" :style="{ color: RED }">
-            Les dépenses dépassent ce qui restait de {{ fmt(Math.abs(totals.remaining)) }}.
+            Les dépenses dépassent ce qui restait de {{ formatMoney(Math.abs(totals.remaining)) }}.
           </p>
         </section>
 
@@ -236,13 +240,15 @@ function show(event: MouseEvent, text: string) {
             <li v-for="row in heaviest" :key="row.label">
               <div class="flex items-baseline justify-between gap-4">
                 <span class="text-sm">{{ row.label }}</span>
-                <span class="text-sm tabular-nums text-secondary">{{ fmt(row.amount) }}</span>
+                <span class="text-sm tabular-nums text-secondary">{{
+                  formatMoney(row.amount)
+                }}</span>
               </div>
               <div class="mt-1.5 h-2 w-full">
                 <div
                   class="h-full rounded-full"
                   :style="{ width: `${row.share}%`, backgroundColor: row.colour }"
-                  @mouseenter="show($event, `${row.label} — ${fmt(row.amount)}`)"
+                  @mouseenter="show($event, `${row.label} — ${formatMoney(row.amount)}`)"
                   @mouseleave="hover = null"
                 />
               </div>
@@ -265,7 +271,7 @@ function show(event: MouseEvent, text: string) {
               Frais communs
             </li>
             <li
-              v-if="heaviest.some((r) => r.colour === HUES.other)"
+              v-if="heaviest.some((row) => row.colour === HUES.other)"
               class="flex items-baseline gap-2"
             >
               <span
@@ -281,7 +287,7 @@ function show(event: MouseEvent, text: string) {
         <section class="mb-20">
           <div class="mb-6 flex items-baseline justify-between">
             <h2 class="font-serif text-2xl">Dépenses du mois</h2>
-            <span class="font-serif text-xl tabular-nums">{{ fmt(spent) }}</span>
+            <span class="font-serif text-xl tabular-nums">{{ formatMoney(spent) }}</span>
           </div>
 
           <form class="mb-7 flex flex-wrap items-end gap-3" @submit.prevent="submit">
@@ -340,21 +346,21 @@ function show(event: MouseEvent, text: string) {
           <template v-else>
             <ul class="flex flex-col">
               <li
-                v-for="e in expenses"
-                :key="e.id"
+                v-for="expense in expenses"
+                :key="expense.id"
                 class="flex items-baseline gap-4 border-b border-[#e5e7eb] py-3 last:border-0"
               >
                 <span class="flex-1 text-sm">
-                  {{ e.label }}
-                  <span class="block text-xs text-secondary">{{ e.date }}</span>
+                  {{ expense.label }}
+                  <span class="block text-xs text-secondary">{{ expense.date }}</span>
                 </span>
-                <span class="text-sm tabular-nums">{{ fmt(e.amount) }}</span>
+                <span class="text-sm tabular-nums">{{ formatMoney(expense.amount) }}</span>
                 <button
                   type="button"
                   :disabled="saving"
                   class="rounded-full px-2 text-secondary transition-colors hover:text-charcoal disabled:opacity-50"
-                  :aria-label="`Retirer ${e.label}`"
-                  @click="removeExpense(e.id)"
+                  :aria-label="`Retirer ${expense.label}`"
+                  @click="removeExpense(expense.id)"
                 >
                   ×
                 </button>
@@ -376,7 +382,7 @@ function show(event: MouseEvent, text: string) {
         <section class="mb-20">
           <div class="mb-6 flex items-baseline justify-between">
             <h2 class="font-serif text-2xl">Frais personnels</h2>
-            <span class="font-serif text-xl tabular-nums">{{ fmt(totals.personal) }}</span>
+            <span class="font-serif text-xl tabular-nums">{{ formatMoney(totals.personal) }}</span>
           </div>
           <ul class="flex flex-col">
             <li
@@ -393,7 +399,7 @@ function show(event: MouseEvent, text: string) {
                 >
                 <span v-if="item.note" class="block text-xs text-secondary">{{ item.note }}</span>
               </span>
-              <span class="text-sm tabular-nums">{{ fmt(item.amount) }}</span>
+              <span class="text-sm tabular-nums">{{ formatMoney(item.amount) }}</span>
             </li>
           </ul>
         </section>
@@ -402,7 +408,7 @@ function show(event: MouseEvent, text: string) {
         <section class="mb-20">
           <div class="mb-6 flex items-baseline justify-between">
             <h2 class="font-serif text-2xl">Frais communs</h2>
-            <span class="font-serif text-xl tabular-nums">{{ fmt(totals.shared) }}</span>
+            <span class="font-serif text-xl tabular-nums">{{ formatMoney(totals.shared) }}</span>
           </div>
           <ul class="flex flex-col">
             <li
@@ -415,9 +421,11 @@ function show(event: MouseEvent, text: string) {
                 <span v-if="item.note" class="block text-xs text-secondary">{{ item.note }}</span>
               </span>
               <span class="w-24 text-right text-sm tabular-nums text-secondary">
-                {{ fmt(item.total) }}
+                {{ formatMoney(item.total) }}
               </span>
-              <span class="w-24 text-right text-sm tabular-nums">{{ fmt(item.share) }}</span>
+              <span class="w-24 text-right text-sm tabular-nums">{{
+                formatMoney(item.share)
+              }}</span>
             </li>
           </ul>
         </section>
