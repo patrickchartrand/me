@@ -75,3 +75,9 @@ page says so.
 The CV and cover-letter buttons fetch the matching page out of `public/site/`
 and rasterise it in the browser. There is no PDF service behind them, and both
 documents stay editable as ordinary HTML and CSS.
+
+## License
+
+The code is MIT. The content is not — the copy, the photographs, the CV and
+cover letter, and the testimonials stay all rights reserved. See
+[LICENSE](LICENSE) for the split.
