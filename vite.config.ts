@@ -41,45 +41,37 @@ function budgetApiDevServer(): Plugin {
   }
 
   /**
-   * Obviously-fake standing commitments, so the page is usable under `vite dev`.
+   * An empty set of standing commitments, so `vite dev` opens the page with
+   * blank fields rather than numbers to mentally subtract.
    *
-   * Production reads the real figures from Vercel Blob; they are never written to
-   * disk here, and nothing local can reach them. Before this existed the dev page
-   * only ever showed "les charges fixes sont introuvables" — the seeding screen
-   * that used to fill the gap is gone, deliberately, since the commitments are
-   * now read-only.
+   * It cannot simply be absent: useBudget treats a missing fixed budget as a
+   * hard failure and shows "les charges fixes sont introuvables" instead of the
+   * page. So the shape is there and the values are not — zeroed income, no
+   * lines — which renders every total as $0.00 and both lists empty.
    *
-   * Round numbers and placeholder labels on purpose: nobody should be able to
-   * mistake this for a real budget, or report a bug against its arithmetic.
+   * Production reads the real figures from Vercel Blob. They are never written
+   * to disk here and nothing local can reach them.
    */
-  const SAMPLE: FixedBudget = {
-    updatedAt: '2026-01-01',
+  const EMPTY: FixedBudget = {
+    updatedAt: '',
     income: {
-      weeklyNet: 1000,
-      weeklyGross: 1400,
-      weeklyDeductions: 400,
-      weeklyHours: 35,
-      hourlyRate: 40,
-      payday: 'Thursday',
+      weeklyNet: 0,
+      weeklyGross: 0,
+      weeklyDeductions: 0,
+      weeklyHours: 0,
+      hourlyRate: 0,
+      payday: '',
     },
-    personal: [
-      { label: 'Sample rent', amount: 1200 },
-      { label: 'Sample car payment', amount: 400 },
-      { label: 'Sample phone', amount: 50 },
-      { label: 'Sample savings', amount: 300, savings: true },
-    ],
-    shared: [
-      { label: 'Sample groceries', total: 800, share: 400 },
-      { label: 'Sample utilities', total: 200, share: 100 },
-    ],
+    personal: [],
+    shared: [],
   }
 
   const read = (): Store => {
     try {
       const store = JSON.parse(readFileSync(FILE, 'utf8')) as Store
-      return { ...store, fixed: store.fixed ?? SAMPLE }
+      return { ...store, fixed: store.fixed ?? EMPTY }
     } catch {
-      return { fixed: SAMPLE }
+      return { fixed: EMPTY }
     }
   }
   const write = (store: Store) => {

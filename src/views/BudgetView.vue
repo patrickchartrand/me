@@ -142,7 +142,11 @@ function show(event: MouseEvent, text: string) {
           ← Retour au site
         </RouterLink>
         <h1 class="font-serif text-4xl md:text-5xl">Budget mensuel</h1>
-        <p v-if="fixed" class="mt-3 text-sm text-secondary">Mis à jour le {{ fixed.updatedAt }}</p>
+        <!-- on the date, not on `fixed`: an empty updatedAt left "Mis à jour le"
+             dangling with nothing after it. -->
+        <p v-if="fixed?.updatedAt" class="mt-3 text-sm text-secondary">
+          Mis à jour le {{ fixed.updatedAt }}
+        </p>
       </header>
 
       <p
