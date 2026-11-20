@@ -1,3 +1,5 @@
+import { i18n } from '@/i18n'
+
 /**
  * Renders one of the static pages in public/site/ to a PDF and saves it.
  *
@@ -36,10 +38,7 @@ function nextFrame(): Promise<void> {
   })
 }
 
-export async function useDownload(
-  locale: string,
-  { filename, filepath }: { filename: string; filepath: string },
-) {
+export async function useDownload({ filename, filepath }: { filename: string; filepath: string }) {
   if (running) return
   running = true
 
@@ -137,7 +136,7 @@ export async function useDownload(
    */
   void nextFrame().then(() => {
     const text = overlay.querySelector('.pdf-text')
-    if (text) text.textContent = locale === 'en' ? 'Generating PDF' : 'Génération du PDF'
+    if (text) text.textContent = i18n.global.t('download.generating')
   })
 
   let container: HTMLDivElement | null = null
@@ -206,12 +205,7 @@ export async function useDownload(
     // Say so on screen rather than fail silently behind the overlay.
     overlay.querySelector('.pdf-spinner')?.remove()
     const label = overlay.querySelector('.pdf-label')
-    if (label) {
-      label.textContent =
-        locale === 'en'
-          ? 'Download failed — please try again'
-          : 'Échec du téléchargement — veuillez réessayer'
-    }
+    if (label) label.textContent = i18n.global.t('download.failed')
     await new Promise((resolve) => setTimeout(resolve, 1800))
   } finally {
     container?.remove()

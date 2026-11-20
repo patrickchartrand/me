@@ -145,4 +145,8 @@ export default {
     copyright: 'Tous droits réservés.',
     topLink: 'Haut',
   },
+  download: {
+    generating: 'Génération du PDF',
+    failed: 'Échec du téléchargement — veuillez réessayer',
+  },
 }

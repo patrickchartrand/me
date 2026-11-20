@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const router = useRouter()
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const year = new Date().getFullYear()
 
 /**
@@ -101,9 +101,7 @@ const socialLinks = [
             <button
               type="button"
               class="group inline-flex items-center gap-4 bg-[#63667b] text-cream px-8 py-4 rounded-full font-medium hover:bg-[#767a90] hover:scale-105 transition-all duration-300"
-              @click="
-                useDownload(locale, { filename: 'pchartrand-cv.pdf', filepath: '/site/cv.html' })
-              "
+              @click="useDownload({ filename: 'pchartrand-cv.pdf', filepath: '/site/cv.html' })"
             >
               {{ t('footer.ctaCV') }}
               <span
@@ -132,7 +130,7 @@ const socialLinks = [
             decoding="async"
             class="blob-avatar xl:ml-auto mb-8 h-44 w-44 md:h-56 md:w-56 object-cover ring-1 ring-white/15 shadow-md shadow-black/20"
             @dblclick="
-              useDownload(locale, {
+              useDownload({
                 filename: 'pchartrand-letter.pdf',
                 filepath: '/site/letter.html',
               })

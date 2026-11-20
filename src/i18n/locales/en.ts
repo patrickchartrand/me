@@ -143,4 +143,8 @@ export default {
     copyright: 'All rights reserved.',
     topLink: 'Top',
   },
+  download: {
+    generating: 'Generating PDF',
+    failed: 'Download failed — please try again',
+  },
 }

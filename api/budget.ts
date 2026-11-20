@@ -287,7 +287,7 @@ export default async function handler(request: ApiRequest, response: ApiResponse
            * so applying it would silently erase whatever the other write added.
            */
           return reply(412, {
-            error: 'Ce budget a changé ailleurs depuis son chargement.',
+            error: 'This month changed elsewhere since it was read.',
             conflict: true,
           })
         }

@@ -156,7 +156,7 @@ function budgetApiDevServer(): Plugin {
               const given = typeof sent === 'string' && sent !== '' ? sent : null
               if (given !== expected) {
                 return reply(
-                  { error: 'Ce budget a changé ailleurs depuis son chargement.', conflict: true },
+                  { error: 'This month changed elsewhere since it was read.', conflict: true },
                   412,
                 )
               }
