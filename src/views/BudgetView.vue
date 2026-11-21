@@ -21,8 +21,6 @@ const {
 const label = ref('')
 const amount = ref<number | null>(null)
 
-// The fields were cleared before the save resolved, so a failed add took the
-// typed values with it and left the visitor nothing to retry from.
 async function submit() {
   if (amount.value === null) return
   const typed = { label: label.value, amount: amount.value }
@@ -33,7 +31,6 @@ async function submit() {
   }
 }
 
-// One click used to wipe every expense of the month, with nothing to undo it.
 function confirmRemoveAll() {
   if (!window.confirm('Retirer toutes les dépenses du mois ? Cette action est irréversible.'))
     return
@@ -44,26 +41,6 @@ const currency = new Intl.NumberFormat('fr-CA', { style: 'currency', currency: '
 const formatMoney = (amount: number) => currency.format(amount)
 const percent = (share: number) => `${Math.round(share)}\u00a0%`
 
-/*
- * Chart palette.
- *
- * Each chart hue is a site hue raised to chart strength. The brand colours are
- * deliberately desaturated for text on cream, and that restraint disqualifies
- * them for categorical encoding: the accent #5dab9d measures chroma 0.081,
- * under the 0.1 floor, and reads gray inside a bar. So the chart keeps the hue
- * and lifts the chroma — #34a08e at 180° for the accent's 181°, #5a5fa6 at 279°
- * for the lavender's 282° and primary's 279°.
- *
- * Validated across ALL pairs, not just adjacent ones, because the segments share
- * one bar and each must stand apart from each. Worst case is shared↔spending at
- * ΔE 12.9 under deutan vision, against a floor of 8. Against this page's cream
- * ground `shared` measures 2.89:1 — under 3:1, which is why every segment
- * carries a visible label in the legend rather than relying on its fill.
- *
- * `remaining` is neutral on purpose: what is left over is not a category
- * competing for attention. It shares its gray with `other`, which is safe —
- * the two never appear in the same chart.
- */
 const HUES = {
   personal: '#5a5fa6',
   shared: '#34a08e',
@@ -74,7 +51,6 @@ const HUES = {
 
 const RED = '#b3261e'
 
-/** Where the income goes: one whole split into parts, so a single bar. */
 const breakdown = computed(() => {
   if (!totals.value) return []
   const income = totals.value.monthlyIncome
@@ -88,7 +64,6 @@ const breakdown = computed(() => {
     .map((part) => ({ ...part, share: income > 0 ? (part.amount / income) * 100 : 0 }))
 })
 
-/** The heaviest commitments, both categories combined. */
 const TOP = 6
 const heaviest = computed(() => {
   if (!fixed.value) return []
@@ -123,7 +98,6 @@ const heaviest = computed(() => {
   return rows.map((row) => ({ ...row, share: (row.amount / ceiling) * 100 }))
 })
 
-/** Tooltip shared by both charts. */
 const hover = ref<{ text: string; x: number; y: number } | null>(null)
 function show(event: MouseEvent, text: string) {
   const box = (event.currentTarget as HTMLElement).getBoundingClientRect()
@@ -142,8 +116,6 @@ function show(event: MouseEvent, text: string) {
           ← Retour au site
         </RouterLink>
         <h1 class="font-serif text-4xl md:text-5xl">Budget mensuel</h1>
-        <!-- on the date, not on `fixed`: an empty updatedAt left "Mis à jour le"
-             dangling with nothing after it. -->
         <p v-if="fixed?.updatedAt" class="mt-3 text-sm text-secondary">
           Mis à jour le {{ fixed.updatedAt }}
         </p>
@@ -187,7 +159,6 @@ function show(event: MouseEvent, text: string) {
           </div>
         </section>
 
-        <!-- Where the income goes -->
         <section class="mb-20">
           <h2 class="mb-5 text-xs uppercase tracking-[0.2em] text-secondary">Où part le revenu</h2>
 
@@ -230,7 +201,6 @@ function show(event: MouseEvent, text: string) {
           </p>
         </section>
 
-        <!-- Heaviest commitments -->
         <section class="mb-20">
           <h2 class="mb-5 text-xs uppercase tracking-[0.2em] text-secondary">
             Les plus gros postes
@@ -283,7 +253,6 @@ function show(event: MouseEvent, text: string) {
           </ul>
         </section>
 
-        <!-- This month's expenses -->
         <section class="mb-20">
           <div class="mb-6 flex items-baseline justify-between">
             <h2 class="font-serif text-2xl">Dépenses du mois</h2>
@@ -327,9 +296,7 @@ function show(event: MouseEvent, text: string) {
                 class="w-full rounded-full border border-charcoal/10 bg-white px-4 py-2.5 text-right text-sm tabular-nums focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
               />
             </div>
-            <!-- The form wraps below md and the button lands alone on its own
-                 line, where flex-start left it under the inputs; ml-auto sends
-                 it to the right edge. Reset at md, where it sits inline again. -->
+
             <button
               type="submit"
               :disabled="saving"
@@ -378,7 +345,6 @@ function show(event: MouseEvent, text: string) {
           </template>
         </section>
 
-        <!-- Personal charges -->
         <section class="mb-20">
           <div class="mb-6 flex items-baseline justify-between">
             <h2 class="font-serif text-2xl">Frais personnels</h2>
@@ -404,7 +370,6 @@ function show(event: MouseEvent, text: string) {
           </ul>
         </section>
 
-        <!-- Shared charges -->
         <section class="mb-20">
           <div class="mb-6 flex items-baseline justify-between">
             <h2 class="font-serif text-2xl">Frais communs</h2>
@@ -430,7 +395,6 @@ function show(event: MouseEvent, text: string) {
           </ul>
         </section>
 
-        <!-- Notes -->
         <section>
           <div class="mb-6 flex items-baseline justify-between">
             <h2 class="font-serif text-2xl">Notes</h2>
@@ -452,7 +416,6 @@ function show(event: MouseEvent, text: string) {
       </template>
     </div>
 
-    <!-- Chart tooltip -->
     <div
       v-if="hover"
       class="pointer-events-none fixed z-50 -translate-x-1/2 -translate-y-full rounded-full bg-charcoal px-3 py-1.5 text-xs text-cream"

@@ -82,8 +82,6 @@ function cleanMonth(raw: unknown): MonthData {
         label: text(expense.label),
         amount: Number(expense.amount),
       }))
-      // `date` was only length-capped, so any ten characters were accepted and
-      // stored as one. The types promise YYYY-MM-DD; this is what enforces it.
       .filter(
         (expense) =>
           expense.id !== '' &&
@@ -132,12 +130,6 @@ function cleanFixed(raw: unknown): FixedBudget {
   }
 }
 
-/**
- * The ETag comes back with the document because every write is conditional on
- * it. `etag` is null when the blob does not exist yet, which is a real state —
- * a month nobody has saved into — and the caller's first write is then
- * conditional on it still not existing.
- */
 interface StoredJson {
   data: unknown | null
   etag: string | null
@@ -146,9 +138,6 @@ interface StoredJson {
 async function readJson(pathname: string, token: string): Promise<StoredJson> {
   const result = await get(pathname, { access: 'private', useCache: false, token })
   if (!result?.stream) return { data: null, etag: null }
-  // An empty string is not a version: passing it on would make the client send
-  // a blank If-Match, which this handler reads as "no precondition", so every
-  // save would take the create-only path and be refused forever.
   const raw = result.blob?.etag
   const etag = typeof raw === 'string' && raw !== '' ? raw : null
   try {
@@ -158,11 +147,6 @@ async function readJson(pathname: string, token: string): Promise<StoredJson> {
   }
 }
 
-/**
- * Returns the ETag of what was just written, so the caller can keep writing.
- * With no ifMatch the write is create-only: that is the first save of a month,
- * and it must still lose if another client created the document meanwhile.
- */
 async function writeJson(
   pathname: string,
   value: unknown,
@@ -178,17 +162,6 @@ async function writeJson(
   return result.etag
 }
 
-/**
- * Did this write lose a race rather than fail outright?
- *
- * With an ifMatch the library says so with a typed error. Without one — the
- * create-only first save of a month — the refusal comes from the remote Blob
- * API, and the SDK ships no message for it: `already exists` appears nowhere in
- * the package, because `x-allow-overwrite` is just a header the server decides
- * on. Matching its wording would be betting on a string nothing promises, so
- * this asks the store instead: if the document is there now, someone created it
- * while we were writing, and that is the same lost race.
- */
 async function isLostRace(
   cause: unknown,
   pathname: string,
@@ -239,9 +212,6 @@ export default async function handler(request: ApiRequest, response: ApiResponse
   const method = request.method
 
   try {
-    // Read-only on purpose. The standing commitments are written to private
-    // storage out of band; no caller here can overwrite them, so a stolen
-    // session cannot rewrite the budget itself — only the month's expenses.
     if (scope === 'fixed') {
       if (method === 'GET') {
         const { data } = await readJson('budget/fixed.json', token)
@@ -263,9 +233,6 @@ export default async function handler(request: ApiRequest, response: ApiResponse
         return reply(200, { month, ...cleanMonth(data) })
       }
       if (method === 'PUT') {
-        // cleanMonth turns anything unrecognisable into an empty month, so
-        // without this guard a malformed body overwrote the real document and
-        // answered 200. Refuse instead of erasing.
         if (
           typeof request.body !== 'object' ||
           request.body === null ||
@@ -280,12 +247,6 @@ export default async function handler(request: ApiRequest, response: ApiResponse
           response.setHeader('ETag', await writeJson(pathname, data, token, ifMatch))
         } catch (e) {
           if (!(await isLostRace(e, pathname, token, ifMatch !== null))) throw e
-          /*
-           * The document moved under this client — another tab or device wrote
-           * it between their read and this write. Refusing is the whole point:
-           * the body they sent is a full month assembled from a stale snapshot,
-           * so applying it would silently erase whatever the other write added.
-           */
           return reply(412, {
             error: 'This month changed elsewhere since it was read.',
             conflict: true,
