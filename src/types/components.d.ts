@@ -13,8 +13,6 @@ declare module 'vue' {
   export interface GlobalComponents {
     ExperienceSection: typeof import('./../components/ExperienceSection.vue')['default']
     HeroSection: typeof import('./../components/HeroSection.vue')['default']
-    RouterLink: typeof import('vue-router')['RouterLink']
-    RouterView: typeof import('vue-router')['RouterView']
     StackSection: typeof import('./../components/StackSection.vue')['default']
     StatsSection: typeof import('./../components/StatsSection.vue')['default']
     TestimonialsSection: typeof import('./../components/TestimonialsSection.vue')['default']

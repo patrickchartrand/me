@@ -7,17 +7,14 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 
-import { budgetApiDevServer } from './plugins/budget-api-dev'
-
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    budgetApiDevServer(),
     tailwindcss(),
     vue(),
     vueDevTools(),
     AutoImport({
-      imports: ['vue', 'vue-i18n', 'vue-router', { '@unhead/vue': ['useHead'] }],
+      imports: ['vue', 'vue-i18n', { '@unhead/vue': ['useHead'] }],
       dirs: ['src/composables'],
       dts: 'src/types/auto-imports.d.ts',
       vueTemplate: true,

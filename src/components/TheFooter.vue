@@ -1,21 +1,6 @@
 <script setup lang="ts">
-const router = useRouter()
 const { t } = useI18n()
 const year = new Date().getFullYear()
-
-/**
- * A full document load, not router.push.
- *
- * The budget page sits behind Cloudflare Access, which only ever sees top-level
- * navigations. Pushing the route client-side mounted the page without
- * authenticating at all, so its first request met the login redirect and failed
- * — a fetch cannot follow one into an interactive sign-in — and the screen only
- * appeared if you then refreshed by hand. Resolved through the router so the
- * path stays defined in one place.
- */
-function openBudget() {
-  window.location.assign(router.resolve({ name: 'budget' }).href)
-}
 
 const socialLinks = [
   {
@@ -154,7 +139,7 @@ const socialLinks = [
       <div
         class="pt-10 flex flex-col-reverse md:flex-row justify-between items-start md:items-center gap-6"
       >
-        <div class="text-sm text-white/60" @dblclick="openBudget">
+        <div class="text-sm text-white/60">
           © {{ year }} Patrick Chartrand. {{ t('footer.copyright') }}
         </div>
         <div class="flex gap-8 text-sm uppercase tracking-widest text-white/65">

@@ -29,8 +29,6 @@ declare global {
   const nextTick: typeof import('vue').nextTick
   const onActivated: typeof import('vue').onActivated
   const onBeforeMount: typeof import('vue').onBeforeMount
-  const onBeforeRouteLeave: typeof import('vue-router').onBeforeRouteLeave
-  const onBeforeRouteUpdate: typeof import('vue-router').onBeforeRouteUpdate
   const onBeforeUnmount: typeof import('vue').onBeforeUnmount
   const onBeforeUpdate: typeof import('vue').onBeforeUpdate
   const onDeactivated: typeof import('vue').onDeactivated
@@ -59,7 +57,6 @@ declare global {
   const unref: typeof import('vue').unref
   const useActiveSection: typeof import('../composables/useActiveSection').useActiveSection
   const useAttrs: typeof import('vue').useAttrs
-  const useBudget: typeof import('../composables/useBudget').useBudget
   const useCssModule: typeof import('vue').useCssModule
   const useCssVars: typeof import('vue').useCssVars
   const useDownload: typeof import('../composables/useDownload').useDownload
@@ -67,12 +64,9 @@ declare global {
   const useHeaderScroll: typeof import('../composables/useHeaderScroll').useHeaderScroll
   const useI18n: typeof import('vue-i18n').useI18n
   const useId: typeof import('vue').useId
-  const useLink: typeof import('vue-router').useLink
   const useLocale: typeof import('../composables/useLocale').useLocale
   const useMobileMenu: typeof import('../composables/useMobileMenu').useMobileMenu
   const useModel: typeof import('vue').useModel
-  const useRoute: typeof import('vue-router').useRoute
-  const useRouter: typeof import('vue-router').useRouter
   const useScrollAnimations: typeof import('../composables/useScrollAnimations').useScrollAnimations
   const useScrollSpotlight: typeof import('../composables/useScrollSpotlight').useScrollSpotlight
   const useSlots: typeof import('vue').useSlots
@@ -115,8 +109,6 @@ declare module 'vue' {
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
-    readonly onBeforeRouteLeave: UnwrapRef<typeof import('vue-router')['onBeforeRouteLeave']>
-    readonly onBeforeRouteUpdate: UnwrapRef<typeof import('vue-router')['onBeforeRouteUpdate']>
     readonly onBeforeUnmount: UnwrapRef<typeof import('vue')['onBeforeUnmount']>
     readonly onBeforeUpdate: UnwrapRef<typeof import('vue')['onBeforeUpdate']>
     readonly onDeactivated: UnwrapRef<typeof import('vue')['onDeactivated']>
@@ -145,7 +137,6 @@ declare module 'vue' {
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
     readonly useActiveSection: UnwrapRef<typeof import('../composables/useActiveSection')['useActiveSection']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
-    readonly useBudget: UnwrapRef<typeof import('../composables/useBudget')['useBudget']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
     readonly useDownload: UnwrapRef<typeof import('../composables/useDownload')['useDownload']>
@@ -153,12 +144,9 @@ declare module 'vue' {
     readonly useHeaderScroll: UnwrapRef<typeof import('../composables/useHeaderScroll')['useHeaderScroll']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
-    readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
     readonly useLocale: UnwrapRef<typeof import('../composables/useLocale')['useLocale']>
     readonly useMobileMenu: UnwrapRef<typeof import('../composables/useMobileMenu')['useMobileMenu']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
-    readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
-    readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
     readonly useScrollAnimations: UnwrapRef<typeof import('../composables/useScrollAnimations')['useScrollAnimations']>
     readonly useScrollSpotlight: UnwrapRef<typeof import('../composables/useScrollSpotlight')['useScrollSpotlight']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>

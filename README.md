@@ -1,8 +1,7 @@
 # Patrick Chartrand — portfolio
 
 The source of [patrickchartrand.dev](https://patrickchartrand.dev): a single-page
-portfolio in French and English, plus a private budget page that rides along in
-the same build.
+portfolio in French and English.
 
 ## Stack
 
@@ -12,9 +11,9 @@ the same build.
   are never edited by hand
 - **Tailwind CSS v4** through `@tailwindcss/vite`; the palette, breakpoints and
   the few hand-written rules all sit in `src/assets/style.css`
-- **vue-i18n** for the French and English copy, **vue-router** for the two
-  routes, **@unhead/vue** for metadata that follows the chosen locale
-- **Vercel** for hosting and for the single serverless function
+- **vue-i18n** for the French and English copy, **@unhead/vue** for metadata
+  that follows the chosen locale
+- **Vercel** for hosting
 
 ## Running it
 
@@ -23,52 +22,31 @@ npm install
 npm run dev
 ```
 
-Node 22.12 or later.
-
-The budget page needs no setup locally. `vite.config.ts` carries a dev-only
-plugin that replays the production API against a JSON file in
-`node_modules/.tmp/`, conflict path included, so that branch stays exercised
-without a network or a token. It opens with every figure at zero — the real
-ones are never written to disk here.
+Node 22.12 or later. There is nothing else to configure: the site is static,
+with no API, no database and no environment variables.
 
 ## Scripts
 
-| script               | what it does                                         |
-| -------------------- | ---------------------------------------------------- |
-| `npm run dev`        | Vite dev server, local budget API included           |
-| `npm run build`      | type-check and bundle, in parallel                   |
-| `npm run preview`    | serve the built output                               |
-| `npm run type-check` | `vue-tsc` over the app and the Node-side files alike |
-| `npm run lint`       | oxlint, then ESLint — both rewrite files in place    |
-| `npm run format`     | Prettier over `src/`                                 |
+| script               | what it does                                      |
+| -------------------- | ------------------------------------------------- |
+| `npm run dev`        | Vite dev server                                   |
+| `npm run build`      | type-check and bundle, in parallel                |
+| `npm run preview`    | serve the built output                            |
+| `npm run type-check` | `vue-tsc` over the app and the Vite config alike  |
+| `npm run lint`       | oxlint, then ESLint — both rewrite files in place |
+| `npm run format`     | Prettier over `src/`                              |
 
 ## Layout
 
 ```
-api/budget.ts            serverless function: reads and writes the budget
-public/site/             printable CV and cover letter, rendered to PDF in-browser
-src/components/          the sections the home page is assembled from
-src/composables/         scroll, menu, locale, PDF export, budget state
-src/services/budget.ts   the client half of the budget API
-src/views/               IndexView (public) and BudgetView (private)
-vite.config.ts           build config, plus the dev-only budget API
+public/site/       printable CV and cover letter, rendered to PDF in-browser
+src/App.vue        the page itself: metadata, then the sections in order
+src/components/    the sections the page is assembled from
+src/composables/   scroll, menu, locale, PDF export
+src/i18n/          the French and English copy
 ```
 
-## The private half
-
-`/_/budget` is a second page in the same bundle. Cloudflare Access gates it at
-the edge, and the serverless function verifies the signed assertion on every
-request and answers 401 without it — so the route holds even though its
-JavaScript ships to everyone.
-
-Writes are conditional. Each save carries the version it read, the store refuses
-a stale one with a 412, and the client re-reads and replays its own change
-instead of overwriting whatever landed in between. Two tabs can edit the same
-month without either of them losing an entry.
-
-Deploying it takes one environment variable, `DB_READ_WRITE_TOKEN`, a read-write
-token for the Vercel Blob store. Without it the function answers 503 and the
-page says so.
+One page, one component tree, no router.
 
 ## PDF export
 

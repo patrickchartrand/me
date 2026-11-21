@@ -84,12 +84,6 @@
     box-shadow: 0 0 0 3px #f5f3ef;
     border-radius: 2px;
   }
-
-  /* v4 uses 50%-alpha currentColor, which renders darker and loses the blue cast. */
-  input::placeholder,
-  textarea::placeholder {
-    color: #9ca3af;
-  }
 }
 
 /*
