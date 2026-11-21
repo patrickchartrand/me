@@ -6,11 +6,6 @@ const { activeSection } = useActiveSection()
 const { mobileMenuOpen, menuToggle, toggleMobileMenu, closeMobileMenu } = useMobileMenu()
 const { locale, toggle } = useLocale()
 
-/*
- * The overlay takes focus when it opens, so Escape reaches it and tabbing starts
- * inside it rather than behind it. closeMobileMenu hands focus back to the
- * hamburger.
- */
 const menuPanel = ref<HTMLElement | null>(null)
 watch(mobileMenuOpen, async (open) => {
   if (!open) return
@@ -89,7 +84,6 @@ const navLinks = computed(() => [
     </div>
   </header>
 
-  <!-- Mobile Menu Overlay -->
   <Transition name="mobile-menu">
     <div
       v-if="mobileMenuOpen"

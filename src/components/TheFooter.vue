@@ -51,9 +51,6 @@ const socialLinks = [
       class="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"
     />
 
-    <!-- Full width below xl: at w-1/2 it measured 188px against the photo's 176px
-         and started at x=188 where the photo ends at x=200, so the two read as a
-         competing pair rather than one sitting on the other. -->
     <div class="absolute top-0 right-0 w-full xl:w-1/2 h-full opacity-10 pointer-events-none">
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
         <path
@@ -95,9 +92,6 @@ const socialLinks = [
               </span>
             </a>
 
-            <!-- A button, not a link: it runs an export rather than going
-                 anywhere, and as an <a href="#"> it ignored Space — the key
-                 that activates buttons — scrolling the page instead. -->
             <button
               type="button"
               class="group inline-flex items-center gap-4 bg-[#63667b] text-cream px-8 py-4 rounded-full font-medium hover:bg-[#767a90] hover:scale-105 transition-all duration-300"
@@ -157,8 +151,6 @@ const socialLinks = [
         </div>
       </div>
 
-      <!-- col-reverse below md so the copyright sits under the links, which are
-           the useful thing to reach; the row order is unchanged from md up. -->
       <div
         class="pt-10 flex flex-col-reverse md:flex-row justify-between items-start md:items-center gap-6"
       >
@@ -180,8 +172,6 @@ const socialLinks = [
 </template>
 
 <style scoped>
-/* Forme organique, en écho au blob décoratif du fond :
-   border-radius à 8 valeurs = rayons horizontaux / rayons verticaux. */
 .blob-avatar {
   border-radius: 70% 30% 38% 62% / 58% 36% 64% 42%;
 }

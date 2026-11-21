@@ -65,7 +65,6 @@ const technologies = [
   },
 ]
 
-/** Same derivation the fetch used to do, now done once at module scope. */
 const gray = (svg: string) => svg.replace(/fill="[^"]*"/g, 'fill="currentColor"')
 
 const hovered = ref<string | null>(null)

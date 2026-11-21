@@ -16,8 +16,6 @@ interface EducationItem {
 const experiences = computed(() => tm('experience.items') as ExperienceItem[])
 const education = computed(() => tm('experience.education') as EducationItem[])
 
-// The rows only light up on hover, which a touch screen never delivers; below
-// md the highlight follows the scroll instead.
 const experienceList = ref<HTMLElement | null>(null)
 const educationList = ref<HTMLElement | null>(null)
 const { spotlit: spotlitExperience } = useScrollSpotlight(experienceList, experiences)
@@ -31,7 +29,6 @@ const { spotlit: spotlitEducation } = useScrollSpotlight(educationList, educatio
   >
     <div class="max-w-7xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-y-16 gap-x-8 lg:gap-x-16">
-        <!-- Experience Column -->
         <div class="md:col-span-7 fade-in-up">
           <h2 class="text-3xl font-serif mb-14">
             <span class="highlight-offset-dark">{{ t('experience.experienceTitle') }}</span>
@@ -57,7 +54,6 @@ const { spotlit: spotlitEducation } = useScrollSpotlight(educationList, educatio
           </div>
         </div>
 
-        <!-- Education Column -->
         <div class="md:col-span-5 fade-in-up">
           <h2 class="text-3xl font-serif mb-14">
             <span class="highlight-offset-dark">{{ t('experience.educationTitle') }}</span>

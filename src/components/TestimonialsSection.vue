@@ -29,7 +29,6 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
           :key="item.name"
           class="group relative bg-white/60 border border-[#e5e7eb] rounded-2xl p-8 md:p-10 flex flex-col gap-6 hover:shadow-lg hover:shadow-charcoal/5 transition-all duration-300"
         >
-          <!-- Quote mark -->
           <span
             class="quote-mark absolute top-8 right-10 text-7xl font-serif leading-none select-none"
             aria-hidden="true"

@@ -7,20 +7,15 @@ interface StatItem {
 
 const statItems = computed(() => tm('stats.items') as StatItem[])
 
-// Première année d'expérience professionnelle : le compteur se recalcule
-// à chaque chargement, pas besoin d'y revenir chaque 1er janvier.
 const CAREER_START_YEAR = 2017
 const yearsOfExperience = new Date().getFullYear() - CAREER_START_YEAR
 
 const rawValues = [yearsOfExperience, 1453, 100, 404]
-/** The counted-up numbers. Formatting is derived, so it follows the locale. */
 const current = ref(rawValues.map(() => 0))
 const hasAnimated = ref(false)
 
 const formatNumber = (value: number, index: number) => {
   if (index === 0) return value.toString().padStart(2, '0')
-  // The thousands separator has to follow the page, not the developer: a hard
-  // 'en-US' printed "1,458+" under a French label.
   if (index === 1) return value.toLocaleString(locale.value === 'fr' ? 'fr-CA' : 'en-CA') + '+'
   if (index === 2) return value + '%'
   return value.toString()
