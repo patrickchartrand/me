@@ -15,6 +15,29 @@ function nextFrame(): Promise<void> {
   })
 }
 
+function decodeCloudflareEmail(encoded: string): string {
+  if (encoded.length < 4) return ''
+  const key = parseInt(encoded.slice(0, 2), 16)
+  let address = ''
+  for (let i = 2; i < encoded.length; i += 2) {
+    address += String.fromCharCode(parseInt(encoded.slice(i, i + 2), 16) ^ key)
+  }
+  return address
+}
+
+function restoreProtectedEmails(root: HTMLElement) {
+  root
+    .querySelectorAll<HTMLAnchorElement>('a[href*="/cdn-cgi/l/email-protection"]')
+    .forEach((link) => {
+      const address = decodeCloudflareEmail(link.getAttribute('href')?.split('#')[1] ?? '')
+      if (address) link.setAttribute('href', `mailto:${address}`)
+    })
+  root.querySelectorAll<HTMLElement>('.__cf_email__').forEach((placeholder) => {
+    const address = decodeCloudflareEmail(placeholder.dataset.cfemail ?? '')
+    if (address) placeholder.replaceWith(document.createTextNode(address))
+  })
+}
+
 export async function useDownload({ filename, filepath }: { filename: string; filepath: string }) {
   if (running) return
   running = true
@@ -84,6 +107,7 @@ export async function useDownload({ filename, filepath }: { filename: string; fi
     container = document.createElement('div')
     container.style.cssText = 'position:fixed;top:0;left:-9999px;width:210mm;'
     container.innerHTML = html
+    restoreProtectedEmails(container)
     document.body.appendChild(container)
 
     const dateEl = container.querySelector<HTMLElement>('#letter-date')
