@@ -34,20 +34,13 @@ useHead({
 
 useScrollAnimations()
 
-/*
- * A shared or bookmarked /#work arrives before the sections exist: the browser
- * makes its own jump while #app is still empty, and misses. The router used to
- * redo it once the route resolved; with the router gone this is the only thing
- * left that does. scroll-padding-top in style.css supplies the 6rem offset.
- * The hash then comes off the URL, as it always did.
- */
 onMounted(() => {
   const { hash } = window.location
   if (!hash) return
   try {
     document.querySelector(hash)?.scrollIntoView()
   } catch {
-    // An id-shaped fragment that is not a valid selector; nothing to scroll to.
+    console.error('Failed to scroll into view:', hash)
   }
   window.history.replaceState(null, '', window.location.pathname + window.location.search)
 })

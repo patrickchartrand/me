@@ -62,9 +62,6 @@ const testimonials = computed(() => tm('testimonials.items') as Testimonial[])
   z-index: 1;
 }
 .highlight-offset::before {
-  /* lh, not %: a percentage is a share of the whole box, so a heading that
-     wrapped to two lines got a bar 48px tall against a 40px line and swallowed
-     the second one. One line's worth, however many lines there are. */
   content: '';
   display: block;
   width: calc(100% - 30px);

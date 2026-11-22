@@ -84,14 +84,6 @@ const { spotlit: spotlitEducation } = useScrollSpotlight(educationList, educatio
 </template>
 
 <style scoped>
-/*
- * Scoped rather than Tailwind's hover: utilities, because the project
- * deliberately keeps the ungated v3 variant (see style.css) and these rows are
- * the one place that cannot have it. A tap leaves :hover stuck, and since the
- * row under the midline already lights up, that left two rows lit at once.
- * Behind @media (hover: hover) the scroll is the only thing that marks a row
- * on a touch screen, and a pointer still works as before everywhere else.
- */
 @media (hover: hover) {
   .exp-row:hover {
     background-color: color-mix(in srgb, var(--color-cream) 5%, transparent);
@@ -107,9 +99,6 @@ const { spotlit: spotlitEducation } = useScrollSpotlight(educationList, educatio
   z-index: 1;
 }
 .highlight-offset-dark::before {
-  /* lh, not %: a percentage is a share of the whole box, so a heading that
-     wrapped to two lines got a bar 48px tall against a 40px line and swallowed
-     the second one. One line's worth, however many lines there are. */
   content: '';
   display: block;
   width: 100%;

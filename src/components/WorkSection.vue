@@ -32,8 +32,6 @@ const projects = computed(() => {
     ...project,
     title: translations[index]?.title ?? project.title,
     category: translations[index]?.category ?? project.category,
-    // These were the only user-facing strings left in English on the fr page:
-    // a screen reader read them out with French phonetics.
     imageAlt: translations[index]?.imageAlt ?? project.imageAlt,
   }))
   return isMobile.value ? [...mapped].sort((a, b) => Number(b.year) - Number(a.year)) : mapped
@@ -82,9 +80,6 @@ const projects = computed(() => {
               />
             </div>
             <div class="flex justify-between items-start gap-4 pt-4">
-              <!-- min-w-0 lets the title column shrink: without it an
-                   unbreakable title at a larger root font size pushed the year
-                   pill outside the card. -->
               <div class="min-w-0">
                 <h3
                   class="text-2xl md:text-3xl font-serif mb-1 group-hover:text-primary transition-all duration-300"
@@ -128,9 +123,6 @@ const projects = computed(() => {
   z-index: 1;
 }
 .highlight-offset-md::before {
-  /* lh, not %: a percentage is a share of the whole box, so a heading that
-     wrapped to two lines got a bar 48px tall against a 40px line and swallowed
-     the second one. One line's worth, however many lines there are. */
   content: '';
   display: block;
   width: calc(100% - 30px);

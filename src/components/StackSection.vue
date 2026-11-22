@@ -1,19 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
 
-/*
- * The icons are inlined rather than fetched.
- *
- * They used to come from cdn.simpleicons.org — twelve unconditional cross-origin
- * requests on every page load, to a fifth third-party origin, with the response
- * going straight into the page through v-html. Inlining removes the requests,
- * the origin and the injection in one move. 12.5 kB of markup against twelve
- * round trips is not a close trade.
- *
- * Source: Simple Icons, CC0 1.0. The <title> each one ships with is stripped:
- * the visible label beside the icon already names it, and the icon is
- * aria-hidden.
- */
 const technologies = [
   {
     name: 'Figma',
@@ -114,9 +101,6 @@ const hovered = ref<string | null>(null)
 }
 
 .tech-icon :deep(svg) {
-  /* height was 1lh, which resolved to the 24px line-height: the svg box came
-     out 40x24 while its viewBox is square, so the glyph met the smaller side
-     and drew at 24px inside a 40px container. Filling the box squares it. */
   width: 100%;
   height: 100%;
 }
@@ -127,9 +111,6 @@ const hovered = ref<string | null>(null)
   z-index: 1;
 }
 .highlight-offset-md::before {
-  /* lh, not %: a percentage is a share of the whole box, so a heading that
-     wrapped to two lines got a bar 48px tall against a 40px line and swallowed
-     the second one. One line's worth, however many lines there are. */
   content: '';
   display: block;
   width: calc(100% - 30px);
